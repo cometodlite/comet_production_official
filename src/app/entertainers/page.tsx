@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
 
+
 export default function EntertainersPage() {
   const { t } = useLang();
 
@@ -114,8 +115,14 @@ export default function EntertainersPage() {
           {/* 고구마오지터 */}
           <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center text-2xl font-black text-white shrink-0">
-                고
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
+                <Image
+                  src="/artist-ojiter.png"
+                  alt="고구마오지터"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h4 className="text-lg font-bold text-white">고구마오지터</h4>
