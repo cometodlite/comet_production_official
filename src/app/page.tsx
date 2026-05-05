@@ -1,65 +1,123 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { useLang } from "@/context/LanguageContext";
+
+export default function HomePage() {
+  const { t } = useLang();
+
+  const subsidiaries = [
+    {
+      name: "COMET ENTERTAINERS",
+      href: "/entertainers",
+      icon: "✦",
+      color: "from-violet-600/20 to-purple-900/20",
+      border: "border-violet-500/30",
+      accent: "text-violet-400",
+      tagline: t("엔터테인먼트 · 아티스트 관리 · 지원", "Entertainment · Artist Management · Support"),
+      desc: t(
+        "KE ENTERTAINMENT의 계보를 이어받아, 아티스트와 함께 새로운 별을 만들어갑니다.",
+        "Carrying on the legacy of KE ENTERTAINMENT, creating new stars alongside our artists."
+      ),
+    },
+    {
+      name: "COMET DEVELOPS",
+      href: "/develops",
+      icon: "◈",
+      color: "from-blue-600/20 to-indigo-900/20",
+      border: "border-blue-500/30",
+      accent: "text-blue-400",
+      tagline: t("게임 개발 · 관리 및 배급 · 추가 지원", "Game Dev · Publishing · Extended Support"),
+      desc: t(
+        "게임 개발과 배급을 통해 COMET PRODUCTION의 새로운 지평을 엽니다.",
+        "Opening new horizons for COMET PRODUCTION through game development and publishing."
+      ),
+    },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="relative">
+      {/* Hero Section */}
+      <section className="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-20 relative">
+        <div className="animate-fadeInUp" style={{ animationDelay: "0.1s", opacity: 0 }}>
+          <p className="text-indigo-400 text-sm tracking-[0.5em] uppercase mb-4">
+            {t("케이 네트워크 산하", "Under KE NETWORK")}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="animate-fadeInUp" style={{ animationDelay: "0.3s", opacity: 0 }}>
+          <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
+            <span className="gradient-text">COMET</span>
+          </h1>
+          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-white/60 mb-10">
+            PRODUCTION
+          </h2>
         </div>
-      </main>
+
+        <div className="animate-fadeInUp" style={{ animationDelay: "0.5s", opacity: 0 }}>
+          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-12">
+            {t(
+              "엔터테인먼트와 개발, 두 개의 날개로 더 넓은 우주를 향해 나아갑니다.",
+              "With two wings — entertainment and development — we reach for a wider universe."
+            )}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/about"
+              className="px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30 animate-glow"
+            >
+              {t("회사 소개", "About Us")}
+            </Link>
+            <Link
+              href="/contact"
+              className="px-8 py-3 rounded-full border border-white/20 hover:border-indigo-400 text-white/70 hover:text-white font-medium transition-all"
+            >
+              {t("문의하기", "Contact")}
+            </Link>
+          </div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 animate-float">
+          <span className="text-xs tracking-widest">{t("스크롤", "SCROLL")}</span>
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+            <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="1.5"/>
+            <circle cx="8" cy="7" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+      </section>
+
+      {/* Subsidiaries Section */}
+      <section className="max-w-6xl mx-auto px-6 pb-28">
+        <div className="text-center mb-16">
+          <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
+            {t("산하 브랜드", "SUBSIDIARIES")}
+          </p>
+          <h3 className="text-3xl md:text-4xl font-bold text-white">
+            {t("두 개의 날개", "Two Wings")}
+          </h3>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {subsidiaries.map((sub) => (
+            <Link key={sub.name} href={sub.href} className="group">
+              <div className={`glass-card p-8 bg-gradient-to-br ${sub.color} border ${sub.border} h-full`}>
+                <div className={`text-4xl mb-5 ${sub.accent} group-hover:scale-110 transition-transform inline-block`}>
+                  {sub.icon}
+                </div>
+                <h4 className="text-xl font-bold text-white mb-2">{sub.name}</h4>
+                <p className={`text-xs tracking-widest uppercase mb-4 ${sub.accent}`}>
+                  {sub.tagline}
+                </p>
+                <p className="text-white/50 text-sm leading-relaxed">{sub.desc}</p>
+                <div className={`mt-6 flex items-center gap-2 text-sm font-semibold ${sub.accent} group-hover:gap-3 transition-all`}>
+                  {t("자세히 보기", "Learn more")} <span>→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
