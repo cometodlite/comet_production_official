@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/context/LanguageContext";
+import { CometProductionLogo } from "@/components/logos/CometLogo";
 
 export default function AboutPage() {
   const { t } = useLang();
@@ -102,14 +103,48 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* Group Structure */}
+      <div className="mt-20 mb-8">
+        <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
+          {t("그룹 구조", "GROUP STRUCTURE")}
+        </p>
+        <h3 className="text-2xl font-bold text-white text-center mb-10">
+          {t("KE 그룹 산하 COMET", "COMET under KE Group")}
+        </h3>
+        <div className="glass-card p-8 border border-amber-500/20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3 px-6 py-3 rounded-xl border border-amber-500/40 bg-amber-500/5">
+              <span className="text-amber-400 font-bold tracking-widest text-sm">KE NETWORK</span>
+            </div>
+            <div className="w-px h-6 bg-white/20" />
+            <div className="flex items-center gap-3 px-6 py-3 rounded-xl border border-amber-500/60 bg-amber-500/10">
+              <CometProductionLogo size={22} />
+              <span className="text-white font-bold tracking-widest text-sm">C O M E T  PRODUCTION</span>
+            </div>
+            <div className="w-px h-6 bg-white/20" />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="px-5 py-2.5 rounded-lg border border-violet-500/40 bg-violet-500/10 text-violet-300 text-xs font-semibold tracking-wider text-center">
+                COMET ENTERTAINERS
+              </div>
+              <div className="px-5 py-2.5 rounded-lg border border-blue-500/40 bg-blue-500/10 text-blue-300 text-xs font-semibold tracking-wider text-center">
+                COMET DEVELOPS
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Vision */}
-      <div className="mt-24 glass-card p-10 text-center border border-indigo-500/20">
+      <div className="mt-12 glass-card p-10 text-center border border-indigo-500/20">
         <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
           {t("비전", "VISION")}
         </p>
         <h2 className="text-3xl font-bold text-white mb-4">
           {t("더 넓은 우주로", "Toward a Wider Universe")}
         </h2>
+        <p className="text-amber-500/60 text-sm tracking-[0.12em] italic mb-4">
+          _Talent. Care. Knowledge. Connection
+        </p>
         <p className="text-white/50 text-base leading-relaxed max-w-2xl mx-auto">
           {t(
             "COMET PRODUCTION은 엔터테인먼트와 기술 개발을 통해 더 많은 사람들에게 영감을 주고, KE 그룹과 함께 새로운 가능성을 탐구합니다.",

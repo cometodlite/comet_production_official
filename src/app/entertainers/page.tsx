@@ -45,7 +45,13 @@ export default function EntertainersPage() {
         <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] text-violet-400 mb-8">
           ENTERTAINERS
         </h2>
-        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="text-violet-300/70 text-base tracking-[0.08em] mb-4 italic">
+          _Talent. Care. Knowledge. Connection
+        </p>
+        <p className="text-white/30 text-sm tracking-widest mb-6 italic">
+          Ingenium atque labor lux veritatis
+        </p>
+        <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed">
           {t(
             "KE ENTERTAINMENT의 정신을 이어받아, 아티스트와 함께 더 빛나는 무대를 만들어갑니다.",
             "Carrying the spirit of KE ENTERTAINMENT, we create brighter stages together with our artists."

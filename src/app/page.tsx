@@ -55,11 +55,14 @@ export default function HomePage() {
         </div>
 
         <div className="animate-fadeInUp" style={{ animationDelay: "0.5s", opacity: 0 }}>
-          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-12">
+          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-4">
             {t(
               "엔터테인먼트와 개발, 두 개의 날개로 더 넓은 우주를 향해 나아갑니다.",
               "With two wings — entertainment and development — we reach for a wider universe."
             )}
+          </p>
+          <p className="text-amber-500/60 text-sm tracking-[0.15em] mb-12 italic">
+            _Talent. Care. Knowledge. Connection
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

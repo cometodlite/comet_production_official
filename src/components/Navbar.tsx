@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
+import { CometProductionLogo } from "@/components/logos/CometLogo";
 
 export default function Navbar() {
   const { lang, toggleLang, t } = useLang();
@@ -20,12 +21,15 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/10">
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-xl font-bold tracking-widest text-white group-hover:text-indigo-300 transition-colors">
-            COMET
-          </span>
-          <span className="text-xs font-light tracking-[0.3em] text-indigo-400 uppercase">
-            PRODUCTION
-          </span>
+          <CometProductionLogo size={28} className="group-hover:opacity-80 transition-opacity" />
+          <div className="flex flex-col leading-none">
+            <span className="text-sm font-black tracking-[0.25em] text-white group-hover:text-amber-300 transition-colors">
+              C O M E T
+            </span>
+            <span className="text-[9px] font-light tracking-[0.35em] text-amber-500/80 uppercase">
+              PRODUCTION
+            </span>
+          </div>
         </Link>
 
         <ul className="hidden md:flex items-center gap-8">
