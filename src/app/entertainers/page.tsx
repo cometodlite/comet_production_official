@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
 
 export default function EntertainersPage() {
@@ -36,19 +37,25 @@ export default function EntertainersPage() {
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
       <div className="text-center mb-20">
-        <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-8">
           COMET PRODUCTION {t("산하", "Subsidiary")}
         </p>
-        <h1 className="text-5xl md:text-6xl font-black text-white mb-3">
-          COMET
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] text-violet-400 mb-8">
-          ENTERTAINERS
-        </h2>
-        <p className="text-violet-300/70 text-base tracking-[0.08em] mb-4 italic">
+        {/* 실제 로고 이미지 */}
+        <div className="flex justify-center mb-8">
+          <div className="bg-white rounded-2xl px-10 py-6 inline-block shadow-lg shadow-violet-500/10">
+            <Image
+              src="/logo-entertainers.jpg"
+              alt="COMET ENTERTAINERS"
+              width={320}
+              height={100}
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <p className="text-violet-300/70 text-base tracking-[0.08em] mb-3 italic">
           _Talent. Care. Knowledge. Connection
         </p>
-        <p className="text-white/30 text-sm tracking-widest mb-6 italic">
+        <p className="text-white/30 text-sm tracking-widest mb-8 italic">
           Ingenium atque labor lux veritatis
         </p>
         <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed">

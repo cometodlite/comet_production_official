@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
 import { CometProductionLogo } from "@/components/logos/CometLogo";
 
@@ -112,6 +113,19 @@ export default function AboutPage() {
           {t("KE 그룹 산하 COMET", "COMET under KE Group")}
         </h3>
         <div className="glass-card p-8 border border-amber-500/20">
+          {/* KE NETWORK + COMET 로고 이미지 */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white rounded-xl px-8 py-5 inline-block">
+              <Image
+                src="/logo-ke-comet.jpg"
+                alt="KE NETWORK & COMET"
+                width={380}
+                height={160}
+                className="object-contain"
+              />
+            </div>
+          </div>
+          {/* 구조도 */}
           <div className="flex flex-col items-center gap-3">
             <div className="flex items-center gap-3 px-6 py-3 rounded-xl border border-amber-500/40 bg-amber-500/5">
               <span className="text-amber-400 font-bold tracking-widest text-sm">KE NETWORK</span>
