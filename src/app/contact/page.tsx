@@ -5,9 +5,9 @@ import emailjs from "@emailjs/browser";
 import { useLang } from "@/context/LanguageContext";
 
 // EmailJS 설정값 — 나중에 실제 값으로 교체하세요
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID = "service_h0fh8wh";
+const EMAILJS_TEMPLATE_ID = "template_4x9623z";
+const EMAILJS_PUBLIC_KEY = "VIQe47NTdllY1RELK";
 
 export default function ContactPage() {
   const { t } = useLang();
