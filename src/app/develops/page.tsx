@@ -89,6 +89,27 @@ export default function DevelopsPage() {
         </div>
       </div>
 
+      {/* 게임 포트폴리오 */}
+      <div className="mb-20">
+        <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
+          {t("포트폴리오", "PORTFOLIO")}
+        </p>
+        <h3 className="text-3xl font-bold text-white text-center mb-4">
+          {t("개발 작품", "Our Games")}
+        </h3>
+        <p className="text-white/40 text-sm text-center mb-12">
+          {t("첫 번째 작품을 준비 중입니다.", "Our first title is in development.")}
+        </p>
+        <div className="grid md:grid-cols-3 gap-5">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="glass-card border border-blue-500/15 aspect-video flex flex-col items-center justify-center gap-3 text-white/20">
+              <div className="text-3xl">◈</div>
+              <p className="text-xs tracking-widest">{t("개발 중", "In Development")}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="glass-card p-10 text-center border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-indigo-900/20">
         <h3 className="text-2xl font-bold text-white mb-4">

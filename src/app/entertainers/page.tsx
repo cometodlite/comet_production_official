@@ -102,6 +102,29 @@ export default function EntertainersPage() {
         </div>
       </div>
 
+      {/* 아티스트 갤러리 */}
+      <div className="mb-20">
+        <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
+          {t("아티스트", "ARTISTS")}
+        </p>
+        <h3 className="text-3xl font-bold text-white text-center mb-4">
+          {t("소속 아티스트", "Our Artists")}
+        </h3>
+        <p className="text-white/40 text-sm text-center mb-12">
+          {t("아티스트 정보가 곧 공개됩니다.", "Artist information coming soon.")}
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="glass-card border border-violet-500/15 aspect-square flex flex-col items-center justify-center gap-3 text-white/20">
+              <div className="w-16 h-16 rounded-full border-2 border-dashed border-white/15 flex items-center justify-center text-2xl">
+                ✦
+              </div>
+              <p className="text-xs tracking-widest">{t("준비 중", "Coming Soon")}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="glass-card p-10 text-center border border-violet-500/20 bg-gradient-to-br from-violet-900/20 to-purple-900/20">
         <h3 className="text-2xl font-bold text-white mb-4">

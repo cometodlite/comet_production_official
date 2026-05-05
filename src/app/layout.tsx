@@ -6,8 +6,17 @@ import Footer from "@/components/Footer";
 import StarField from "@/components/StarField";
 
 export const metadata: Metadata = {
-  title: "COMET PRODUCTION",
-  description: "COMET PRODUCTION — COMET ENTERTAINERS & COMET DEVELOPS",
+  metadataBase: new URL("https://comet-production-official.vercel.app"),
+  title: { default: "COMET PRODUCTION", template: "%s | COMET PRODUCTION" },
+  description: "KE NETWORK 산하 COMET PRODUCTION — 엔터테인먼트와 개발, 두 개의 날개로 더 넓은 우주를 향해 나아갑니다.",
+  openGraph: {
+    siteName: "COMET PRODUCTION",
+    title: "COMET PRODUCTION",
+    description: "KE NETWORK 산하 COMET PRODUCTION — COMET ENTERTAINERS & COMET DEVELOPS",
+    images: ["/logo-ke-comet.jpg"],
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
