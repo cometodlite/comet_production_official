@@ -41,7 +41,7 @@ export default function HomePage() {
       <section className="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-20 relative">
         <div className="animate-fadeInUp" style={{ animationDelay: "0.1s", opacity: 0 }}>
           <p className="text-indigo-400 text-sm tracking-[0.5em] uppercase mb-4">
-            {t("케이 네트워크 산하", "Under KE NETWORK")}
+            {t("KE NETWORK 산하", "Under KE NETWORK")}
           </p>
         </div>
 
