@@ -36,19 +36,41 @@ export default function DevelopsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <FadeUp className="text-center mb-20">
-        <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-4">
-          COMET PRODUCTION {t("산하", "Subsidiary")}
-        </p>
-        <h1 className="text-5xl md:text-6xl font-black text-white mb-3">COMET</h1>
-        <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] text-blue-400 mb-8">DEVELOPS</h2>
-        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
-          {t(
-            "게임이라는 새로운 우주를 개척하고, COMET PRODUCTION의 기술적 가능성을 확장합니다.",
-            "We pioneer a new universe called games, expanding the technological possibilities of COMET PRODUCTION."
-          )}
-        </p>
-      </FadeUp>
+      <div className="text-center mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <p className="text-blue-400 text-sm tracking-[0.5em] uppercase mb-4">
+            COMET PRODUCTION {t("산하", "Subsidiary")}
+          </p>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
+            <span className="gradient-text">COMET</span>
+          </h1>
+          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-blue-400/80 mb-10">
+            DEVELOPS
+          </h2>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed">
+            {t(
+              "게임이라는 새로운 우주를 개척하고, COMET PRODUCTION의 기술적 가능성을 확장합니다.",
+              "We pioneer a new universe called games, expanding the technological possibilities of COMET PRODUCTION."
+            )}
+          </p>
+        </motion.div>
+      </div>
 
       {/* Origin Banner */}
       <FadeUp className="glass-card p-6 border border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 mb-16 flex items-start gap-4">

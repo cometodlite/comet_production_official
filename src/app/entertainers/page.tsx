@@ -37,34 +37,47 @@ export default function EntertainersPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <FadeUp className="text-center mb-20">
-        <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-8">
-          COMET PRODUCTION {t("산하", "Subsidiary")}
-        </p>
-        <div className="flex justify-center mb-8">
-          <div className="bg-white rounded-2xl px-10 py-6 inline-block shadow-lg shadow-violet-500/10">
-            <Image
-              src="/logo-entertainers.jpg"
-              alt="COMET ENTERTAINERS"
-              width={320}
-              height={100}
-              className="object-contain"
-            />
-          </div>
-        </div>
-        <p className="text-violet-300/70 text-base tracking-[0.08em] mb-3 italic">
-          _Talent. Care. Knowledge. Connection
-        </p>
-        <p className="text-white/30 text-sm tracking-widest mb-8 italic">
-          Ingenium atque labor lux veritatis
-        </p>
-        <p className="text-white/50 text-base max-w-2xl mx-auto leading-relaxed">
-          {t(
-            "KE ENTERTAINMENT의 정신을 이어받아, 아티스트와 함께 더 빛나는 무대를 만들어갑니다.",
-            "Carrying the spirit of KE ENTERTAINMENT, we create brighter stages together with our artists."
-          )}
-        </p>
-      </FadeUp>
+      <div className="text-center mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <p className="text-violet-400 text-sm tracking-[0.5em] uppercase mb-4">
+            COMET PRODUCTION {t("산하", "Subsidiary")}
+          </p>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
+            <span className="gradient-text">COMET</span>
+          </h1>
+          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-violet-400/80 mb-10">
+            ENTERTAINERS
+          </h2>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <p className="text-amber-500/60 text-sm tracking-[0.15em] mb-3 italic">
+            _Talent. Care. Knowledge. Connection
+          </p>
+          <p className="text-white/30 text-sm tracking-widest mb-6 italic">
+            Ingenium atque labor lux veritatis
+          </p>
+          <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed">
+            {t(
+              "KE ENTERTAINMENT의 정신을 이어받아, 아티스트와 함께 더 빛나는 무대를 만들어갑니다.",
+              "Carrying the spirit of KE ENTERTAINMENT, we create brighter stages together with our artists."
+            )}
+          </p>
+        </motion.div>
+      </div>
 
       {/* Origin Banner */}
       <FadeUp className="glass-card p-6 border border-violet-500/30 bg-gradient-to-r from-violet-900/20 to-purple-900/20 mb-16 flex items-start gap-4">
