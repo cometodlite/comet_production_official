@@ -280,7 +280,7 @@ export default function EntertainersPage() {
             <div className="flex flex-col gap-2">
               <a href="https://soundcloud.com/user-149250997" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 text-xs text-white/50 hover:text-orange-400 transition-colors">
-                <span className="w-5 h-5 rounded bg-orange-500/20 flex items-center justify-center text-orange-400 text-[10px] font-black">SC</span>
+                <Image src="/soundcloud.png" alt="SoundCloud" width={20} height={20} className="rounded" />
                 SoundCloud
               </a>
               <a href="https://www.instagram.com/hibi_lunalite100/" target="_blank" rel="noopener noreferrer"
