@@ -139,6 +139,9 @@ export default function DevelopsPage() {
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
                     {t("정적 웹게임", "Static Web Game")}
                   </span>
+                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-cyan-300 border-cyan-500/30 bg-cyan-500/10">
+                    {t("인크리멘탈 / 아이들", "Incremental / Idle")}
+                  </span>
                 </div>
                 <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">HCSiG</h4>
                 <p className="text-blue-400/70 text-xs mb-3">해킹코드 시뮬레이션</p>
