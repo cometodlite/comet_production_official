@@ -97,12 +97,32 @@ export default function DevelopsPage() {
         <h3 className="text-3xl font-bold text-white text-center mb-4">
           {t("개발 작품", "Our Games")}
         </h3>
-        <p className="text-white/40 text-sm text-center mb-12">
-          {t("첫 번째 작품을 준비 중입니다.", "Our first title is in development.")}
-        </p>
         <div className="grid md:grid-cols-3 gap-5">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="glass-card border border-blue-500/15 aspect-video flex flex-col items-center justify-center gap-3 text-white/20">
+          {/* HCSiG */}
+          <a href="https://cometodlite.github.io/hacking-code-simulation-game/" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card border border-blue-500/30 bg-gradient-to-b from-blue-900/20 to-transparent p-6 h-full hover:border-blue-400/60 transition-all">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-blue-400 text-lg">◈</span>
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
+                  {t("정적 웹게임", "Static Web Game")}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
+                HCSiG
+              </h4>
+              <p className="text-blue-400/70 text-xs mb-3">해킹코드 시뮬레이션</p>
+              <p className="text-white/40 text-xs leading-relaxed mb-5">
+                {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.", "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
+              </p>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-400 group-hover:gap-2.5 transition-all">
+                {t("플레이하기", "Play Now")} →
+              </div>
+            </div>
+          </a>
+
+          {/* 준비 중 슬롯 */}
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="glass-card border border-blue-500/15 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[180px]">
               <div className="text-3xl">◈</div>
               <p className="text-xs tracking-widest">{t("개발 중", "In Development")}</p>
             </div>
