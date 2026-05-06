@@ -255,6 +255,24 @@ export default function EntertainersPage() {
             </div>
           </div>
 
+          {/* instar */}
+          <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full border-2 border-dashed border-violet-400/30 flex items-center justify-center text-violet-400/50 text-xl shrink-0">
+                ✦
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white">instar</h4>
+                <p className="text-violet-400 text-xs tracking-widest mt-0.5">CREATOR</p>
+              </div>
+            </div>
+            <div className="mb-5">
+              <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
+                COMET LIVE 1기
+              </span>
+            </div>
+          </div>
+
           {/* Lunalite */}
           <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
             <div className="flex items-center gap-4 mb-4">
