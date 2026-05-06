@@ -254,6 +254,42 @@ export default function EntertainersPage() {
               </a>
             </div>
           </div>
+
+          {/* Lunalite */}
+          <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
+                <Image
+                  src="/composer-lunalite.png"
+                  alt="Lunalite"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white">Lunalite</h4>
+                <p className="text-violet-400 text-xs tracking-widest mt-0.5">COMPOSER</p>
+              </div>
+            </div>
+            <div className="mb-5">
+              <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
+                COMET LIVE 1기
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="https://soundcloud.com/user-149250997" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-orange-400 transition-colors">
+                <span className="w-5 h-5 rounded bg-orange-500/20 flex items-center justify-center text-orange-400 text-[10px] font-black">SC</span>
+                SoundCloud
+              </a>
+              <a href="https://www.instagram.com/hibi_lunalite100/" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-pink-400 transition-colors">
+                <Image src="/instagram.png" alt="인스타그램" width={20} height={20} className="rounded" />
+                인스타그램
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
