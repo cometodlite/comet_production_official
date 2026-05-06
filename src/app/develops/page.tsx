@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/context/LanguageContext";
+import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
 
 export default function DevelopsPage() {
   const { t } = useLang();
@@ -35,26 +36,22 @@ export default function DevelopsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <div className="text-center mb-20">
+      <FadeUp className="text-center mb-20">
         <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-4">
           COMET PRODUCTION {t("산하", "Subsidiary")}
         </p>
-        <h1 className="text-5xl md:text-6xl font-black text-white mb-3">
-          COMET
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] text-blue-400 mb-8">
-          DEVELOPS
-        </h2>
+        <h1 className="text-5xl md:text-6xl font-black text-white mb-3">COMET</h1>
+        <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] text-blue-400 mb-8">DEVELOPS</h2>
         <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
           {t(
             "게임이라는 새로운 우주를 개척하고, COMET PRODUCTION의 기술적 가능성을 확장합니다.",
             "We pioneer a new universe called games, expanding the technological possibilities of COMET PRODUCTION."
           )}
         </p>
-      </div>
+      </FadeUp>
 
       {/* Origin Banner */}
-      <div className="glass-card p-6 border border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 mb-16 flex items-start gap-4">
+      <FadeUp className="glass-card p-6 border border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 mb-16 flex items-start gap-4">
         <span className="text-2xl mt-0.5">🛰️</span>
         <div>
           <p className="text-blue-400 text-xs tracking-widest uppercase font-semibold mb-1">
@@ -67,87 +64,104 @@ export default function DevelopsPage() {
             )}
           </p>
         </div>
-      </div>
+      </FadeUp>
 
       {/* Services */}
       <div className="mb-20">
-        <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
-          {t("주요 사업", "SERVICES")}
-        </p>
-        <h3 className="text-3xl font-bold text-white text-center mb-12">
-          {t("우리가 하는 일", "What We Do")}
-        </h3>
-
-        <div className="grid md:grid-cols-3 gap-6">
+        <FadeUp className="text-center mb-12">
+          <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3">
+            {t("주요 사업", "SERVICES")}
+          </p>
+          <h3 className="text-3xl font-bold text-white">
+            {t("우리가 하는 일", "What We Do")}
+          </h3>
+        </FadeUp>
+        <StaggerContainer className="grid md:grid-cols-3 gap-6">
           {services.map((s, i) => (
-            <div key={i} className="glass-card p-7 border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent text-center">
-              <div className="text-4xl mb-4">{s.icon}</div>
-              <h4 className="text-lg font-bold text-white mb-3">{s.title}</h4>
-              <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
-            </div>
+            <StaggerItem key={i}>
+              <motion.div
+                className="glass-card p-7 border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent text-center h-full"
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              >
+                <div className="text-4xl mb-4">{s.icon}</div>
+                <h4 className="text-lg font-bold text-white mb-3">{s.title}</h4>
+                <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
 
       {/* 게임 포트폴리오 */}
       <div className="mb-20">
-        <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
-          {t("포트폴리오", "PORTFOLIO")}
-        </p>
-        <h3 className="text-3xl font-bold text-white text-center mb-4">
-          {t("개발 작품", "Our Games")}
-        </h3>
-        <div className="grid md:grid-cols-3 gap-5">
-          {/* HCSiG */}
-          <a href="https://cometodlite.github.io/hacking-code-simulation-game/" target="_blank" rel="noopener noreferrer" className="group">
-            <div className="glass-card border border-blue-500/30 bg-gradient-to-b from-blue-900/20 to-transparent p-6 h-full hover:border-blue-400/60 transition-all">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-blue-400 text-lg">◈</span>
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
-                  {t("정적 웹게임", "Static Web Game")}
-                </span>
+        <FadeUp className="text-center mb-12">
+          <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3">
+            {t("포트폴리오", "PORTFOLIO")}
+          </p>
+          <h3 className="text-3xl font-bold text-white">
+            {t("개발 작품", "Our Games")}
+          </h3>
+        </FadeUp>
+        <StaggerContainer className="grid md:grid-cols-3 gap-5">
+          <StaggerItem>
+            <motion.a
+              href="https://cometodlite.github.io/hacking-code-simulation-game/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <div className="glass-card border border-blue-500/30 bg-gradient-to-b from-blue-900/20 to-transparent p-6 h-full hover:border-blue-400/60 transition-all">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-blue-400 text-lg">◈</span>
+                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
+                    {t("정적 웹게임", "Static Web Game")}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">HCSiG</h4>
+                <p className="text-blue-400/70 text-xs mb-3">해킹코드 시뮬레이션</p>
+                <p className="text-white/40 text-xs leading-relaxed mb-5">
+                  {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.", "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
+                </p>
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-400 group-hover:gap-2.5 transition-all">
+                  {t("플레이하기", "Play Now")} →
+                </div>
               </div>
-              <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
-                HCSiG
-              </h4>
-              <p className="text-blue-400/70 text-xs mb-3">해킹코드 시뮬레이션</p>
-              <p className="text-white/40 text-xs leading-relaxed mb-5">
-                {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.", "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
-              </p>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-400 group-hover:gap-2.5 transition-all">
-                {t("플레이하기", "Play Now")} →
-              </div>
-            </div>
-          </a>
-
-          {/* 준비 중 슬롯 */}
+            </motion.a>
+          </StaggerItem>
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="glass-card border border-blue-500/15 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[180px]">
-              <div className="text-3xl">◈</div>
-              <p className="text-xs tracking-widest">{t("개발 중", "In Development")}</p>
-            </div>
+            <StaggerItem key={i}>
+              <div className="glass-card border border-blue-500/15 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[180px]">
+                <div className="text-3xl">◈</div>
+                <p className="text-xs tracking-widest">{t("개발 중", "In Development")}</p>
+              </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
 
       {/* CTA */}
-      <div className="glass-card p-10 text-center border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-indigo-900/20">
-        <h3 className="text-2xl font-bold text-white mb-4">
-          {t("협업 또는 지원 문의", "Collaboration or Support Inquiry")}
-        </h3>
-        <p className="text-white/50 mb-6 text-sm">
-          {t(
-            "게임 개발 협업, 배급 파트너십, 기술 지원 등 다양한 문의를 받고 있습니다.",
-            "We accept various inquiries including game development collaboration, publishing partnerships, and technical support."
-          )}
-        </p>
-        <a
-          href="/contact"
-          className="inline-block px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-blue-500/30"
-        >
-          {t("문의하기", "Contact Us")}
-        </a>
-      </div>
+      <FadeUp>
+        <div className="glass-card p-10 text-center border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-indigo-900/20">
+          <h3 className="text-2xl font-bold text-white mb-4">
+            {t("협업 또는 지원 문의", "Collaboration or Support Inquiry")}
+          </h3>
+          <p className="text-white/50 mb-6 text-sm">
+            {t(
+              "게임 개발 협업, 배급 파트너십, 기술 지원 등 다양한 문의를 받고 있습니다.",
+              "We accept various inquiries including game development collaboration, publishing partnerships, and technical support."
+            )}
+          </p>
+          <motion.a
+            href="/contact"
+            className="inline-block px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-blue-500/30"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            {t("문의하기", "Contact Us")}
+          </motion.a>
+        </div>
+      </FadeUp>
     </div>
   );
 }

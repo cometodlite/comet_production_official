@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { FadeUp, StaggerContainer, StaggerItem, AnimatePresence, motion } from "@/components/Motion";
 
 type Category = "all" | "production" | "entertainers" | "develops";
 
@@ -56,7 +57,7 @@ export default function NewsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
-      <div className="text-center mb-16">
+      <FadeUp className="text-center mb-16">
         <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
           {t("최신 소식", "LATEST NEWS")}
         </p>
@@ -66,14 +67,16 @@ export default function NewsPage() {
         <p className="text-white/50 text-base">
           {t("COMET PRODUCTION 그룹의 최신 소식을 전달합니다.", "The latest news from the COMET PRODUCTION group.")}
         </p>
-      </div>
+      </FadeUp>
 
       {/* 필터 */}
-      <div className="flex flex-wrap gap-2 mb-12 justify-center">
+      <FadeUp className="flex flex-wrap gap-2 mb-12 justify-center">
         {categories.map((c) => (
-          <button
+          <motion.button
             key={c.value}
             onClick={() => setFilter(c.value)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all border ${
               filter === c.value
                 ? "bg-indigo-600 border-indigo-500 text-white"
@@ -81,36 +84,49 @@ export default function NewsPage() {
             }`}
           >
             {c.label}
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </FadeUp>
 
       {/* 뉴스 목록 */}
-      <div className="space-y-6">
-        {filtered.map((news) => (
-          <div key={news.id} className="glass-card p-7 border border-white/8 hover:border-indigo-500/30 transition-all">
-            <div className="flex flex-wrap items-center gap-3 mb-3">
-              <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${news.tagColor}`}>
-                {news.tag}
-              </span>
-              <span className="text-white/30 text-xs">{news.date}</span>
-            </div>
-            <h3 className="text-lg font-bold text-white mb-2">
-              {t(news.titleKo, news.titleEn)}
-            </h3>
-            <p className="text-white/50 text-sm leading-relaxed">
-              {t(news.descKo, news.descEn)}
-            </p>
-          </div>
-        ))}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={filter}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-6"
+        >
+          {filtered.map((news) => (
+            <motion.div
+              key={news.id}
+              className="glass-card p-7 border border-white/8 hover:border-indigo-500/30 transition-all"
+              whileHover={{ x: 4, transition: { duration: 0.2 } }}
+            >
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${news.tagColor}`}>
+                  {news.tag}
+                </span>
+                <span className="text-white/30 text-xs">{news.date}</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">{t(news.titleKo, news.titleEn)}</h3>
+              <p className="text-white/50 text-sm leading-relaxed">{t(news.descKo, news.descEn)}</p>
+            </motion.div>
+          ))}
 
-      {filtered.length === 0 && (
-        <div className="text-center py-20 text-white/30">
-          <p className="text-4xl mb-4">✦</p>
-          <p>{t("아직 등록된 소식이 없습니다.", "No news yet.")}</p>
-        </div>
-      )}
+          {filtered.length === 0 && (
+            <motion.div
+              className="text-center py-20 text-white/30"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <p className="text-4xl mb-4">✦</p>
+              <p>{t("아직 등록된 소식이 없습니다.", "No news yet.")}</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

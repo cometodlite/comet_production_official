@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
+import { motion, StaggerContainer, StaggerItem } from "@/components/Motion";
 
 export default function HomePage() {
   const { t } = useLang();
@@ -39,22 +40,34 @@ export default function HomePage() {
     <div className="relative">
       {/* Hero Section */}
       <section className="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-20 relative">
-        <div className="animate-fadeInUp" style={{ animationDelay: "0.1s", opacity: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
           <p className="text-indigo-400 text-sm tracking-[0.5em] uppercase mb-4">
             {t("KE NETWORK 산하", "Under KE NETWORK")}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="animate-fadeInUp" style={{ animationDelay: "0.3s", opacity: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
             <span className="gradient-text">COMET</span>
           </h1>
           <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-white/60 mb-10">
             PRODUCTION
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="animate-fadeInUp" style={{ animationDelay: "0.5s", opacity: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
           <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-4">
             {t(
               "엔터테인먼트와 개발, 두 개의 날개로 더 넓은 우주를 향해 나아갑니다.",
@@ -79,7 +92,7 @@ export default function HomePage() {
               {t("문의하기", "Contact")}
             </Link>
           </div>
-        </div>
+        </motion.div>
 
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 animate-float">
           <span className="text-xs tracking-widest">{t("스크롤", "SCROLL")}</span>
@@ -92,34 +105,45 @@ export default function HomePage() {
 
       {/* Subsidiaries Section */}
       <section className="max-w-6xl mx-auto px-6 pb-28">
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
             {t("산하 브랜드", "SUBSIDIARIES")}
           </p>
           <h3 className="text-3xl md:text-4xl font-bold text-white">
             {t("두 개의 날개", "Two Wings")}
           </h3>
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <StaggerContainer className="grid md:grid-cols-2 gap-8">
           {subsidiaries.map((sub) => (
-            <Link key={sub.name} href={sub.href} className="group">
-              <div className={`glass-card p-8 bg-gradient-to-br ${sub.color} border ${sub.border} h-full`}>
-                <div className={`text-4xl mb-5 ${sub.accent} group-hover:scale-110 transition-transform inline-block`}>
-                  {sub.icon}
-                </div>
-                <h4 className="text-xl font-bold text-white mb-2">{sub.name}</h4>
-                <p className={`text-xs tracking-widest uppercase mb-4 ${sub.accent}`}>
-                  {sub.tagline}
-                </p>
-                <p className="text-white/50 text-sm leading-relaxed">{sub.desc}</p>
-                <div className={`mt-6 flex items-center gap-2 text-sm font-semibold ${sub.accent} group-hover:gap-3 transition-all`}>
-                  {t("자세히 보기", "Learn more")} <span>→</span>
-                </div>
-              </div>
-            </Link>
+            <StaggerItem key={sub.name}>
+              <Link href={sub.href} className="group block h-full">
+                <motion.div
+                  className={`glass-card p-8 bg-gradient-to-br ${sub.color} border ${sub.border} h-full`}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                >
+                  <div className={`text-4xl mb-5 ${sub.accent} group-hover:scale-110 transition-transform inline-block`}>
+                    {sub.icon}
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">{sub.name}</h4>
+                  <p className={`text-xs tracking-widest uppercase mb-4 ${sub.accent}`}>
+                    {sub.tagline}
+                  </p>
+                  <p className="text-white/50 text-sm leading-relaxed">{sub.desc}</p>
+                  <div className={`mt-6 flex items-center gap-2 text-sm font-semibold ${sub.accent} group-hover:gap-3 transition-all`}>
+                    {t("자세히 보기", "Learn more")} <span>→</span>
+                  </div>
+                </motion.div>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
     </div>
   );

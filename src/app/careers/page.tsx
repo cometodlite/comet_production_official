@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
+import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
 
 const openings = [
   {
@@ -41,7 +42,7 @@ export default function CareersPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
-      <div className="text-center mb-16">
+      <FadeUp className="text-center mb-16">
         <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
           {t("함께할 인재", "JOIN US")}
         </p>
@@ -54,52 +55,61 @@ export default function CareersPage() {
             "We're looking for talented people to build a new universe with COMET PRODUCTION."
           )}
         </p>
-      </div>
+      </FadeUp>
 
       {/* 채용 목록 */}
-      <div className="space-y-6 mb-20">
+      <StaggerContainer className="space-y-6 mb-20">
         {openings.map((job, i) => (
-          <div key={i} className="glass-card p-7 border border-white/8 hover:border-indigo-500/30 transition-all group">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${job.brandColor}`}>
-                {job.brand}
-              </span>
-              <span className="text-white/30 text-xs border border-white/10 rounded-full px-2.5 py-1">
-                {t(job.typeKo, job.typeEn)}
-              </span>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">
-              {t(job.titleKo, job.titleEn)}
-            </h3>
-            <p className="text-white/50 text-sm leading-relaxed mb-5">{t(job.descKo, job.descEn)}</p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group-hover:gap-3"
+          <StaggerItem key={i}>
+            <motion.div
+              className="glass-card p-7 border border-white/8 hover:border-indigo-500/30 transition-all group"
+              whileHover={{ x: 4, transition: { duration: 0.2 } }}
             >
-              {t("지원하기", "Apply Now")} →
-            </Link>
-          </div>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${job.brandColor}`}>
+                  {job.brand}
+                </span>
+                <span className="text-white/30 text-xs border border-white/10 rounded-full px-2.5 py-1">
+                  {t(job.typeKo, job.typeEn)}
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">
+                {t(job.titleKo, job.titleEn)}
+              </h3>
+              <p className="text-white/50 text-sm leading-relaxed mb-5">{t(job.descKo, job.descEn)}</p>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors group-hover:gap-3"
+              >
+                {t("지원하기", "Apply Now")} →
+              </Link>
+            </motion.div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
 
       {/* 자발적 지원 */}
-      <div className="glass-card p-10 text-center border border-indigo-500/20 bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
-        <h3 className="text-2xl font-bold text-white mb-3">
-          {t("원하는 포지션이 없으신가요?", "Don't see a role that fits?")}
-        </h3>
-        <p className="text-white/50 text-sm mb-6 leading-relaxed">
-          {t(
-            "공개 채용 외에도 자발적 지원을 언제든지 환영합니다. 문의 페이지를 통해 연락 주세요.",
-            "We welcome spontaneous applications at any time. Please reach out through our contact page."
-          )}
-        </p>
-        <Link
-          href="/contact"
-          className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30"
-        >
-          {t("문의하기", "Contact Us")}
-        </Link>
-      </div>
+      <FadeUp>
+        <div className="glass-card p-10 text-center border border-indigo-500/20 bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
+          <h3 className="text-2xl font-bold text-white mb-3">
+            {t("원하는 포지션이 없으신가요?", "Don't see a role that fits?")}
+          </h3>
+          <p className="text-white/50 text-sm mb-6 leading-relaxed">
+            {t(
+              "공개 채용 외에도 자발적 지원을 언제든지 환영합니다. 문의 페이지를 통해 연락 주세요.",
+              "We welcome spontaneous applications at any time. Please reach out through our contact page."
+            )}
+          </p>
+          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-block">
+            <Link
+              href="/contact"
+              className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30"
+            >
+              {t("문의하기", "Contact Us")}
+            </Link>
+          </motion.div>
+        </div>
+      </FadeUp>
     </div>
   );
 }
