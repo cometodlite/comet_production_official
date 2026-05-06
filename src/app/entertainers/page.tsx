@@ -189,12 +189,40 @@ export default function EntertainersPage() {
             </div>
           </div>
 
-          {/* 추가 슬롯 */}
-          <div className="glass-card border border-violet-500/10 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[200px]">
-            <div className="w-14 h-14 rounded-full border-2 border-dashed border-white/10 flex items-center justify-center text-2xl">
-              ✦
+          {/* 테마 */}
+          <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
+                <Image
+                  src="/theme.png"
+                  alt="테마"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white">테마</h4>
+                <p className="text-violet-400 text-xs tracking-widest mt-0.5">BROADCASTER</p>
+              </div>
             </div>
-            <p className="text-xs tracking-widest">{t("준비 중", "Coming Soon")}</p>
+            <div className="mb-5">
+              <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
+                COMET LIVE 2기
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="https://chzzk.naver.com/674d8882d0be4f9114bcc7f66d90dd65" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-green-400 transition-colors">
+                <Image src="/chzzk.webp" alt="치지직" width={20} height={20} className="rounded" />
+                치지직
+              </a>
+              <a href="https://discord.gg/9nejxVtwF4" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-indigo-400 transition-colors">
+                <Image src="/discord.webp" alt="디스코드" width={20} height={20} className="rounded" />
+                디스코드
+              </a>
+            </div>
           </div>
         </div>
       </div>
