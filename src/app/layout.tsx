@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StarField from "@/components/StarField";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://comet-production-official.vercel.app"),
@@ -32,6 +33,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1 relative z-10 pt-16">{children}</main>
           <Footer />
+          <ScrollToTop />
         </LanguageProvider>
       </body>
     </html>

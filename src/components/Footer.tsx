@@ -67,10 +67,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/5 text-center">
+        <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-2">
           <p className="text-white/20 text-xs">
             © {new Date().getFullYear()} COMET PRODUCTION. All rights reserved.
           </p>
+          <Link href="/privacy" className="text-white/20 hover:text-white/50 text-xs transition-colors">
+            {t("개인정보처리방침", "Privacy Policy")}
+          </Link>
         </div>
       </div>
     </footer>
