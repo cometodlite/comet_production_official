@@ -153,15 +153,49 @@ export default function EntertainersPage() {
             </div>
           </div>
 
-          {/* 추가 슬롯 */}
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="glass-card border border-violet-500/10 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[200px]">
-              <div className="w-14 h-14 rounded-full border-2 border-dashed border-white/10 flex items-center justify-center text-2xl">
-                ✦
+          {/* 주황파커 */}
+          <div className="glass-card p-7 border border-violet-500/25 bg-gradient-to-b from-violet-900/15 to-transparent group">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
+                <Image
+                  src="/artist-parker.png"
+                  alt="주황파커"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <p className="text-xs tracking-widest">{t("준비 중", "Coming Soon")}</p>
+              <div>
+                <h4 className="text-lg font-bold text-white">주황파커</h4>
+                <p className="text-violet-400 text-xs tracking-widest mt-0.5">YOUTUBER</p>
+              </div>
             </div>
-          ))}
+            <div className="mb-5">
+              <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
+                COMET LIVE 2기
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a href="https://www.youtube.com/@parker0951_overwatch2/videos" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-red-400 transition-colors">
+                <span className="w-5 h-5 rounded bg-red-500/20 flex items-center justify-center text-red-400 text-[10px] font-bold">▶</span>
+                주황머리파커
+              </a>
+              <a href="https://www.youtube.com/@parker0951_second" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-white/50 hover:text-red-400 transition-colors">
+                <span className="w-5 h-5 rounded bg-red-500/20 flex items-center justify-center text-red-400 text-[10px] font-bold">▶</span>
+                주황마인파커
+              </a>
+            </div>
+          </div>
+
+          {/* 추가 슬롯 */}
+          <div className="glass-card border border-violet-500/10 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[200px]">
+            <div className="w-14 h-14 rounded-full border-2 border-dashed border-white/10 flex items-center justify-center text-2xl">
+              ✦
+            </div>
+            <p className="text-xs tracking-widest">{t("준비 중", "Coming Soon")}</p>
+          </div>
         </div>
       </div>
 
