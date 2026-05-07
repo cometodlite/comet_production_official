@@ -38,7 +38,18 @@ export default function EntertainersPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <div className="text-center mb-20">
+      <div className="relative text-center mb-20">
+        {/* 히어로 글로우 */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,92,246,0.12) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            transform: "scale(1.4)",
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -140,8 +151,8 @@ export default function EntertainersPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
-                  <Image src="/artist-ojiter.png" alt="고구마오지터" width={56} height={56} className="w-full h-full object-cover" />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0 transition-all duration-300 group-hover:border-violet-400/80 group-hover:shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+                  <Image src="/artist-ojiter.png" alt="고구마오지터" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">고구마오지터</h4>
@@ -172,8 +183,8 @@ export default function EntertainersPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
-                  <Image src="/artist-parker.png" alt="주황파커" width={56} height={56} className="w-full h-full object-cover" />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0 transition-all duration-300 group-hover:border-violet-400/80 group-hover:shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+                  <Image src="/artist-parker.png" alt="주황파커" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">주황파커</h4>
@@ -201,8 +212,8 @@ export default function EntertainersPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
-                  <Image src="/theme.png" alt="테마" width={56} height={56} className="w-full h-full object-cover" />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0 transition-all duration-300 group-hover:border-violet-400/80 group-hover:shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+                  <Image src="/theme.png" alt="테마" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">테마</h4>
@@ -230,8 +241,8 @@ export default function EntertainersPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
-                  <Image src="/artist-ghw.jpg" alt="강하월" width={56} height={56} className="w-full h-full object-cover" />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0 transition-all duration-300 group-hover:border-violet-400/80 group-hover:shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+                  <Image src="/artist-ghw.jpg" alt="강하월" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">강하월</h4>
@@ -279,8 +290,8 @@ export default function EntertainersPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0">
-                  <Image src="/composer-lunalite.png" alt="Lunalite" width={56} height={56} className="w-full h-full object-cover" />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-violet-400/40 shrink-0 transition-all duration-300 group-hover:border-violet-400/80 group-hover:shadow-[0_0_14px_rgba(139,92,246,0.45)]">
+                  <Image src="/composer-lunalite.png" alt="Lunalite" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">Lunalite</h4>

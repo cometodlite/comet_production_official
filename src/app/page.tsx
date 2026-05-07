@@ -40,6 +40,16 @@ export default function HomePage() {
     <div className="relative">
       {/* Hero Section */}
       <section className="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-20 relative">
+        {/* 히어로 글로우 */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+          style={{
+            background: "radial-gradient(ellipse 70% 55% at 50% 38%, rgba(99,102,241,0.13) 0%, transparent 70%)",
+            filter: "blur(30px)",
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

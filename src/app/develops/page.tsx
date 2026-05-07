@@ -36,7 +36,18 @@ export default function DevelopsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <div className="text-center mb-20">
+      <div className="relative text-center mb-20">
+        {/* 히어로 글로우 */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59,130,246,0.12) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            transform: "scale(1.4)",
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

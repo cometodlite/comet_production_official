@@ -21,6 +21,7 @@ body {
   overflow-x: hidden;
 }
 
+/* ── 기존 애니메이션 ── */
 @keyframes twinkle {
   0%, 100% { opacity: 0.2; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.4); }
@@ -48,6 +49,24 @@ body {
   100% { transform: translateX(0) translateY(0); }
 }
 
+/* ── 유성 애니메이션 ── */
+@keyframes shooting-star {
+  0% {
+    opacity: 0;
+    transform: rotate(-42deg) translateX(0px);
+  }
+  12% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(-42deg) translateX(-700px);
+  }
+}
+
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease forwards;
 }
@@ -60,11 +79,23 @@ body {
   animation: glow 3s ease-in-out infinite;
 }
 
+/* ── 별 ── */
 .star {
   position: absolute;
   border-radius: 50%;
   background: white;
   animation: twinkle ease-in-out infinite;
+}
+
+/* ── 유성 ── */
+.shooting-star {
+  position: absolute;
+  height: 1.5px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(200, 220, 255, 0.4), transparent);
+  pointer-events: none;
+  transform-origin: right center;
+  animation: shooting-star linear forwards;
+  border-radius: 999px;
 }
 
 .gradient-text {
@@ -74,7 +105,9 @@ body {
   background-clip: text;
 }
 
+/* ── 글래스 카드 ── */
 .glass-card {
+  position: relative;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -82,11 +115,43 @@ body {
   transition: all 0.3s ease;
 }
 
+/* 그라디언트 테두리 (hover 시 표시) */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.55) 0%,
+    rgba(167, 139, 250, 0.25) 45%,
+    rgba(96, 165, 250, 0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
 .glass-card:hover {
   background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: rgba(99, 102, 241, 0.35);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+  box-shadow:
+    0 20px 60px rgba(99, 102, 241, 0.15),
+    0 0 35px rgba(99, 102, 241, 0.07);
 }
 
 .nebula-bg {
