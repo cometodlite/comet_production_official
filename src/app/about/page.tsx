@@ -289,22 +289,53 @@ export default function AboutPage() {
 
       {/* ── 비전 ── */}
       <FadeUp>
-        <div className="glass-card p-10 text-center border border-indigo-500/20">
-          <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
-            {t("비전", "VISION")}
-          </p>
-          <h2 className="text-3xl font-bold text-white mb-4">
-            {t("더 넓은 우주로", "Toward a Wider Universe")}
-          </h2>
-          <p className="text-amber-500/60 text-sm tracking-[0.12em] italic mb-5">
-            _Talent. Care. Knowledge. Connection
-          </p>
-          <p className="text-white/50 text-base leading-relaxed max-w-2xl mx-auto">
-            {t(
-              "COMET PRODUCTION은 엔터테인먼트와 기술 개발을 통해 더 많은 사람들에게 영감을 주고, KE 그룹과 함께 새로운 가능성을 탐구합니다.",
-              "COMET PRODUCTION inspires more people through entertainment and technology, exploring new possibilities together with the KE group."
-            )}
-          </p>
+        <div className="glass-card border border-indigo-500/20 overflow-hidden">
+
+          {/* Brand Line */}
+          <div className="p-10 text-center border-b border-white/5">
+            <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-6">
+              {t("비전", "VISION")}
+            </p>
+            <p className="text-white/60 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
+              {t(
+                "재능을 발견하고, 창작을 실현하며,\n사람과 가능성을 연결하는 제작 생태계를 만든다.",
+                "Discover talent, realize creation, and build a production ecosystem that connects people and possibility."
+              )}
+            </p>
+            <p className="text-3xl md:text-4xl font-black gradient-text mb-2 tracking-tight">
+              We produce possibility.
+            </p>
+            <p className="text-white/30 text-sm tracking-[0.2em]">
+              {t("우리는 가능성을 제작합니다.", "We produce possibility.")}
+            </p>
+          </div>
+
+          {/* Core Direction */}
+          <div className="px-10 py-7 text-center border-b border-white/5">
+            <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
+              {t("핵심 방향", "CORE DIRECTION")}
+            </p>
+            <p className="text-amber-500/70 text-sm md:text-base tracking-[0.25em] font-medium">
+              Talent.&nbsp; Care.&nbsp; Knowledge.&nbsp; Connection.
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="px-10 py-8 space-y-4">
+            <p className="text-white/55 text-sm leading-relaxed">
+              {t(
+                "COMET PRODUCTION은 재능 있는 사람을 단순히 모으는 곳이 아니라, 그들이 실제로 창작하고, 성장하고, 연결될 수 있는 환경을 만드는 제작 조직입니다.",
+                "COMET PRODUCTION is not simply a place to gather talented people — it is a production organization that creates an environment where they can truly create, grow, and connect."
+              )}
+            </p>
+            <p className="text-white/55 text-sm leading-relaxed">
+              {t(
+                "우리는 콘텐츠, 기술, 예술, 엔터테인먼트를 분리된 분야로 보지 않습니다. 각자의 가능성이 하나의 프로젝트가 되고, 하나의 프로젝트가 새로운 세계가 될 수 있도록 돕습니다.",
+                "We do not see content, technology, art, and entertainment as separate fields. We help each person's potential become a project — and each project become a new world."
+              )}
+            </p>
+          </div>
+
         </div>
       </FadeUp>
 
