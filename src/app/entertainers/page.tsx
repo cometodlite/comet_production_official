@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
 import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
 
@@ -245,6 +246,10 @@ export default function EntertainersPage() {
                   <Image src="/instagram.png" alt="인스타그램" width={20} height={20} className="rounded" />인스타그램
                 </a>
               </div>
+              <Link href="/entertainers/ghw" className="mt-4 pt-3 border-t border-violet-500/10 flex items-center justify-between group/profile">
+                <span className="text-xs text-violet-400/50 tracking-widest group-hover/profile:text-violet-300 transition-colors">{t("프로필 보기", "View Profile")}</span>
+                <span className="text-violet-400/40 text-xs group-hover/profile:text-violet-300 group-hover/profile:translate-x-0.5 transition-all inline-block">→</span>
+              </Link>
             </motion.div>
           </StaggerItem>
 
@@ -293,6 +298,10 @@ export default function EntertainersPage() {
                   <Image src="/instagram.png" alt="인스타그램" width={20} height={20} className="rounded" />인스타그램
                 </a>
               </div>
+              <Link href="/entertainers/lunalite" className="mt-4 pt-3 border-t border-violet-500/10 flex items-center justify-between group/profile">
+                <span className="text-xs text-violet-400/50 tracking-widest group-hover/profile:text-violet-300 transition-colors">{t("프로필 보기", "View Profile")}</span>
+                <span className="text-violet-400/40 text-xs group-hover/profile:text-violet-300 group-hover/profile:translate-x-0.5 transition-all inline-block">→</span>
+              </Link>
             </motion.div>
           </StaggerItem>
         </StaggerContainer>
