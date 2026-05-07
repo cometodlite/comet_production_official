@@ -125,17 +125,19 @@ export default function DevelopsPage() {
         </StaggerContainer>
       </div>
 
-      {/* 게임 포트폴리오 */}
+      {/* 프로젝트 */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
           <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3">
-            {t("포트폴리오", "PORTFOLIO")}
+            {t("프로젝트", "PROJECTS")}
           </p>
           <h3 className="text-3xl font-bold text-white">
-            {t("개발 작품", "Our Games")}
+            {t("개발 작품", "Our Works")}
           </h3>
         </FadeUp>
-        <StaggerContainer className="grid md:grid-cols-3 gap-5">
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          {/* HCSiG */}
           <StaggerItem>
             <motion.a
               href="https://cometodlite.github.io/hacking-code-simulation-game/"
@@ -145,17 +147,19 @@ export default function DevelopsPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="glass-card border border-blue-500/30 bg-gradient-to-b from-blue-900/20 to-transparent p-6 h-full hover:border-blue-400/60 transition-all">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-blue-400 text-lg">◈</span>
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-green-300 border-green-500/30 bg-green-500/10">
+                    {t("운영 중", "Live")}
+                  </span>
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
-                    {t("정적 웹게임", "Static Web Game")}
+                    {t("웹게임", "Web Game")}
                   </span>
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-cyan-300 border-cyan-500/30 bg-cyan-500/10">
                     {t("인크리멘탈 / 아이들", "Incremental / Idle")}
                   </span>
                 </div>
                 <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">HCSiG</h4>
-                <p className="text-blue-400/70 text-xs mb-3">해킹코드 시뮬레이션</p>
+                <p className="text-blue-400/70 text-xs mb-3">{t("해킹코드 시뮬레이션", "Hacking Code Simulation")}</p>
                 <p className="text-white/40 text-xs leading-relaxed mb-5">
                   {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.", "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
                 </p>
@@ -165,14 +169,81 @@ export default function DevelopsPage() {
               </div>
             </motion.a>
           </StaggerItem>
-          {[...Array(2)].map((_, i) => (
-            <StaggerItem key={i}>
-              <div className="glass-card border border-blue-500/15 flex flex-col items-center justify-center gap-3 text-white/20 min-h-[180px]">
-                <div className="text-3xl">◈</div>
-                <p className="text-xs tracking-widest">{t("개발 중", "In Development")}</p>
+
+          {/* PROJECT: HW */}
+          <StaggerItem>
+            <motion.div
+              className="glass-card border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent p-6 h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
+                  {t("기획 중", "Planning")}
+                </span>
               </div>
-            </StaggerItem>
-          ))}
+              <h4 className="text-lg font-bold text-white mb-1">PROJECT: HW</h4>
+              <p className="text-blue-400/70 text-xs mb-3">&nbsp;</p>
+              <p className="text-white/40 text-xs leading-relaxed">
+                {t("편안한 힐링을 위한.", "For comfortable healing.")}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
+          {/* WORLDWIDE_LUNATIC FAMILY */}
+          <StaggerItem>
+            <motion.div
+              className="glass-card border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent p-6 h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
+                  {t("기획 중", "Planning")}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white mb-1">WORLDWIDE_LUNATIC FAMILY</h4>
+              <p className="text-blue-400/70 text-xs mb-3">&nbsp;</p>
+              <p className="text-white/25 text-xs italic">
+                {t("공개 예정", "Details coming soon")}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
+          {/* UTOPIA SYNDROME */}
+          <StaggerItem>
+            <motion.div
+              className="glass-card border border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">
+                  {t("미공개", "Unrevealed")}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white/70 mb-1">UTOPIA SYNDROME</h4>
+              <p className="text-white/25 text-xs mt-auto italic">
+                {t("공개 예정", "Details coming soon")}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
+          {/* DREAM ON */}
+          <StaggerItem>
+            <motion.div
+              className="glass-card border border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">
+                  {t("미공개", "Unrevealed")}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white/70 mb-1">DREAM ON</h4>
+              <p className="text-white/25 text-xs mt-auto italic">
+                {t("공개 예정", "Details coming soon")}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
         </StaggerContainer>
       </div>
 

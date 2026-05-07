@@ -199,68 +199,13 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════
-          03 / PROJECTS
-      ══════════════════════════════════════════ */}
-      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-40 border-t border-white/5">
-        <FadeUp>
-          <p className="text-white/25 text-[10px] tracking-[0.7em] uppercase mb-10 md:mb-16">
-            03 / PROJECTS
-          </p>
-        </FadeUp>
-        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-          {/* HCSiG */}
-          <StaggerItem>
-            <motion.a
-              href="https://cometodlite.github.io/hacking-code-simulation-game/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group glass-card block p-8 border border-blue-500/20 h-full"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
-              <p className="text-blue-400/50 text-[9px] tracking-[0.5em] uppercase mb-5">
-                COMET DEVELOPS
-              </p>
-              <h4 className="text-2xl font-black text-white mb-1 group-hover:text-blue-200 transition-colors">
-                HCSiG
-              </h4>
-              <p className="text-white/25 text-xs tracking-wider mb-6">
-                해킹코드 시뮬레이션
-              </p>
-              <p className="text-white/40 text-sm leading-relaxed mb-8">
-                {t(
-                  "브라우저에서 즐기는 인크리멘탈/아이들 장르 웹게임.",
-                  "An incremental / idle web game playable in your browser."
-                )}
-              </p>
-              <span className="text-blue-400/40 text-[10px] tracking-[0.5em] group-hover:text-blue-400 transition-colors">
-                PLAY →
-              </span>
-            </motion.a>
-          </StaggerItem>
-
-          {/* 준비 중 × 2 */}
-          {[...Array(2)].map((_, i) => (
-            <StaggerItem key={i}>
-              <div className="glass-card p-8 border border-white/5 flex flex-col items-center justify-center min-h-[240px] text-white/10">
-                <div className="text-3xl mb-3">◈</div>
-                <p className="text-[10px] tracking-[0.5em]">
-                  {t("준비 중", "COMING SOON")}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          04 / CULTURE
+          03 / CULTURE
       ══════════════════════════════════════════ */}
       <section className="border-t border-white/5">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
             <p className="text-white/25 text-[10px] tracking-[0.7em] uppercase">
-              04 / CULTURE
+              03 / CULTURE
             </p>
           </FadeUp>
         </div>
