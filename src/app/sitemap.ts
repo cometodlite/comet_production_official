@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = "https://comet-production-official.vercel.app";
+const BASE_URL = "https://comet.kenet.co.kr";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

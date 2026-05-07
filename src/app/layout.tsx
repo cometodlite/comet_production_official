@@ -7,7 +7,7 @@ import StarField from "@/components/StarField";
 import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://comet-production-official.vercel.app"),
+  metadataBase: new URL("https://comet.kenet.co.kr"),
   title: { default: "COMET PRODUCTION", template: "%s | COMET PRODUCTION" },
   description: "KE NETWORK 산하 COMET PRODUCTION — 엔터테인먼트와 개발, 두 개의 날개로 더 넓은 우주를 향해 나아갑니다.",
   openGraph: {
