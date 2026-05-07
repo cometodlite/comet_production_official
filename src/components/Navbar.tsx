@@ -39,20 +39,26 @@ export default function Navbar() {
 
         {/* 데스크톱 메뉴 */}
         <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`text-sm tracking-wide transition-colors ${
-                  pathname === href
-                    ? "text-indigo-300 font-semibold"
-                    : "text-white/70 hover:text-white"
-                }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`relative text-sm tracking-wide transition-colors pb-1 ${
+                    isActive
+                      ? "text-white font-semibold"
+                      : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  {label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-indigo-400" />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-3">
@@ -82,21 +88,23 @@ export default function Navbar() {
       {/* 모바일 드롭다운 메뉴 */}
       <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-96 border-t border-white/10" : "max-h-0"}`}>
         <ul className="bg-black/80 backdrop-blur-md px-6 py-4 flex flex-col gap-1">
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className={`block py-2.5 text-sm tracking-wide transition-colors border-b border-white/5 last:border-0 ${
-                  pathname === href
-                    ? "text-indigo-300 font-semibold"
-                    : "text-white/70 hover:text-white"
-                }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`flex items-center gap-2 py-2.5 text-sm tracking-wide transition-colors border-b border-white/5 last:border-0 ${
+                    isActive ? "text-white font-semibold" : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  {isActive && <span className="w-1 h-1 rounded-full bg-indigo-400 shrink-0" />}
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </header>

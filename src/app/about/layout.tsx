@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "회사 소개 | COMET PRODUCTION",
+  title: "회사 소개",
   description: "KE NETWORK 산하 COMET PRODUCTION의 설립 배경과 비전, 자회사 구조를 소개합니다.",
   openGraph: {
     title: "회사 소개 | COMET PRODUCTION",
