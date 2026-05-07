@@ -318,6 +318,52 @@ export default function EntertainersPage() {
         </StaggerContainer>
       </div>
 
+      {/* 비전 */}
+      <FadeUp className="mb-12">
+        <div className="glass-card border border-violet-500/20 overflow-hidden">
+
+          {/* Brand Line */}
+          <div className="p-10 text-center border-b border-white/5">
+            <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-6">
+              {t("비전", "VISION")}
+            </p>
+            <p className="text-white/60 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+              {t(
+                "재능 있는 창작자와 엔터테이너가 자신만의 빛으로 성장하고, 더 넓은 무대와 연결되는 창작 생태계를 만든다.",
+                "To build a creative ecosystem where talented creators and entertainers grow with their own light and connect to a wider stage."
+              )}
+            </p>
+            <p className="text-2xl md:text-3xl font-black gradient-text mb-2 tracking-tight">
+              Let talent become light.
+            </p>
+            <p className="text-white/25 text-sm tracking-[0.2em]">
+              {t("재능이 빛이 되도록.", "Let talent become light.")}
+            </p>
+          </div>
+
+          {/* Sub Line */}
+          <div className="px-10 py-6 text-center border-b border-white/5">
+            <p className="text-amber-500/60 text-sm italic tracking-[0.12em] mb-1.5">
+              Ingenium atque labor lux veritatis.
+            </p>
+            <p className="text-white/25 text-xs tracking-widest">
+              {t("재능과 노력은 진실의 빛이다.", "Talent and labor are the light of truth.")}
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="px-10 py-8 text-center">
+            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mx-auto">
+              {t(
+                "COMET ENTERTAINERS는 예술, 방송, 음악, 디자인, 캐릭터 콘텐츠를 통해 창작자의 개성과 재능이 하나의 브랜드로 성장할 수 있는 엔터테인먼트 환경을 만듭니다.",
+                "COMET ENTERTAINERS creates an entertainment environment where creators' individuality and talents can grow into a brand — through art, broadcasting, music, design, and character content."
+              )}
+            </p>
+          </div>
+
+        </div>
+      </FadeUp>
+
       {/* CTA */}
       <FadeUp>
         <div className="glass-card p-10 text-center border border-violet-500/20 bg-gradient-to-br from-violet-900/20 to-purple-900/20">

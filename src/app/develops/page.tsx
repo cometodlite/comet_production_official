@@ -176,6 +176,42 @@ export default function DevelopsPage() {
         </StaggerContainer>
       </div>
 
+      {/* 비전 */}
+      <FadeUp className="mb-12">
+        <div className="glass-card border border-blue-500/20 overflow-hidden">
+
+          {/* Brand Line */}
+          <div className="p-10 text-center border-b border-white/5">
+            <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-6">
+              {t("비전", "VISION")}
+            </p>
+            <p className="text-white/60 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+              {t(
+                "아이디어를 구조로 만들고, 구조를 경험으로 완성하는 개발 조직이 된다.",
+                "To become a development organization that turns ideas into structure, and structure into experience."
+              )}
+            </p>
+            <p className="text-2xl md:text-3xl font-black gradient-text mb-2 tracking-tight">
+              We build the unseen.
+            </p>
+            <p className="text-white/25 text-sm tracking-[0.2em]">
+              {t("보이지 않던 가능성을 구축합니다.", "We build the unseen.")}
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="px-10 py-8 text-center">
+            <p className="text-white/50 text-sm leading-relaxed max-w-2xl mx-auto">
+              {t(
+                "COMET DEVELOPS는 창작과 기술을 연결하여, 아이디어가 실제 서비스와 게임, 시스템으로 완성되는 개발 생태계를 만듭니다.",
+                "COMET DEVELOPS connects creativity and technology, building a development ecosystem where ideas are realized as services, games, and systems."
+              )}
+            </p>
+          </div>
+
+        </div>
+      </FadeUp>
+
       {/* CTA */}
       <FadeUp>
         <div className="glass-card p-10 text-center border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-indigo-900/20">
