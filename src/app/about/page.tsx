@@ -47,51 +47,47 @@ export default function AboutPage() {
 
   const values = [
     {
-      letter: "T",
       name: "TALENT",
       nameKo: "재능",
-      color: "text-indigo-400",
-      border: "border-indigo-500/30",
-      bg: "from-indigo-900/10",
-      desc: t(
-        "아티스트와 크리에이터의 가능성을 발굴하고, 그 재능을 세상으로 이끌어냅니다.",
-        "We discover the potential of artists and creators, and bring their talents to the world."
-      ),
-    },
-    {
-      letter: "C",
-      name: "CARE",
-      nameKo: "보호",
-      color: "text-amber-400",
-      border: "border-amber-500/30",
-      bg: "from-amber-900/10",
-      desc: t(
-        "소속원을 보호하고 아끼며, 모든 구성원이 안전하게 활동할 수 있는 환경을 만듭니다.",
-        "We protect and cherish our members, creating an environment where everyone can thrive safely."
-      ),
-    },
-    {
-      letter: "K",
-      name: "KNOWLEDGE",
-      nameKo: "지식",
       color: "text-[#6C7CFF]",
       border: "border-[#6C7CFF]/30",
-      bg: "from-[#080E24]/20",
+      bg: "from-[#080E24]/30",
       desc: t(
-        "전문적인 지식과 경험을 바탕으로 올바른 방향을 제시하고, 지속적으로 성장합니다.",
-        "We provide clear direction grounded in expertise and experience, and continuously grow."
+        "가능성 있는 재능을 발견합니다.",
+        "We discover talent with genuine potential."
       ),
     },
     {
-      letter: "C",
+      name: "CARE",
+      nameKo: "보호",
+      color: "text-[#C8A86A]",
+      border: "border-[#C8A86A]/30",
+      bg: "from-[#1a1106]/30",
+      desc: t(
+        "소속원이 안정적으로 성장할 수 있는 환경을 만듭니다.",
+        "We build an environment for stable, lasting growth."
+      ),
+    },
+    {
+      name: "KNOWLEDGE",
+      nameKo: "지식",
+      color: "text-[#60d5fa]",
+      border: "border-[#60d5fa]/30",
+      bg: "from-[#051420]/30",
+      desc: t(
+        "경험과 지식을 바탕으로 더 나은 방향을 제시합니다.",
+        "We provide direction grounded in experience and expertise."
+      ),
+    },
+    {
       name: "CONNECTION",
       nameKo: "연결",
-      color: "text-violet-400",
-      border: "border-violet-500/30",
-      bg: "from-violet-900/10",
+      color: "text-[#a78bfa]",
+      border: "border-[#a78bfa]/30",
+      bg: "from-[#0d0518]/30",
       desc: t(
-        "아티스트와 팬, 크리에이터와 기술, 사람과 사람 사이의 연결을 소중히 여깁니다.",
-        "We value the connections between artists and fans, creators and technology, and people with people."
+        "사람과 프로젝트, 창작과 기술을 연결합니다.",
+        "We connect people, projects, creation, and technology."
       ),
     },
   ];
@@ -106,8 +102,8 @@ export default function AboutPage() {
       accent: "text-indigo-400",
       bg: "from-indigo-900/10",
       desc: t(
-        "COMET 설립 이후로 소속원들이 부조리를 당하거나 힘들지 않게 이끌어주면서, 멋진 방향으로 회사를 이끌어나갈 것을 약속합니다.",
-        "Since COMET's founding, committed to leading the company in a great direction — ensuring every member is protected from injustice and never left to struggle alone."
+        "COMET PRODUCTION의 방향성과 조직 운영을 총괄하며, 소속원이 안정적으로 창작하고 성장할 수 있는 환경을 만들어갑니다.",
+        "Oversees the direction and operations of COMET PRODUCTION, building an environment where members can create and grow with stability."
       ),
     },
     {
@@ -119,8 +115,8 @@ export default function AboutPage() {
       accent: "text-violet-400",
       bg: "from-violet-900/10",
       desc: t(
-        "KE NETWORK의 관리 및 COMET의 지원을 보조하고, 소속원에 대한 각종 보호를 약속합니다.",
-        "Assists in managing KE NETWORK and supporting COMET operations, with a commitment to comprehensive protection for all members."
+        "COMET의 창작·운영 지원 체계를 관리하며, 소속원과 프로젝트가 지속적으로 성장할 수 있도록 지원합니다.",
+        "Manages COMET's creative and operational support systems, ensuring members and projects can grow continuously."
       ),
     },
   ];
@@ -204,13 +200,16 @@ export default function AboutPage() {
                 className={`glass-card p-7 border ${v.border} bg-gradient-to-b ${v.bg} to-transparent text-center h-full`}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
-                <div className={`text-6xl font-black mb-3 ${v.color} leading-none tracking-tight`}>
-                  {v.letter}
+                {/* 컬러 액센트 라인 */}
+                <div className={`w-8 h-0.5 mx-auto mb-5 rounded-full ${v.border} border-0`}
+                  style={{ backgroundColor: "currentColor" }}
+                >
+                  <div className={`w-full h-full rounded-full ${v.color}`} style={{ background: "currentColor", opacity: 0.7 }} />
                 </div>
-                <h4 className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-1 ${v.color}`}>
+                <h4 className={`text-lg font-black tracking-[0.15em] uppercase mb-1.5 ${v.color}`}>
                   {v.name}
                 </h4>
-                <p className={`text-[9px] tracking-[0.25em] mb-4 opacity-50 ${v.color}`}>
+                <p className={`text-[9px] tracking-[0.3em] mb-5 opacity-40 ${v.color}`}>
                   {v.nameKo}
                 </p>
                 <p className="text-white/50 text-sm leading-relaxed">{v.desc}</p>
@@ -327,16 +326,6 @@ export default function AboutPage() {
             </p>
             <p className="text-white/30 text-sm tracking-[0.2em]">
               {t("우리는 가능성을 제작합니다.", "We produce possibility.")}
-            </p>
-          </div>
-
-          {/* Core Direction */}
-          <div className="px-10 py-7 text-center border-b border-white/5">
-            <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
-              {t("핵심 방향", "CORE DIRECTION")}
-            </p>
-            <p className="text-amber-500/70 text-sm md:text-base tracking-[0.25em] font-medium">
-              Talent.&nbsp; Care.&nbsp; Knowledge.&nbsp; Connection.
             </p>
           </div>
 
