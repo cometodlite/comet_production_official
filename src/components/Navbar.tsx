@@ -8,7 +8,7 @@ import { useLang } from "@/context/LanguageContext";
 import { CometProductionLogo } from "@/components/logos/CometLogo";
 
 export default function Navbar() {
-  const { lang, toggleLang, t } = useLang();
+  const { lang, isChanging, toggleLang, t } = useLang();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -71,7 +71,8 @@ export default function Navbar() {
             {/* 언어 토글 */}
             <button
               onClick={toggleLang}
-              className="text-xs text-[#86868b] hover:text-white transition-colors duration-200 tracking-wide"
+              disabled={isChanging}
+              className="text-xs text-[#86868b] hover:text-white transition-all duration-200 tracking-wide disabled:opacity-50"
             >
               <span className={lang === "ko" ? "text-white" : ""}>{lang === "ko" ? "한국어" : "KO"}</span>
               <span className="mx-1.5 text-[#3a3a3c]">/</span>
