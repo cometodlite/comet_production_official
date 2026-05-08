@@ -47,8 +47,9 @@ export default function AboutPage() {
 
   const values = [
     {
-      key: "T",
-      name: "TAKE",
+      letter: "T",
+      name: "TALENT",
+      nameKo: "재능",
       color: "text-indigo-400",
       border: "border-indigo-500/30",
       bg: "from-indigo-900/10",
@@ -58,25 +59,39 @@ export default function AboutPage() {
       ),
     },
     {
-      key: "2C",
-      name: "CARE & CONNECTION",
+      letter: "C",
+      name: "CARE",
+      nameKo: "보호",
+      color: "text-amber-400",
+      border: "border-amber-500/30",
+      bg: "from-amber-900/10",
+      desc: t(
+        "소속원을 보호하고 아끼며, 모든 구성원이 안전하게 활동할 수 있는 환경을 만듭니다.",
+        "We protect and cherish our members, creating an environment where everyone can thrive safely."
+      ),
+    },
+    {
+      letter: "K",
+      name: "KNOWLEDGE",
+      nameKo: "지식",
+      color: "text-[#6C7CFF]",
+      border: "border-[#6C7CFF]/30",
+      bg: "from-[#080E24]/20",
+      desc: t(
+        "전문적인 지식과 경험을 바탕으로 올바른 방향을 제시하고, 지속적으로 성장합니다.",
+        "We provide clear direction grounded in expertise and experience, and continuously grow."
+      ),
+    },
+    {
+      letter: "C",
+      name: "CONNECTION",
+      nameKo: "연결",
       color: "text-violet-400",
       border: "border-violet-500/30",
       bg: "from-violet-900/10",
       desc: t(
-        "소속원을 보호하고 아끼며, 아티스트와 팬, 팀 사이의 연결을 소중히 여깁니다.",
-        "We protect and cherish our members, valuing the connections between artists, fans, and our team."
-      ),
-    },
-    {
-      key: "K",
-      name: "KNOWLEDGE",
-      color: "text-blue-400",
-      border: "border-blue-500/30",
-      bg: "from-blue-900/10",
-      desc: t(
-        "전문적인 지식과 경험을 바탕으로 올바른 방향을 제시하고, 지속적으로 성장합니다.",
-        "We provide clear direction grounded in expertise and experience, and continuously grow."
+        "아티스트와 팬, 크리에이터와 기술, 사람과 사람 사이의 연결을 소중히 여깁니다.",
+        "We value the connections between artists and fans, creators and technology, and people with people."
       ),
     },
   ];
@@ -174,25 +189,30 @@ export default function AboutPage() {
           <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
             {t("핵심 가치", "CORE VALUES")}
           </p>
-          <h2 className="text-2xl font-bold text-white mb-2">T · 2C · K</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">
+            {t("핵심 가치", "Core Values")}
+          </h2>
           <p className="text-white/25 text-xs tracking-[0.35em]">
-            TAKE · CARE &amp; CONNECTION · KNOWLEDGE
+            TALENT · CARE · KNOWLEDGE · CONNECTION
           </p>
         </FadeUp>
 
-        <StaggerContainer className="grid md:grid-cols-3 gap-5">
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           {values.map((v) => (
-            <StaggerItem key={v.key}>
+            <StaggerItem key={v.name}>
               <motion.div
                 className={`glass-card p-7 border ${v.border} bg-gradient-to-b ${v.bg} to-transparent text-center h-full`}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className={`text-6xl font-black mb-3 ${v.color} leading-none tracking-tight`}>
-                  {v.key}
+                  {v.letter}
                 </div>
-                <h4 className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-4 ${v.color}`}>
+                <h4 className={`text-[10px] font-bold tracking-[0.3em] uppercase mb-1 ${v.color}`}>
                   {v.name}
                 </h4>
+                <p className={`text-[9px] tracking-[0.25em] mb-4 opacity-50 ${v.color}`}>
+                  {v.nameKo}
+                </p>
                 <p className="text-white/50 text-sm leading-relaxed">{v.desc}</p>
               </motion.div>
             </StaggerItem>
@@ -231,10 +251,10 @@ export default function AboutPage() {
             </div>
             <div className="w-px h-6 bg-white/20" />
             <div className="flex flex-col sm:flex-row gap-4">
-              <div className="px-5 py-2.5 rounded-lg border border-violet-500/40 bg-violet-500/10 text-violet-300 text-xs font-semibold tracking-wider text-center">
+              <div className="px-5 py-2.5 rounded-lg border border-[#C8A86A]/40 bg-[#C8A86A]/10 text-[#e8cfa0] text-xs font-semibold tracking-wider text-center">
                 COMET ENTERTAINERS
               </div>
-              <div className="px-5 py-2.5 rounded-lg border border-blue-500/40 bg-blue-500/10 text-blue-300 text-xs font-semibold tracking-wider text-center">
+              <div className="px-5 py-2.5 rounded-lg border border-[#6C7CFF]/40 bg-[#6C7CFF]/10 text-[#9ba8ff] text-xs font-semibold tracking-wider text-center">
                 COMET DEVELOPS
               </div>
             </div>

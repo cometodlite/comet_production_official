@@ -19,37 +19,26 @@ export default function Footer() {
   const { t } = useLang();
 
   return (
-    <footer className="border-t border-white/10 bg-black/40 backdrop-blur-sm relative z-10">
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <footer className="border-t border-white/8 bg-black/40 backdrop-blur-sm relative z-10">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+
+        {/* 메인 행 */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+
           {/* 브랜드 */}
           <div>
             <p className="text-white font-bold tracking-widest text-sm mb-1">COMET PRODUCTION</p>
-            <p className="text-white/40 text-xs mb-3">
+            <p className="text-white/35 text-xs mb-1">
               {t("산하: COMET ENTERTAINERS · COMET DEVELOPS", "Subsidiaries: COMET ENTERTAINERS · COMET DEVELOPS")}
             </p>
-            <p className="text-white/25 text-xs italic">Under KE NETWORK</p>
-          </div>
-
-          {/* 링크 */}
-          <div className="flex flex-col sm:flex-row gap-6 text-xs text-white/40">
-            <div className="flex flex-col gap-2">
-              <p className="text-white/20 uppercase tracking-widest text-[10px] mb-1">{t("바로가기", "Quick Links")}</p>
-              <Link href="/about" className="hover:text-white transition-colors">{t("회사 소개", "About")}</Link>
-              <Link href="/entertainers" className="hover:text-white transition-colors">ENTERTAINERS</Link>
-              <Link href="/develops" className="hover:text-white transition-colors">DEVELOPS</Link>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-white/20 uppercase tracking-widest text-[10px] mb-1">{t("기타", "More")}</p>
-              <Link href="/news" className="hover:text-white transition-colors">{t("뉴스", "News")}</Link>
-              <Link href="/careers" className="hover:text-white transition-colors">{t("채용", "Careers")}</Link>
-              <Link href="/contact" className="hover:text-white transition-colors">{t("문의", "Contact")}</Link>
-            </div>
+            <p className="text-white/20 text-xs italic">Under KE NETWORK</p>
           </div>
 
           {/* 소셜 링크 */}
-          <div className="flex flex-col gap-3">
-            <p className="text-white/20 uppercase tracking-widest text-[10px]">{t("소셜 미디어", "Social")}</p>
+          <div className="flex flex-col gap-2.5">
+            <p className="text-white/20 uppercase tracking-widest text-[10px]">
+              {t("소셜 미디어", "Social")}
+            </p>
             <div className="flex gap-3">
               {socialLinks.map((s) => (
                 <a
@@ -67,11 +56,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-2">
+        {/* 하단: 저작권 + 개인정보처리방침 */}
+        <div className="mt-8 pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-white/20 text-xs">
             © {new Date().getFullYear()} COMET PRODUCTION. All rights reserved.
           </p>
-          <Link href="/privacy" className="text-white/20 hover:text-white/50 text-xs transition-colors">
+          <Link
+            href="/privacy"
+            className="text-white/20 hover:text-white/50 text-xs transition-colors"
+          >
             {t("개인정보처리방침", "Privacy Policy")}
           </Link>
         </div>

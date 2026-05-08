@@ -177,6 +177,31 @@ export default function ContactPage() {
                 />
               </motion.div>
 
+              {/* 개인정보 수집 동의 */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="flex items-start gap-3 p-4 rounded-lg border border-white/8 bg-white/[0.02]"
+              >
+                <input
+                  type="checkbox"
+                  id="privacy-consent"
+                  required
+                  className="mt-0.5 w-4 h-4 accent-indigo-500 cursor-pointer flex-shrink-0"
+                />
+                <label htmlFor="privacy-consent" className="text-white/40 text-xs leading-relaxed cursor-pointer">
+                  {t(
+                    "개인정보 수집 및 이용에 동의합니다. 수집 항목: 이름, 이메일, 문의 내용 / 이용 목적: 문의 접수 및 답변 / 보유 기간: 문의 처리 후 3년 이내",
+                    "I agree to the collection and use of personal information. Items: name, email, message / Purpose: inquiry handling and response / Retention: up to 3 years after processing"
+                  )}
+                  {" · "}
+                  <a href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2 transition-colors">
+                    {t("개인정보처리방침", "Privacy Policy")}
+                  </a>
+                </label>
+              </motion.div>
+
               {status === "error" && (
                 <motion.p
                   initial={{ opacity: 0 }}

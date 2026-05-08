@@ -1,118 +1,63 @@
 "use client";
 
-import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
 import { motion, FadeUp, StaggerContainer, StaggerItem } from "@/components/Motion";
+import PinnedHero from "@/components/PinnedHero";
+import Link from "next/link";
 
 export default function HomePage() {
   const { t } = useLang();
 
   const cultureValues = [
-    { en: "TALENT",     ko: "재능" },
-    { en: "CARE",       ko: "보호" },
-    { en: "KNOWLEDGE",  ko: "지식" },
-    { en: "CONNECTION", ko: "연결" },
+    {
+      en: "TALENT",
+      ko: "재능",
+      color: "#6C7CFF",
+      descKo: "잠재된 가능성을 발굴하고 세상으로 이끌어냅니다.",
+      descEn: "Discovering hidden potential and bringing it to the world.",
+    },
+    {
+      en: "CARE",
+      ko: "보호",
+      color: "#C8A86A",
+      descKo: "모두가 안전하게 성장할 수 있는 환경을 만듭니다.",
+      descEn: "Creating an environment where everyone grows safely.",
+    },
+    {
+      en: "KNOWLEDGE",
+      ko: "지식",
+      color: "#60d5fa",
+      descKo: "경험에서 나온 올바른 방향과 지속적인 성장.",
+      descEn: "Guiding with expertise and continuous growth.",
+    },
+    {
+      en: "CONNECTION",
+      ko: "연결",
+      color: "#a78bfa",
+      descKo: "창작이 실제 세계로 닿는 연결고리.",
+      descEn: "The bridge where creation reaches the real world.",
+    },
   ];
 
   return (
     <div className="relative">
 
       {/* ══════════════════════════════════════════
-          HERO
+          PINNED HERO
       ══════════════════════════════════════════ */}
-      <section className="min-h-screen flex flex-col justify-end px-8 md:px-16 lg:px-24 pb-20 pt-36 relative overflow-hidden">
-
-        {/* 글로우 */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden
-          style={{
-            background: "radial-gradient(ellipse 70% 55% at 45% 35%, rgba(99,102,241,0.13) 0%, transparent 70%)",
-            filter: "blur(30px)",
-          }}
-        />
-
-        {/* 라벨 */}
-        <motion.p
-          className="text-white/30 text-[10px] tracking-[0.7em] uppercase mb-8 md:mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.1 }}
-        >
-          COMET PRODUCTION · KE NETWORK
-        </motion.p>
-
-        {/* 메인 타이포 */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut", delay: 0.25 }}
-        >
-          <h1 className="font-black tracking-tight leading-[0.88] mb-10 md:mb-14">
-            <span className="block gradient-text text-[15vw] sm:text-[12vw] md:text-[11vw] lg:text-[10vw]">
-              WE
-            </span>
-            <span className="block gradient-text text-[15vw] sm:text-[12vw] md:text-[11vw] lg:text-[10vw]">
-              PRODUCE
-            </span>
-            <span className="block text-white text-[15vw] sm:text-[12vw] md:text-[11vw] lg:text-[10vw]">
-              POSSIBILITY.
-            </span>
-          </h1>
-        </motion.div>
-
-        {/* 서브 문구 + CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="max-w-lg"
-        >
-          <p className="text-white/45 text-base md:text-lg leading-relaxed mb-8">
-            {t(
-              "재능을 발견하고, 창작을 실현하며,\n사람과 가능성을 연결하는 제작 생태계.",
-              "Discover talent, realize creation —\na production ecosystem connecting people and possibility."
-            )}
-          </p>
-          <div className="flex gap-4 flex-wrap">
-            <Link
-              href="/about"
-              className="px-7 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30"
-            >
-              {t("회사 소개", "About Us")}
-            </Link>
-            <Link
-              href="/contact"
-              className="px-7 py-3 rounded-full border border-white/20 hover:border-indigo-400 text-white/70 hover:text-white text-sm font-medium transition-all"
-            >
-              {t("문의하기", "Contact")}
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* 스크롤 인디케이터 */}
-        <div className="absolute bottom-10 right-10 hidden md:flex flex-col items-center gap-3 text-white/20 animate-float">
-          <span
-            className="text-[9px] tracking-[0.6em] uppercase"
-            style={{ writingMode: "vertical-rl" }}
-          >
-            SCROLL
-          </span>
-          <div className="w-px h-14 bg-gradient-to-b from-white/20 to-transparent" />
-        </div>
-      </section>
+      <PinnedHero />
 
       {/* ══════════════════════════════════════════
           01 / WHO WE ARE
       ══════════════════════════════════════════ */}
-      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-40 border-t border-white/5">
+      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-44 border-t border-white/5">
         <FadeUp>
-          <p className="text-white/25 text-[10px] tracking-[0.7em] uppercase mb-10 md:mb-16">
+          <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase mb-12 md:mb-20">
             01 / WHO WE ARE
           </p>
         </FadeUp>
         <FadeUp delay={0.1}>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.0] tracking-tight max-w-4xl mb-10 md:mb-14 whitespace-pre-line">
+          <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight max-w-4xl mb-10 md:mb-14 whitespace-pre-line">
             {t(
               "창작, 개발,\n엔터테인먼트를\n하나로 잇는\n제작 조직.",
               "A production\norganization that\nconnects creation,\ndevelopment & art."
@@ -120,7 +65,7 @@ export default function HomePage() {
           </h2>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <p className="text-white/40 text-base md:text-lg leading-relaxed max-w-2xl">
+          <p className="text-[#A7ADBD] text-base md:text-lg leading-relaxed max-w-2xl">
             {t(
               "COMET PRODUCTION은 재능 있는 사람들이 실제로 창작하고, 성장하고, 연결될 수 있는 환경을 만드는 제작 중심 조직입니다. 콘텐츠, 기술, 예술, 엔터테인먼트를 분리된 분야로 보지 않습니다.",
               "COMET PRODUCTION is a production-first organization that builds environments where talented people can truly create, grow, and connect — viewing content, technology, art, and entertainment not as separate fields, but as one."
@@ -132,66 +77,122 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           02 / OUR GROUPS
       ══════════════════════════════════════════ */}
-      <section className="border-t border-white/5">
+      <section className="border-t border-[#252A36]">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
-            <p className="text-white/25 text-[10px] tracking-[0.7em] uppercase">
+            <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase">
               02 / OUR GROUPS
             </p>
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid md:grid-cols-2 gap-px bg-white/5">
-          {/* DEVELOPS */}
+        <StaggerContainer className="grid md:grid-cols-2 gap-px bg-[#252A36]">
+
+          {/* ── DEVELOPS ── */}
           <StaggerItem>
             <motion.div
-              className="bg-[#05040f] p-10 md:p-16 lg:p-20 h-full"
-              whileHover={{ backgroundColor: "rgba(59,130,246,0.03)" }}
-              transition={{ duration: 0.4 }}
+              className="group relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex flex-col"
+              style={{ background: "#060d1f" }}
+              whileHover="hover"
             >
-              <Link href="/develops" className="group block">
-                <p className="text-blue-400/50 text-[9px] tracking-[0.7em] uppercase mb-8">
+              {/* 배경 효과 */}
+              <div className="absolute inset-0 pointer-events-none" aria-hidden>
+                <div
+                  className="absolute inset-0 opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: "radial-gradient(ellipse 80% 70% at 20% 85%, rgba(108,124,255,0.22) 0%, transparent 60%)",
+                  }}
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: "radial-gradient(ellipse 50% 40% at 90% 10%, rgba(0,212,255,0.08) 0%, transparent 50%)",
+                  }}
+                />
+                {/* 그리드 텍스처 */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(rgba(108,124,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(108,124,255,0.055) 1px, transparent 1px)",
+                    backgroundSize: "48px 48px",
+                  }}
+                />
+              </div>
+
+              <Link href="/develops" className="block relative z-10 p-10 md:p-16 lg:p-20 h-full flex flex-col">
+                <p className="text-[#6C7CFF]/50 text-[9px] tracking-[0.7em] uppercase mb-10 md:mb-14">
                   COMET DEVELOPS
                 </p>
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.0] tracking-tight mb-8 group-hover:text-blue-100 transition-colors duration-300">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tight mb-8 group-hover:text-[#6C7CFF] transition-colors duration-500">
                   WE BUILD<br />THE UNSEEN.
                 </h3>
-                <p className="text-white/35 text-sm leading-relaxed mb-10 max-w-sm">
+                <p className="text-white/35 text-sm md:text-base leading-relaxed mb-auto max-w-sm">
                   {t(
                     "기술, 게임, 시스템, 서비스. 아이디어를 구조로 만들고, 구조를 경험으로 완성합니다.",
                     "Technology, games, systems, services. We turn ideas into structure, and structure into experience."
                   )}
                 </p>
-                <span className="text-blue-400/40 text-[10px] tracking-[0.5em] group-hover:text-blue-400 transition-colors duration-300">
-                  EXPLORE →
-                </span>
+                <div className="mt-10 md:mt-14">
+                  <span className="inline-flex items-center gap-3 text-[#6C7CFF]/50 text-[10px] tracking-[0.6em] uppercase group-hover:text-[#6C7CFF] transition-colors duration-300">
+                    EXPLORE
+                    <span className="w-6 h-px bg-current transition-all duration-500 group-hover:w-12" />
+                  </span>
+                </div>
               </Link>
             </motion.div>
           </StaggerItem>
 
-          {/* ENTERTAINERS */}
+          {/* ── ENTERTAINERS ── */}
           <StaggerItem>
             <motion.div
-              className="bg-[#05040f] p-10 md:p-16 lg:p-20 h-full"
-              whileHover={{ backgroundColor: "rgba(139,92,246,0.03)" }}
-              transition={{ duration: 0.4 }}
+              className="group relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex flex-col"
+              style={{ background: "#100b07" }}
+              whileHover="hover"
             >
-              <Link href="/entertainers" className="group block">
-                <p className="text-violet-400/50 text-[9px] tracking-[0.7em] uppercase mb-8">
+              {/* 배경 효과 */}
+              <div className="absolute inset-0 pointer-events-none" aria-hidden>
+                <div
+                  className="absolute inset-0 opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: "radial-gradient(ellipse 80% 60% at 80% 15%, rgba(200,168,106,0.2) 0%, transparent 60%)",
+                  }}
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: "radial-gradient(ellipse 55% 45% at 15% 90%, rgba(200,168,106,0.1) 0%, transparent 55%)",
+                  }}
+                />
+                {/* 무대 스포트라이트 라인 */}
+                <div
+                  className="absolute inset-0 opacity-[0.04]"
+                  style={{
+                    background:
+                      "repeating-linear-gradient(125deg, transparent, transparent 80px, rgba(200,168,106,1) 80px, rgba(200,168,106,1) 81px)",
+                  }}
+                />
+              </div>
+
+              <Link href="/entertainers" className="block relative z-10 p-10 md:p-16 lg:p-20 h-full flex flex-col">
+                <p className="text-[#C8A86A]/50 text-[9px] tracking-[0.7em] uppercase mb-10 md:mb-14">
                   COMET ENTERTAINERS
                 </p>
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.0] tracking-tight mb-8 group-hover:text-violet-100 transition-colors duration-300">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tight mb-8 group-hover:text-[#C8A86A] transition-colors duration-500">
                   LET TALENT<br />BECOME LIGHT.
                 </h3>
-                <p className="text-white/35 text-sm leading-relaxed mb-10 max-w-sm">
+                <p className="text-white/35 text-sm md:text-base leading-relaxed mb-auto max-w-sm">
                   {t(
                     "예술, 방송, 음악, 캐릭터. 재능 있는 창작자가 자신만의 빛으로 성장하도록 돕습니다.",
                     "Art, broadcasting, music, characters. We help creators grow with their own light."
                   )}
                 </p>
-                <span className="text-violet-400/40 text-[10px] tracking-[0.5em] group-hover:text-violet-400 transition-colors duration-300">
-                  EXPLORE →
-                </span>
+                <div className="mt-10 md:mt-14">
+                  <span className="inline-flex items-center gap-3 text-[#C8A86A]/50 text-[10px] tracking-[0.6em] uppercase group-hover:text-[#C8A86A] transition-colors duration-300">
+                    EXPLORE
+                    <span className="w-6 h-px bg-current transition-all duration-500 group-hover:w-12" />
+                  </span>
+                </div>
               </Link>
             </motion.div>
           </StaggerItem>
@@ -201,29 +202,43 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           03 / CULTURE
       ══════════════════════════════════════════ */}
-      <section className="border-t border-white/5">
+      <section className="border-t border-[#252A36]">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
-            <p className="text-white/25 text-[10px] tracking-[0.7em] uppercase">
+            <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase">
               03 / CULTURE
             </p>
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#252A36]">
           {cultureValues.map((v) => (
             <StaggerItem key={v.en}>
-              <div className="bg-[#05040f] py-14 md:py-24 px-6 text-center">
-                <p className="text-xl md:text-2xl lg:text-3xl font-black text-white/75 tracking-tight mb-2">
+              <motion.div
+                className="bg-[#050509] py-14 md:py-24 px-6 md:px-8 text-center flex flex-col items-center justify-center h-full"
+                whileHover={{ backgroundColor: "#080E24" }}
+                transition={{ duration: 0.4 }}
+              >
+                <p
+                  className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight mb-1"
+                  style={{ color: `${v.color}CC` }}
+                >
                   {v.en}
                 </p>
-                <p className="text-white/20 text-[10px] tracking-[0.4em]">{v.ko}</p>
-              </div>
+                <p
+                  className="text-[9px] tracking-[0.4em] mb-5"
+                  style={{ color: `${v.color}55` }}
+                >
+                  {v.ko}
+                </p>
+                <p className="text-white/30 text-xs leading-relaxed max-w-[140px]">
+                  {t(v.descKo, v.descEn)}
+                </p>
+              </motion.div>
             </StaggerItem>
           ))}
         </StaggerContainer>
 
-        {/* 하단 여백 */}
         <div className="h-20 md:h-28" />
       </section>
 

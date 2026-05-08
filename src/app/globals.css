@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #05040f;
-  --foreground: #e8e8f0;
+  /* ── COMET 색감 시스템 ── */
+  --background:    #050509;   /* Main Black */
+  --foreground:    #F4F7FF;   /* Moon White */
+  --bg-soft:       #080E24;   /* Deep Navy */
+  --comet-blue:    #6C7CFF;   /* Comet Blue — 핵심 포인트 */
+  --text-sub:      #A7ADBD;   /* Soft Gray */
+  --line-gray:     #252A36;   /* Line / Border */
+  --warm-accent:   #C8A86A;   /* Entertainers Gold */
+  --develops-bg:   #060d1f;   /* Develops Dark */
+  --ent-bg:        #100b07;   /* Entertainers Dark */
 }
 
 * {
@@ -11,13 +19,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden; /* body 단독 설정 시 Safari에서 sticky 오작동 방지 */
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  min-height: 100vh;
+  min-height: 100svh;
   overflow-x: hidden;
 }
 
@@ -99,7 +108,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #818cf8, #a78bfa, #60a5fa);
+  background: linear-gradient(135deg, #6C7CFF 0%, #a78bfa 55%, #60d5fa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

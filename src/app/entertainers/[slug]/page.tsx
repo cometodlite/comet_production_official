@@ -26,7 +26,7 @@ export default function ArtistPage({
       <FadeUp className="mb-12">
         <Link
           href="/entertainers"
-          className="inline-flex items-center gap-2 text-violet-400/70 hover:text-violet-300 text-sm tracking-[0.3em] transition-colors group"
+          className="inline-flex items-center gap-2 text-[#C8A86A]/70 hover:text-[#C8A86A] text-sm tracking-[0.3em] transition-colors group"
         >
           <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span>
           ENTERTAINERS
@@ -43,22 +43,22 @@ export default function ArtistPage({
               alt={artist.name}
               width={160}
               height={160}
-              className="w-full h-full object-cover rounded-full border-2 border-violet-400/40"
+              className="w-full h-full object-cover rounded-full border-2 border-[#C8A86A]/40"
             />
           ) : (
-            <div className="w-full h-full rounded-full border-2 border-dashed border-violet-400/30 flex items-center justify-center text-violet-400/50 text-4xl">
+            <div className="w-full h-full rounded-full border-2 border-dashed border-[#C8A86A]/30 flex items-center justify-center text-[#C8A86A]/50 text-4xl">
               ✦
             </div>
           )}
           {/* 글로우 링 */}
-          <div className="absolute inset-0 rounded-full ring-1 ring-violet-400/20 scale-[1.12] pointer-events-none" />
+          <div className="absolute inset-0 rounded-full ring-1 ring-[#C8A86A]/20 scale-[1.12] pointer-events-none" />
         </div>
 
         {/* 이름 */}
         <h1 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tight">
           {artist.name}
         </h1>
-        <p className="text-violet-400 tracking-[0.4em] text-sm font-light mb-6">
+        <p className="text-[#C8A86A] tracking-[0.4em] text-sm font-light mb-6">
           {artist.role}
         </p>
 
@@ -67,7 +67,7 @@ export default function ArtistPage({
           <span
             className={`text-[11px] font-bold tracking-widest px-3 py-1.5 rounded-full border ${
               isGen2
-                ? "text-violet-300 border-violet-500/30 bg-violet-500/10"
+                ? "text-[#e8cfa0] border-[#C8A86A]/30 bg-[#C8A86A]/10"
                 : "text-amber-300 border-amber-500/30 bg-amber-500/10"
             }`}
           >
@@ -81,8 +81,8 @@ export default function ArtistPage({
 
       {/* 소개 */}
       {(artist.bio.ko || artist.bio.en) && (
-        <FadeUp className="glass-card p-8 border border-violet-500/20 bg-gradient-to-b from-violet-900/10 to-transparent mb-6">
-          <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <FadeUp className="glass-card p-8 border border-[#C8A86A]/20 bg-gradient-to-b from-[#1a1106]/30 to-transparent mb-6">
+          <p className="text-[#C8A86A] text-xs tracking-[0.5em] uppercase mb-4">
             {t("소개", "About")}
           </p>
           <p className="text-white/75 leading-relaxed text-[15px]">
@@ -107,8 +107,8 @@ export default function ArtistPage({
 
       {/* 채널 / SNS */}
       {artist.links.length > 0 && (
-        <FadeUp className="glass-card p-6 border border-violet-500/20 bg-gradient-to-b from-violet-900/10 to-transparent mb-14">
-          <p className="text-violet-400 text-xs tracking-[0.5em] uppercase mb-5">
+        <FadeUp className="glass-card p-6 border border-[#C8A86A]/20 bg-gradient-to-b from-[#1a1106]/30 to-transparent mb-14">
+          <p className="text-[#C8A86A] text-xs tracking-[0.5em] uppercase mb-5">
             {t("채널 / SNS", "Channels & SNS")}
           </p>
           <div className="flex flex-col gap-2.5">
@@ -140,7 +140,7 @@ export default function ArtistPage({
       <FadeUp className="text-center">
         <Link
           href="/entertainers"
-          className="inline-flex items-center gap-2 text-sm text-white/35 hover:text-violet-300 transition-colors tracking-widest"
+          className="inline-flex items-center gap-2 text-sm text-white/35 hover:text-[#C8A86A] transition-colors tracking-widest"
         >
           ← {t("전체 아티스트 보기", "All Artists")}
         </Link>

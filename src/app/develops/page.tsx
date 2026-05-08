@@ -42,7 +42,7 @@ export default function DevelopsPage() {
           className="absolute inset-0 pointer-events-none"
           aria-hidden
           style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59,130,246,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(108,124,255,0.14) 0%, transparent 70%)",
             filter: "blur(40px)",
             transform: "scale(1.4)",
           }}
@@ -53,7 +53,7 @@ export default function DevelopsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <p className="text-blue-400 text-sm tracking-[0.5em] uppercase mb-4">
+          <p className="text-[#6C7CFF] text-sm tracking-[0.5em] uppercase mb-4">
             COMET PRODUCTION {t("산하", "Subsidiary")}
           </p>
         </motion.div>
@@ -65,7 +65,7 @@ export default function DevelopsPage() {
           <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
             <span className="gradient-text">COMET</span>
           </h1>
-          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-blue-400/80 mb-10">
+          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-[#6C7CFF]/80 mb-10">
             DEVELOPS
           </h2>
         </motion.div>
@@ -84,10 +84,10 @@ export default function DevelopsPage() {
       </div>
 
       {/* Origin Banner */}
-      <FadeUp className="glass-card p-6 border border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 mb-16 flex items-start gap-4">
+      <FadeUp className="glass-card p-6 border border-[#6C7CFF]/30 bg-gradient-to-r from-[#080E24]/60 to-transparent mb-16 flex items-start gap-4">
         <span className="text-2xl mt-0.5">🛰️</span>
         <div>
-          <p className="text-blue-400 text-xs tracking-widest uppercase font-semibold mb-1">
+          <p className="text-[#6C7CFF] text-xs tracking-widest uppercase font-semibold mb-1">
             {t("설립 배경", "Background")}
           </p>
           <p className="text-white/60 text-sm leading-relaxed">
@@ -102,7 +102,7 @@ export default function DevelopsPage() {
       {/* Services */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
-          <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3">
+          <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-3">
             {t("주요 사업", "SERVICES")}
           </p>
           <h3 className="text-3xl font-bold text-white">
@@ -113,7 +113,7 @@ export default function DevelopsPage() {
           {services.map((s, i) => (
             <StaggerItem key={i}>
               <motion.div
-                className="glass-card p-7 border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent text-center h-full"
+                className="glass-card p-7 border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/30 to-transparent text-center h-full"
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className="text-4xl mb-4">{s.icon}</div>
@@ -128,7 +128,7 @@ export default function DevelopsPage() {
       {/* 프로젝트 */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
-          <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-3">
+          <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-3">
             {t("프로젝트", "PROJECTS")}
           </p>
           <h3 className="text-3xl font-bold text-white">
@@ -146,24 +146,24 @@ export default function DevelopsPage() {
               className="group block h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
-              <div className="glass-card border border-blue-500/30 bg-gradient-to-b from-blue-900/20 to-transparent p-6 h-full hover:border-blue-400/60 transition-all">
+              <div className="glass-card border border-[#6C7CFF]/30 bg-gradient-to-b from-[#080E24]/40 to-transparent p-6 h-full hover:border-[#6C7CFF]/60 transition-all">
                 <div className="flex flex-wrap items-center gap-2 mb-4">
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-green-300 border-green-500/30 bg-green-500/10">
                     {t("운영 중", "Live")}
                   </span>
-                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-blue-300 border-blue-500/30 bg-blue-500/10">
+                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-[#9ba8ff] border-[#6C7CFF]/30 bg-[#6C7CFF]/10">
                     {t("웹게임", "Web Game")}
                   </span>
                   <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-cyan-300 border-cyan-500/30 bg-cyan-500/10">
                     {t("인크리멘탈 / 아이들", "Incremental / Idle")}
                   </span>
                 </div>
-                <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">HCSiG</h4>
-                <p className="text-blue-400/70 text-xs mb-3">{t("해킹코드 시뮬레이션", "Hacking Code Simulation")}</p>
+                <h4 className="text-lg font-bold text-white mb-1 group-hover:text-[#9ba8ff] transition-colors">HCSiG</h4>
+                <p className="text-[#6C7CFF]/70 text-xs mb-3">{t("해킹코드 시뮬레이션", "Hacking Code Simulation")}</p>
                 <p className="text-white/40 text-xs leading-relaxed mb-5">
                   {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.", "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
                 </p>
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-400 group-hover:gap-2.5 transition-all">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#6C7CFF] group-hover:gap-2.5 transition-all">
                   {t("플레이하기", "Play Now")} →
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function DevelopsPage() {
           {/* PROJECT: HW */}
           <StaggerItem>
             <motion.div
-              className="glass-card border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent p-6 h-full"
+              className="glass-card border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/20 to-transparent p-6 h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -182,7 +182,7 @@ export default function DevelopsPage() {
                 </span>
               </div>
               <h4 className="text-lg font-bold text-white mb-1">PROJECT: HW</h4>
-              <p className="text-blue-400/70 text-xs mb-3">&nbsp;</p>
+              <p className="text-[#6C7CFF]/70 text-xs mb-3">&nbsp;</p>
               <p className="text-white/40 text-xs leading-relaxed">
                 {t("편안한 힐링을 위한.", "For comfortable healing.")}
               </p>
@@ -192,7 +192,7 @@ export default function DevelopsPage() {
           {/* WORLDWIDE_LUNATIC FAMILY */}
           <StaggerItem>
             <motion.div
-              className="glass-card border border-blue-500/20 bg-gradient-to-b from-blue-900/10 to-transparent p-6 h-full"
+              className="glass-card border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/20 to-transparent p-6 h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -201,7 +201,9 @@ export default function DevelopsPage() {
                 </span>
               </div>
               <h4 className="text-lg font-bold text-white mb-1">WORLDWIDE_LUNATIC FAMILY</h4>
-              <p className="text-blue-400/70 text-xs mb-3">&nbsp;</p>
+              <p className="text-[#6C7CFF]/70 text-xs mb-3">
+                {t("LUNATIC 세계관 기반 캐릭터 웹게임", "LUNATIC Universe-based Character Web Game")}
+              </p>
               <p className="text-white/25 text-xs italic">
                 {t("공개 예정", "Details coming soon")}
               </p>
@@ -220,6 +222,9 @@ export default function DevelopsPage() {
                 </span>
               </div>
               <h4 className="text-lg font-bold text-white/70 mb-1">UTOPIA SYNDROME</h4>
+              <p className="text-white/35 text-xs mb-3">
+                {t("2D 픽셀 SCP풍 생존 웹게임", "2D Pixel SCP-style Survival Web Game")}
+              </p>
               <p className="text-white/25 text-xs mt-auto italic">
                 {t("공개 예정", "Details coming soon")}
               </p>
@@ -249,11 +254,11 @@ export default function DevelopsPage() {
 
       {/* 비전 */}
       <FadeUp className="mb-12">
-        <div className="glass-card border border-blue-500/20 overflow-hidden">
+        <div className="glass-card border border-[#6C7CFF]/20 overflow-hidden">
 
           {/* Brand Line */}
           <div className="p-10 text-center border-b border-white/5">
-            <p className="text-blue-400 text-xs tracking-[0.5em] uppercase mb-6">
+            <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-6">
               {t("비전", "VISION")}
             </p>
             <p className="text-white/60 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
@@ -285,7 +290,7 @@ export default function DevelopsPage() {
 
       {/* CTA */}
       <FadeUp>
-        <div className="glass-card p-10 text-center border border-blue-500/20 bg-gradient-to-br from-blue-900/20 to-indigo-900/20">
+        <div className="glass-card p-10 text-center border border-[#6C7CFF]/20 bg-gradient-to-br from-[#080E24]/60 to-transparent">
           <h3 className="text-2xl font-bold text-white mb-4">
             {t("협업 또는 지원 문의", "Collaboration or Support Inquiry")}
           </h3>
@@ -297,7 +302,7 @@ export default function DevelopsPage() {
           </p>
           <motion.a
             href="/contact"
-            className="inline-block px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-blue-500/30"
+            className="inline-block px-8 py-3 rounded-full bg-[#6C7CFF] hover:bg-[#5a6af0] text-white font-semibold transition-all hover:shadow-lg hover:shadow-[#6C7CFF]/30"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
           >

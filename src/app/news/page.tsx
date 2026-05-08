@@ -13,10 +13,11 @@ const newsData = [
     date: "2026.05.05",
     titleKo: "COMET PRODUCTION 공식 홈페이지 오픈",
     titleEn: "COMET PRODUCTION Official Website Launch",
-    descKo: "COMET PRODUCTION의 공식 홈페이지가 오픈되었습니다. 앞으로 다양한 소식을 전달해 드리겠습니다.",
-    descEn: "The official COMET PRODUCTION website has launched. We look forward to sharing exciting news with you.",
+    descKo: "COMET PRODUCTION의 공식 홈페이지가 오픈되었습니다. 브랜드의 비전과 소속 아티스트, 개발 프로젝트를 한눈에 확인하실 수 있으며, 앞으로 다양한 소식과 업데이트를 이 곳을 통해 전달해 드리겠습니다.",
+    descEn: "The official COMET PRODUCTION website has launched. You can now explore our brand vision, artists, and development projects in one place — and we look forward to sharing exciting news and updates with you here.",
     tag: "PRODUCTION",
     tagColor: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+    accentBar: "bg-gradient-to-r from-amber-500/70 to-transparent",
   },
   {
     id: 2,
@@ -24,10 +25,11 @@ const newsData = [
     date: "2026.05.05",
     titleKo: "COMET ENTERTAINERS 공식 출범",
     titleEn: "COMET ENTERTAINERS Official Launch",
-    descKo: "KE ENTERTAINMENT의 뒤를 이어 COMET ENTERTAINERS가 공식 출범하였습니다. 아티스트 지원을 시작합니다.",
-    descEn: "COMET ENTERTAINERS has officially launched, succeeding KE ENTERTAINMENT. Artist support has begun.",
+    descKo: "KE ENTERTAINMENT의 뒤를 이어 COMET ENTERTAINERS가 공식 출범하였습니다. 아티스트 지원과 육성을 핵심으로, 창작자들이 자신만의 빛으로 성장할 수 있는 환경을 구축해 나가겠습니다.",
+    descEn: "COMET ENTERTAINERS has officially launched, succeeding KE ENTERTAINMENT. With a focus on artist support and development, we are building an environment where creators can grow with their own unique light.",
     tag: "ENTERTAINERS",
     tagColor: "text-violet-400 border-violet-500/30 bg-violet-500/10",
+    accentBar: "bg-gradient-to-r from-violet-500/70 to-transparent",
   },
   {
     id: 3,
@@ -35,10 +37,11 @@ const newsData = [
     date: "2026.05.05",
     titleKo: "COMET DEVELOPS 공식 출범",
     titleEn: "COMET DEVELOPS Official Launch",
-    descKo: "게임 개발·배급 전담 자회사 COMET DEVELOPS가 공식 출범하였습니다. 첫 번째 프로젝트를 준비 중입니다.",
-    descEn: "COMET DEVELOPS, our game development and publishing subsidiary, has officially launched. Our first project is in preparation.",
+    descKo: "게임 개발·배급 전담 자회사 COMET DEVELOPS가 공식 출범하였습니다. 인크리멘탈 웹게임 HCSiG를 시작으로, 다양한 독창적 게임 프로젝트를 통해 새로운 디지털 경험을 제공해 나갈 예정입니다.",
+    descEn: "COMET DEVELOPS, our dedicated game development and publishing subsidiary, has officially launched. Starting with HCSiG, an incremental web game, we will deliver new digital experiences through a variety of original game projects.",
     tag: "DEVELOPS",
     tagColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+    accentBar: "bg-gradient-to-r from-blue-500/70 to-transparent",
   },
 ];
 
@@ -46,11 +49,11 @@ export default function NewsPage() {
   const { t } = useLang();
   const [filter, setFilter] = useState<Category>("all");
 
-  const categories: { value: Category; label: string }[] = [
-    { value: "all", label: t("전체", "All") },
-    { value: "production", label: "PRODUCTION" },
-    { value: "entertainers", label: "ENTERTAINERS" },
-    { value: "develops", label: "DEVELOPS" },
+  const categories: { value: Category; label: string; activeClass: string }[] = [
+    { value: "all",           label: t("전체", "All"),         activeClass: "bg-indigo-600 border-indigo-500 text-white" },
+    { value: "production",    label: "PRODUCTION",             activeClass: "bg-amber-600/80 border-amber-500 text-white" },
+    { value: "entertainers",  label: "ENTERTAINERS",           activeClass: "bg-violet-600/80 border-violet-500 text-white" },
+    { value: "develops",      label: "DEVELOPS",               activeClass: "bg-blue-600/80 border-blue-500 text-white" },
   ];
 
   const filtered = filter === "all" ? newsData : newsData.filter((n) => n.category === filter);
@@ -79,7 +82,7 @@ export default function NewsPage() {
             whileTap={{ scale: 0.96 }}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all border ${
               filter === c.value
-                ? "bg-indigo-600 border-indigo-500 text-white"
+                ? c.activeClass
                 : "border-white/15 text-white/50 hover:border-white/30 hover:text-white/80"
             }`}
           >
@@ -96,24 +99,49 @@ export default function NewsPage() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.3 }}
-          className="space-y-6"
         >
-          {filtered.map((news) => (
-            <motion.div
-              key={news.id}
-              className="glass-card p-7 border border-white/8 hover:border-indigo-500/30 transition-all"
-              whileHover={{ x: 4, transition: { duration: 0.2 } }}
-            >
-              <div className="flex flex-wrap items-center gap-3 mb-3">
-                <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${news.tagColor}`}>
-                  {news.tag}
-                </span>
-                <span className="text-white/30 text-xs">{news.date}</span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">{t(news.titleKo, news.titleEn)}</h3>
-              <p className="text-white/50 text-sm leading-relaxed">{t(news.descKo, news.descEn)}</p>
-            </motion.div>
-          ))}
+          <StaggerContainer className="space-y-5">
+            {filtered.map((news) => (
+              <StaggerItem key={news.id}>
+                <motion.div
+                  className="glass-card border border-white/8 hover:border-indigo-500/30 transition-all overflow-hidden"
+                  whileHover={{ x: 4, transition: { duration: 0.2 } }}
+                >
+                  {/* 카테고리 컬러 액센트 바 */}
+                  <div className={`h-[2px] w-full ${news.accentBar}`} />
+
+                  <div className="p-7">
+                    {/* 태그 + 날짜 + PRESS RELEASE */}
+                    <div className="flex flex-wrap items-center gap-3 mb-5">
+                      <span className={`text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border ${news.tagColor}`}>
+                        {news.tag}
+                      </span>
+                      <span className="text-white/30 text-xs font-mono">{news.date}</span>
+                      <span className="text-white/12 text-[9px] tracking-[0.5em] uppercase ml-auto hidden sm:block">
+                        PRESS RELEASE
+                      </span>
+                    </div>
+
+                    {/* 제목 */}
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
+                      {t(news.titleKo, news.titleEn)}
+                    </h3>
+                    <p className="text-white/25 text-xs mb-4 tracking-wide">
+                      {t(news.titleEn, news.titleKo)}
+                    </p>
+
+                    {/* 구분선 */}
+                    <div className="w-12 h-px bg-white/10 mb-4" />
+
+                    {/* 본문 */}
+                    <p className="text-white/55 text-sm leading-relaxed">
+                      {t(news.descKo, news.descEn)}
+                    </p>
+                  </div>
+                </motion.div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
 
           {filtered.length === 0 && (
             <motion.div
