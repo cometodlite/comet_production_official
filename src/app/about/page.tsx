@@ -135,13 +135,13 @@ export default function AboutPage() {
             transform: "scale(1.4)",
           }}
         />
-        <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-4">
           {t("회사 소개", "ABOUT US")}
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
           {t("우리의 이야기", "Our Story")}
         </h1>
-        <p className="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed">
+        <p className="text-[#86868b] text-lg max-w-2xl mx-auto leading-relaxed">
           {t(
             "COMET PRODUCTION은 KE NETWORK 산하에서 엔터테인먼트와 개발을 아우르는 종합 프로덕션으로 성장해가고 있습니다.",
             "COMET PRODUCTION is growing into a comprehensive production under KE NETWORK, spanning both entertainment and development."
@@ -152,10 +152,10 @@ export default function AboutPage() {
       {/* ── 연혁 ── */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
-          <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
+          <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-3">
             {t("연혁", "HISTORY")}
           </p>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-white tracking-tight">
             {t("걸어온 길", "Our Journey")}
           </h2>
         </FadeUp>
@@ -182,10 +182,10 @@ export default function AboutPage() {
       {/* ── 핵심 가치 ── */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
-          <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
+          <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-3">
             {t("핵심 가치", "CORE VALUES")}
           </p>
-          <h2 className="text-2xl font-bold text-white mb-2">
+          <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">
             {t("핵심 가치", "Core Values")}
           </h2>
           <p className="text-white/25 text-xs tracking-[0.35em]">
@@ -221,10 +221,10 @@ export default function AboutPage() {
 
       {/* ── 그룹 구조 ── */}
       <FadeUp className="mb-20">
-        <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-3 text-center">
+        <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-3 text-center">
           {t("그룹 구조", "GROUP STRUCTURE")}
         </p>
-        <h2 className="text-2xl font-bold text-white text-center mb-10">
+        <h2 className="text-2xl font-bold text-white text-center mb-10 tracking-tight">
           {t("KE 그룹 산하 COMET", "COMET under KE Group")}
         </h2>
         <div className="glass-card p-8 border border-amber-500/20">
@@ -246,7 +246,7 @@ export default function AboutPage() {
             <div className="w-px h-6 bg-white/20" />
             <div className="flex items-center gap-3 px-6 py-3 rounded-xl border border-amber-500/60 bg-amber-500/10">
               <CometProductionLogo size={22} />
-              <span className="text-white font-bold tracking-widest text-sm">C O M E T&nbsp;&nbsp;PRODUCTION</span>
+              <span className="text-white font-bold tracking-[0.12em] text-sm whitespace-nowrap">COMET PRODUCTION</span>
             </div>
             <div className="w-px h-6 bg-white/20" />
             <div className="flex flex-col sm:flex-row gap-4">
@@ -264,10 +264,10 @@ export default function AboutPage() {
       {/* ── 경영진 ── */}
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
-          <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-3">
+          <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-3">
             {t("경영진", "LEADERSHIP")}
           </p>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-white tracking-tight">
             {t("함께하는 사람들", "Our Team")}
           </h2>
         </FadeUp>
@@ -299,7 +299,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <p className="text-white/55 text-sm leading-relaxed">{member.desc}</p>
+                <p className="text-[#86868b] text-sm leading-relaxed">{member.desc}</p>
               </motion.div>
             </StaggerItem>
           ))}
@@ -312,10 +312,10 @@ export default function AboutPage() {
 
           {/* Brand Line */}
           <div className="p-10 text-center border-b border-white/5">
-            <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-6">
+            <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-6">
               {t("비전", "VISION")}
             </p>
-            <p className="text-white/60 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
+            <p className="text-[#86868b] text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
               {t(
                 "재능을 발견하고, 창작을 실현하며,\n사람과 가능성을 연결하는 제작 생태계를 만든다.",
                 "Discover talent, realize creation, and build a production ecosystem that connects people and possibility."
@@ -331,13 +331,13 @@ export default function AboutPage() {
 
           {/* Description */}
           <div className="px-10 py-8 space-y-4">
-            <p className="text-white/55 text-sm leading-relaxed">
+            <p className="text-[#86868b] text-sm leading-relaxed">
               {t(
                 "COMET PRODUCTION은 재능 있는 사람을 단순히 모으는 곳이 아니라, 그들이 실제로 창작하고, 성장하고, 연결될 수 있는 환경을 만드는 제작 조직입니다.",
                 "COMET PRODUCTION is not simply a place to gather talented people — it is a production organization that creates an environment where they can truly create, grow, and connect."
               )}
             </p>
-            <p className="text-white/55 text-sm leading-relaxed">
+            <p className="text-[#86868b] text-sm leading-relaxed">
               {t(
                 "우리는 콘텐츠, 기술, 예술, 엔터테인먼트를 분리된 분야로 보지 않습니다. 각자의 가능성이 하나의 프로젝트가 되고, 하나의 프로젝트가 새로운 세계가 될 수 있도록 돕습니다.",
                 "We do not see content, technology, art, and entertainment as separate fields. We help each person's potential become a project — and each project become a new world."
