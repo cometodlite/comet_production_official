@@ -118,7 +118,7 @@ const COLORS = {
   },
   both: {
     kicker: "rgba(255,255,255,0.35)",
-    title: null, // gradient-text 클래스 사용
+    title: undefined, // gradient-text 클래스 사용
     sub: "rgba(255,255,255,0.45)",
     dot: "#a78bfa",
     link: "",
