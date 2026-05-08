@@ -193,7 +193,7 @@ export default function BrandShowcase() {
           ...posStyle,
           height: `calc(100vh - ${NAVBAR_H}px)`,
           overflow: "hidden",
-          backgroundColor: "#050509",
+          backgroundColor: "#000000",
         }}
       >
         {/* ── ENTERTAINERS 배경 ── */}

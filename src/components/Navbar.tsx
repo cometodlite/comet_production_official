@@ -25,7 +25,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* ── 메인 바 ── */}
-      <div className="bg-black/65 backdrop-blur-md border-b border-white/10">
+      <div className="bg-[#000]/80 backdrop-blur-2xl border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
           {/* 로고 */}
@@ -53,16 +53,13 @@ export default function Navbar() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className={`relative text-sm tracking-wide transition-colors pb-1 ${
+                    className={`text-sm transition-colors duration-200 ${
                       isActive
-                        ? "text-white font-semibold"
-                        : "text-white/55 hover:text-white"
+                        ? "text-white font-medium"
+                        : "text-[#86868b] hover:text-white"
                     }`}
                   >
                     {label}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-indigo-400" />
-                    )}
                   </Link>
                 </li>
               );
@@ -74,11 +71,11 @@ export default function Navbar() {
             {/* 언어 토글 */}
             <button
               onClick={toggleLang}
-              className="flex items-center gap-1 text-xs border border-white/20 rounded-full px-3 py-1.5 text-white/70 hover:border-indigo-400 hover:text-indigo-300 transition-all"
+              className="text-xs text-[#86868b] hover:text-white transition-colors duration-200 tracking-wide"
             >
-              <span className={lang === "ko" ? "text-white font-semibold" : ""}>KO</span>
-              <span className="text-white/25">/</span>
-              <span className={lang === "en" ? "text-white font-semibold" : ""}>EN</span>
+              <span className={lang === "ko" ? "text-white" : ""}>{lang === "ko" ? "한국어" : "KO"}</span>
+              <span className="mx-1.5 text-[#3a3a3c]">/</span>
+              <span className={lang === "en" ? "text-white" : ""}>{lang === "en" ? "English" : "EN"}</span>
             </button>
 
             {/* 모바일 MENU 버튼 */}
@@ -123,7 +120,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="md:hidden overflow-hidden bg-[#06050f]/96 backdrop-blur-xl border-b border-white/10"
+            className="md:hidden overflow-hidden bg-[#141414]/98 backdrop-blur-2xl border-b border-white/[0.08]"
           >
             <ul className="px-6 py-2 flex flex-col">
               {navLinks.map(({ href, label }, i) => {

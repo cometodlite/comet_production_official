@@ -56,9 +56,9 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           01 / WHO WE ARE
       ══════════════════════════════════════════ */}
-      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-44 border-t border-white/5">
+      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-44 border-t border-[#3a3a3c]/60">
         <FadeUp>
-          <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase mb-12 md:mb-20">
+          <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-12 md:mb-20">
             01 / WHO WE ARE
           </p>
         </FadeUp>
@@ -71,7 +71,7 @@ export default function HomePage() {
           </h2>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <p className="text-[#A7ADBD] text-base md:text-lg leading-relaxed max-w-2xl">
+          <p className="text-[#86868b] text-base md:text-lg leading-relaxed max-w-2xl">
             {t(
               "COMET PRODUCTION은 재능 있는 사람들이 실제로 창작하고, 성장하고, 연결될 수 있는 환경을 만드는 제작 중심 조직입니다. 콘텐츠, 기술, 예술, 엔터테인먼트를 분리된 분야로 보지 않습니다.",
               "COMET PRODUCTION is a production-first organization that builds environments where talented people can truly create, grow, and connect — viewing content, technology, art, and entertainment not as separate fields, but as one."
@@ -83,16 +83,16 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           02 / OUR GROUPS
       ══════════════════════════════════════════ */}
-      <section className="border-t border-[#252A36]">
+      <section className="border-t border-[#3a3a3c]/60">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
-            <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase">
+            <p className="text-[#86868b] text-[11px] tracking-widest uppercase">
               02 / OUR GROUPS
             </p>
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid md:grid-cols-2 gap-px bg-[#252A36]">
+        <StaggerContainer className="grid md:grid-cols-2 gap-px bg-[#3a3a3c]">
 
           {/* ── DEVELOPS ── */}
           <StaggerItem>
@@ -208,21 +208,21 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           03 / CULTURE
       ══════════════════════════════════════════ */}
-      <section className="border-t border-[#252A36]">
+      <section className="border-t border-[#3a3a3c]/60">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
-            <p className="text-white/20 text-[9px] tracking-[0.8em] uppercase">
+            <p className="text-[#86868b] text-[11px] tracking-widest uppercase">
               03 / CULTURE
             </p>
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#252A36]">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#3a3a3c]">
           {cultureValues.map((v) => (
             <StaggerItem key={v.en}>
               <motion.div
-                className="bg-[#050509] py-14 md:py-24 px-6 md:px-8 text-center flex flex-col items-center justify-center h-full"
-                whileHover={{ backgroundColor: "#080E24" }}
+                className="bg-black py-14 md:py-24 px-6 md:px-8 text-center flex flex-col items-center justify-center h-full"
+                whileHover={{ backgroundColor: "#111111" }}
                 transition={{ duration: 0.4 }}
               >
                 <p

@@ -2,12 +2,12 @@
 
 :root {
   /* ── COMET 색감 시스템 ── */
-  --background:    #050509;   /* Main Black */
-  --foreground:    #F4F7FF;   /* Moon White */
-  --bg-soft:       #080E24;   /* Deep Navy */
+  --background:    #000000;   /* Apple True Black */
+  --foreground:    #f5f5f7;   /* Apple Warm White */
+  --bg-soft:       #1d1d1f;   /* Apple Secondary */
   --comet-blue:    #6C7CFF;   /* Comet Blue — 핵심 포인트 */
-  --text-sub:      #A7ADBD;   /* Soft Gray */
-  --line-gray:     #252A36;   /* Line / Border */
+  --text-sub:      #86868b;   /* Apple Gray */
+  --line-gray:     #3a3a3c;   /* Apple Divider */
   --warm-accent:   #C8A86A;   /* Entertainers Gold */
   --develops-bg:   #060d1f;   /* Develops Dark */
   --ent-bg:        #100b07;   /* Entertainers Dark */
@@ -25,9 +25,12 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
   min-height: 100svh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.008em;
 }
 
 /* ── 기존 애니메이션 ── */
@@ -114,53 +117,22 @@ body {
   background-clip: text;
 }
 
-/* ── 글래스 카드 ── */
+/* ── 글래스 카드 (Apple-style) ── */
 .glass-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  transition: all 0.3s ease;
-}
-
-/* 그라디언트 테두리 (hover 시 표시) */
-.glass-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(129, 140, 248, 0.55) 0%,
-    rgba(167, 139, 250, 0.25) 45%,
-    rgba(96, 165, 250, 0.45) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.glass-card:hover::before {
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  transition: background 0.3s ease, border-color 0.3s ease,
+              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(99, 102, 241, 0.35);
-  transform: translateY(-4px);
-  box-shadow:
-    0 20px 60px rgba(99, 102, 241, 0.15),
-    0 0 35px rgba(99, 102, 241, 0.07);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.55);
 }
 
 .nebula-bg {
