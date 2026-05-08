@@ -451,7 +451,7 @@ export default function DevelopsPage() {
             <p className="text-[#6C7CFF] text-xs tracking-widest uppercase font-semibold mb-1">
               {t("설립 배경", "Background")}
             </p>
-            <p className="text-white/60 text-sm leading-relaxed">
+            <p className="text-[#86868b] text-sm leading-relaxed">
               {t(
                 "COMET DEVELOPS는 COMET PRODUCTION의 새로운 시도 중 '개발'을 목적으로 설립된 자회사입니다. 게임 개발·관리·배급을 주요 사업으로 하며, 모기업인 KE 네트워크에 대한 추가적인 기술 지원도 수행합니다.",
                 "COMET DEVELOPS is a subsidiary established for 'development' as one of COMET PRODUCTION's new ventures. Its main businesses are game development, management, and publishing, while also providing additional technical support for the parent KE Network."
@@ -465,7 +465,7 @@ export default function DevelopsPage() {
           <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-3">
             {t("전체 프로젝트", "ALL PROJECTS")}
           </p>
-          <h3 className="text-3xl font-bold text-white">
+          <h3 className="text-3xl font-bold text-white tracking-tight">
             {t("개발 작품", "Our Works")}
           </h3>
         </FadeUp>
@@ -492,7 +492,7 @@ export default function DevelopsPage() {
                 </div>
                 <h4 className="text-lg font-bold text-white mb-1 group-hover:text-[#9ba8ff] transition-colors">HCSiG</h4>
                 <p className="text-[#6C7CFF]/70 text-xs mb-3">{t("해킹코드 시뮬레이션", "Hacking Code Simulation")}</p>
-                <p className="text-white/40 text-xs leading-relaxed mb-5">
+                <p className="text-[#86868b]/80 text-xs leading-relaxed mb-5">
                   {t("COMET DEVELOPS의 첫 번째 개발 작품. 브라우저에서 즐기는 해킹코드 시뮬레이션 웹게임.",
                      "COMET DEVELOPS' first title. A hacking code simulation web game playable in your browser.")}
                 </p>

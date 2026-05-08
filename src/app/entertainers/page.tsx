@@ -370,7 +370,7 @@ export default function EntertainersPage() {
             <p className="text-[#C8A86A] text-xs tracking-widest uppercase font-semibold mb-1">
               {t("설립 배경", "Background")}
             </p>
-            <p className="text-white/60 text-sm leading-relaxed">
+            <p className="text-[#86868b] text-sm leading-relaxed">
               {t(
                 "COMET ENTERTAINERS는 KE NETWORK 산하 KE ENTERTAINMENT의 뒤를 이어, COMET PRODUCTION에서 파생된 엔터테인먼트 전문 자회사입니다. KE ENTERTAINMENT가 쌓아온 경험과 노하우를 바탕으로, 아티스트 중심의 새로운 엔터테인먼트 생태계를 구축합니다.",
                 "COMET ENTERTAINERS is an entertainment-focused subsidiary derived from COMET PRODUCTION, succeeding KE ENTERTAINMENT under KE NETWORK. Built on the experience and know-how accumulated by KE ENTERTAINMENT, we establish a new artist-centered entertainment ecosystem."
@@ -384,7 +384,7 @@ export default function EntertainersPage() {
           <p className="text-[#C8A86A] text-xs tracking-[0.5em] uppercase mb-3">
             {t("전체 아티스트", "ALL ARTISTS")}
           </p>
-          <h3 className="text-3xl font-bold text-white">
+          <h3 className="text-3xl font-bold text-white tracking-tight">
             {t("소속 아티스트", "Our Artists")}
           </h3>
         </FadeUp>

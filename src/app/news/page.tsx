@@ -61,13 +61,13 @@ export default function NewsPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
       <FadeUp className="text-center mb-16">
-        <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-4">
           {t("최신 소식", "LATEST NEWS")}
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
           {t("뉴스", "News")}
         </h1>
-        <p className="text-white/50 text-base">
+        <p className="text-[#86868b] text-base">
           {t("COMET PRODUCTION 그룹의 최신 소식을 전달합니다.", "The latest news from the COMET PRODUCTION group.")}
         </p>
       </FadeUp>
@@ -134,7 +134,7 @@ export default function NewsPage() {
                     <div className="w-12 h-px bg-white/10 mb-4" />
 
                     {/* 본문 */}
-                    <p className="text-white/55 text-sm leading-relaxed">
+                    <p className="text-[#86868b] text-sm leading-relaxed">
                       {t(news.descKo, news.descEn)}
                     </p>
                   </div>

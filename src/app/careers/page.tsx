@@ -117,13 +117,13 @@ export default function CareersPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
       <FadeUp className="text-center mb-16">
-        <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-4">
           {t("함께할 인재", "JOIN US")}
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
           {t("채용", "Careers")}
         </h1>
-        <p className="text-white/50 text-base max-w-xl mx-auto">
+        <p className="text-[#86868b] text-base max-w-xl mx-auto">
           {t(
             "COMET PRODUCTION과 함께 새로운 우주를 만들어갈 인재를 기다립니다.",
             "We're looking for talented people to build a new universe with COMET PRODUCTION."
@@ -161,7 +161,7 @@ export default function CareersPage() {
                   </div>
 
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+                    <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-indigo-300 transition-colors">
                       {t(job.titleKo, job.titleEn)}
                     </h3>
                     <motion.span
@@ -172,7 +172,7 @@ export default function CareersPage() {
                       ↓
                     </motion.span>
                   </div>
-                  <p className="text-white/50 text-sm leading-relaxed mt-3">{t(job.descKo, job.descEn)}</p>
+                  <p className="text-[#86868b] text-sm leading-relaxed mt-3">{t(job.descKo, job.descEn)}</p>
                 </button>
 
                 {/* 상세 정보 (펼치기) */}
@@ -195,7 +195,7 @@ export default function CareersPage() {
                           </p>
                           <ul className="space-y-1.5">
                             {job.duties.map((d, di) => (
-                              <li key={di} className="flex items-start gap-2 text-white/55 text-xs leading-relaxed">
+                              <li key={di} className="flex items-start gap-2 text-[#86868b] text-xs leading-relaxed">
                                 <span className={`mt-1.5 w-1 h-1 rounded-full flex-shrink-0 ${accent.replace("text-", "bg-")}`} />
                                 {d}
                               </li>
@@ -220,12 +220,12 @@ export default function CareersPage() {
 
                         {/* 우대 사항 */}
                         <div>
-                          <p className="text-[10px] tracking-widest uppercase font-bold mb-3 text-white/30">
+                          <p className="text-[10px] tracking-widest uppercase font-bold mb-3 text-[#86868b]/60">
                             {t("우대 사항", "Preferred")}
                           </p>
                           <ul className="space-y-1.5">
                             {job.preferred.map((p, pi) => (
-                              <li key={pi} className="flex items-start gap-2 text-white/40 text-xs leading-relaxed">
+                              <li key={pi} className="flex items-start gap-2 text-[#86868b]/70 text-xs leading-relaxed">
                                 <span className="mt-1.5 w-1 h-1 rounded-full bg-white/20 flex-shrink-0" />
                                 {p}
                               </li>
@@ -235,10 +235,10 @@ export default function CareersPage() {
 
                         {/* 지원 방법 */}
                         <div>
-                          <p className="text-[10px] tracking-widest uppercase font-bold mb-3 text-white/30">
+                          <p className="text-[10px] tracking-widest uppercase font-bold mb-3 text-[#86868b]/60">
                             {t("지원 방법", "How to Apply")}
                           </p>
-                          <p className="text-white/40 text-xs leading-relaxed mb-4">
+                          <p className="text-[#86868b]/70 text-xs leading-relaxed mb-4">
                             {t(job.applyKo, job.applyEn)}
                           </p>
                           <Link
@@ -262,10 +262,10 @@ export default function CareersPage() {
       {/* 자발적 지원 */}
       <FadeUp>
         <div className="glass-card p-10 text-center border border-indigo-500/20 bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
-          <h3 className="text-2xl font-bold text-white mb-3">
+          <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
             {t("원하는 포지션이 없으신가요?", "Don't see a role that fits?")}
           </h3>
-          <p className="text-white/50 text-sm mb-6 leading-relaxed">
+          <p className="text-[#86868b] text-sm mb-6 leading-relaxed">
             {t(
               "공개 채용 외에도 자발적 지원을 언제든지 환영합니다. 문의 페이지를 통해 연락 주세요.",
               "We welcome spontaneous applications at any time. Please reach out through our contact page."

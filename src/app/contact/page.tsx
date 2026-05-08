@@ -37,13 +37,13 @@ export default function ContactPage() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-20">
       <FadeUp className="text-center mb-16">
-        <p className="text-indigo-400 text-xs tracking-[0.5em] uppercase mb-4">
+        <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-4">
           {t("문의", "CONTACT")}
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
           {t("연락하기", "Get in Touch")}
         </h1>
-        <p className="text-white/50 text-base">
+        <p className="text-[#86868b] text-base">
           {t("COMET PRODUCTION 및 산하 브랜드에 대한 문의를 남겨주세요.", "Leave your inquiry about COMET PRODUCTION and its brands.")}
         </p>
       </FadeUp>
@@ -70,7 +70,7 @@ export default function ContactPage() {
               <h2 className="text-2xl font-bold text-white mb-3">
                 {t("문의가 접수되었습니다", "Inquiry Received")}
               </h2>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <p className="text-[#86868b] text-sm leading-relaxed">
                 {t("빠른 시일 내에 답변 드리겠습니다. 감사합니다.", "We will get back to you as soon as possible. Thank you.")}
               </p>
               <motion.button
@@ -100,7 +100,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                <label className="block text-white/60 text-xs tracking-widest uppercase mb-2">
+                <label className="block text-[#86868b] text-xs tracking-widest uppercase mb-2">
                   {t("문의 유형", "Inquiry Type")}
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -129,7 +129,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <label className="block text-white/60 text-xs tracking-widest uppercase mb-2">
+                <label className="block text-[#86868b] text-xs tracking-widest uppercase mb-2">
                   {t("이름", "Name")}
                 </label>
                 <input
@@ -147,7 +147,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <label className="block text-white/60 text-xs tracking-widest uppercase mb-2">
+                <label className="block text-[#86868b] text-xs tracking-widest uppercase mb-2">
                   {t("이메일", "Email")}
                 </label>
                 <input
@@ -165,7 +165,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <label className="block text-white/60 text-xs tracking-widest uppercase mb-2">
+                <label className="block text-[#86868b] text-xs tracking-widest uppercase mb-2">
                   {t("문의 내용", "Message")}
                 </label>
                 <textarea
@@ -190,7 +190,7 @@ export default function ContactPage() {
                   required
                   className="mt-0.5 w-4 h-4 accent-indigo-500 cursor-pointer flex-shrink-0"
                 />
-                <label htmlFor="privacy-consent" className="text-white/40 text-xs leading-relaxed cursor-pointer">
+                <label htmlFor="privacy-consent" className="text-[#86868b]/70 text-xs leading-relaxed cursor-pointer">
                   {t(
                     "개인정보 수집 및 이용에 동의합니다. 수집 항목: 이름, 이메일, 문의 내용 / 이용 목적: 문의 접수 및 답변 / 보유 기간: 문의 처리 후 3년 이내",
                     "I agree to the collection and use of personal information. Items: name, email, message / Purpose: inquiry handling and response / Retention: up to 3 years after processing"
