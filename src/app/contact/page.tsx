@@ -58,7 +58,7 @@ export default function ContactPage() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="min-h-[50vh] flex items-center justify-center"
           >
-            <div className="glass-card p-12 text-center border border-indigo-500/30 max-w-md w-full">
+            <div className="glass-card p-12 text-center border border-white/[0.08] max-w-md w-full">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -77,7 +77,7 @@ export default function ContactPage() {
                 onClick={() => setStatus("idle")}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-8 px-6 py-2.5 rounded-full border border-white/20 text-white/60 hover:text-white hover:border-indigo-400 transition-all text-sm"
+                className="mt-8 px-6 py-2.5 rounded-full border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-sm"
               >
                 {t("다시 문의하기", "Send Another")}
               </motion.button>
@@ -137,7 +137,7 @@ export default function ContactPage() {
                   name="from_name"
                   required
                   placeholder={t("이름을 입력하세요", "Enter your name")}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm"
                 />
               </motion.div>
 
@@ -155,7 +155,7 @@ export default function ContactPage() {
                   name="reply_to"
                   required
                   placeholder={t("이메일을 입력하세요", "Enter your email")}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm"
                 />
               </motion.div>
 
@@ -173,7 +173,7 @@ export default function ContactPage() {
                   required
                   rows={5}
                   placeholder={t("문의 내용을 입력하세요", "Enter your message")}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm resize-none"
                 />
               </motion.div>
 
@@ -220,7 +220,7 @@ export default function ContactPage() {
                 transition={{ delay: 0.5 }}
                 whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
                 whileTap={{ scale: status === "sending" ? 1 : 0.98 }}
-                className="w-full py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30 animate-glow"
+                className="w-full py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all"
               >
                 {status === "sending" ? t("전송 중...", "Sending...") : t("문의 보내기", "Send Inquiry")}
               </motion.button>

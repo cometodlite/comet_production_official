@@ -56,7 +56,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           01 / WHO WE ARE
       ══════════════════════════════════════════ */}
-      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-44 border-t border-[#3a3a3c]/60">
+      <section className="px-8 md:px-16 lg:px-24 py-28 md:py-44 border-t border-white/[0.07]">
         <FadeUp>
           <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-12 md:mb-20">
             01 / WHO WE ARE
@@ -83,7 +83,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           02 / OUR GROUPS
       ══════════════════════════════════════════ */}
-      <section className="border-t border-[#3a3a3c]/60">
+      <section className="border-t border-white/[0.07]">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
             <p className="text-[#86868b] text-[11px] tracking-widest uppercase">
@@ -208,7 +208,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           03 / CULTURE
       ══════════════════════════════════════════ */}
-      <section className="border-t border-[#3a3a3c]/60">
+      <section className="border-t border-white/[0.07]">
         <div className="px-8 md:px-16 lg:px-24 pt-16 pb-10">
           <FadeUp>
             <p className="text-[#86868b] text-[11px] tracking-widest uppercase">

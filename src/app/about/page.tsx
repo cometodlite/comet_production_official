@@ -166,7 +166,7 @@ export default function AboutPage() {
             {history.map((item, i) => (
               <StaggerItem key={i} className="relative pl-16">
                 <div className={`absolute left-[18px] top-3.5 w-3.5 h-3.5 rounded-full ${item.dot} ring-4 ring-black`} />
-                <div className={`glass-card p-6 border ${item.color} ${item.highlight ? "ring-1 ring-indigo-500/20" : ""}`}>
+                <div className={`glass-card p-6 border ${item.color}`}>
                   <p className={`text-xs tracking-widest uppercase font-bold mb-1.5 ${item.label}`}>
                     {item.date}
                   </p>
@@ -197,7 +197,7 @@ export default function AboutPage() {
           {values.map((v) => (
             <StaggerItem key={v.name}>
               <motion.div
-                className={`glass-card p-7 border ${v.border} bg-gradient-to-b ${v.bg} to-transparent text-center h-full`}
+                className={`glass-card p-7 border ${v.border} text-center h-full`}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 {/* 컬러 액센트 라인 */}
@@ -227,7 +227,7 @@ export default function AboutPage() {
         <h2 className="text-2xl font-bold text-white text-center mb-10 tracking-tight">
           {t("KE 그룹 산하 COMET", "COMET under KE Group")}
         </h2>
-        <div className="glass-card p-8 border border-amber-500/20">
+        <div className="glass-card p-8 border border-white/[0.08]">
           <div className="flex justify-center mb-8">
             <div className="bg-white rounded-xl px-8 py-5 inline-block">
               <Image
@@ -276,7 +276,7 @@ export default function AboutPage() {
           {team.map((member) => (
             <StaggerItem key={member.name}>
               <motion.div
-                className={`glass-card p-8 border ${member.color} bg-gradient-to-b ${member.bg} to-transparent h-full`}
+                className={`glass-card p-8 border ${member.color} h-full`}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 {/* 이니셜 아바타 */}
@@ -308,7 +308,7 @@ export default function AboutPage() {
 
       {/* ── 비전 ── */}
       <FadeUp>
-        <div className="glass-card border border-indigo-500/20 overflow-hidden">
+        <div className="glass-card border border-white/[0.08] overflow-hidden">
 
           {/* Brand Line */}
           <div className="p-10 text-center border-b border-white/5">

@@ -261,7 +261,7 @@ export default function CareersPage() {
 
       {/* 자발적 지원 */}
       <FadeUp>
-        <div className="glass-card p-10 text-center border border-indigo-500/20 bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
+        <div className="glass-card p-10 text-center border border-white/[0.08]">
           <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
             {t("원하는 포지션이 없으신가요?", "Don't see a role that fits?")}
           </h3>
@@ -274,7 +274,7 @@ export default function CareersPage() {
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-block">
             <Link
               href="/contact"
-              className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30"
+              className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all"
             >
               {t("문의하기", "Contact Us")}
             </Link>

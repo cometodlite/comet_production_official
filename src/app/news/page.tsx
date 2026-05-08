@@ -104,7 +104,7 @@ export default function NewsPage() {
             {filtered.map((news) => (
               <StaggerItem key={news.id}>
                 <motion.div
-                  className="glass-card border border-white/8 hover:border-indigo-500/30 transition-all overflow-hidden"
+                  className="glass-card border border-white/[0.08] hover:border-white/20 transition-all overflow-hidden"
                   whileHover={{ x: 4, transition: { duration: 0.2 } }}
                 >
                   {/* 카테고리 컬러 액센트 바 */}
