@@ -1,7 +1,79 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
+
+// ── Kinetic Typography ────────────────────────────
+
+const TECH_WORDS = [
+  "GAME DEVELOPMENT",
+  "WEB SYSTEMS",
+  "TECH SUPPORT",
+  "SERVICES",
+  "IDEAS → STRUCTURE",
+];
+
+/** COMET 타이틀 글리치 효과 (RGB split, 7s 주기) */
+function GlitchText({ text, baseClassName }: { text: string; baseClassName?: string }) {
+  return (
+    <span className="relative inline-block">
+      <span className={baseClassName}>{text}</span>
+      {/* 레이어 1: red */}
+      <span
+        aria-hidden
+        className="absolute inset-0 select-none pointer-events-none"
+        style={{ WebkitTextFillColor: "#f87171", animation: "glitch-shift-1 7s steps(1) infinite" }}
+      >
+        {text}
+      </span>
+      {/* 레이어 2: cyan */}
+      <span
+        aria-hidden
+        className="absolute inset-0 select-none pointer-events-none"
+        style={{ WebkitTextFillColor: "#22d3ee", animation: "glitch-shift-2 7s steps(1) infinite 0.12s" }}
+      >
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/** 기술 키워드 타이프라이터 순환 */
+function TypewriterCycle() {
+  const [wordIdx, setWordIdx]   = useState(0);
+  const [text, setText]         = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const target = TECH_WORDS[wordIdx];
+    const delay  = deleting ? 40 : text.length === target.length ? 1700 : 72;
+    const timer  = setTimeout(() => {
+      if (!deleting && text.length < target.length) {
+        setText(target.slice(0, text.length + 1));
+      } else if (!deleting) {
+        setDeleting(true);
+      } else if (text.length > 0) {
+        setText(text.slice(0, -1));
+      } else {
+        setDeleting(false);
+        setWordIdx((i) => (i + 1) % TECH_WORDS.length);
+      }
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [text, deleting, wordIdx]);
+
+  return (
+    <p className="font-mono text-sm tracking-[0.18em] mt-5 h-5" style={{ color: "rgba(108,124,255,0.6)" }}>
+      <span style={{ color: "rgba(108,124,255,0.35)" }}>&gt; </span>
+      {text}
+      <span
+        className="animate-cursor inline-block w-0.5 h-3.5 ml-px align-middle"
+        style={{ backgroundColor: "rgba(108,124,255,0.6)" }}
+      />
+    </p>
+  );
+}
 
 export default function DevelopsPage() {
   const { t } = useLang();
@@ -48,6 +120,11 @@ export default function DevelopsPage() {
           }}
         />
 
+        {/* ── 스캔라인 ── */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+          <div className="scanline" />
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -63,7 +140,7 @@ export default function DevelopsPage() {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
-            <span className="gradient-text">COMET</span>
+            <GlitchText text="COMET" baseClassName="gradient-text" />
           </h1>
           <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-[#6C7CFF]/80 mb-10">
             DEVELOPS
@@ -80,6 +157,7 @@ export default function DevelopsPage() {
               "We pioneer a new universe called games, expanding the technological possibilities of COMET PRODUCTION."
             )}
           </p>
+          <TypewriterCycle />
         </motion.div>
       </div>
 

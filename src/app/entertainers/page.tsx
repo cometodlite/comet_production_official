@@ -38,7 +38,7 @@ export default function EntertainersPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
       {/* Header */}
-      <div className="relative text-center mb-20">
+      <div className="relative text-center mb-8">
         {/* 히어로 글로우 */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -67,9 +67,26 @@ export default function EntertainersPage() {
           <h1 className="text-7xl md:text-9xl font-black tracking-tight mb-3">
             <span className="gradient-text">COMET</span>
           </h1>
-          <h2 className="text-2xl md:text-3xl font-light tracking-[0.45em] text-[#C8A86A]/80 mb-10">
-            ENTERTAINERS
-          </h2>
+          <motion.h2
+            className="text-2xl md:text-3xl font-light tracking-[0.45em] mb-10"
+            style={{ color: "rgba(200,168,106,0.8)" }}
+            variants={{ visible: { transition: { staggerChildren: 0.055, delayChildren: 0.42 } } }}
+            initial="hidden"
+            animate="visible"
+          >
+            {"ENTERTAINERS".split("").map((char, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                variants={{
+                  hidden:  { opacity: 0, y: 18, filter: "blur(6px)"  },
+                  visible: { opacity: 1, y: 0,  filter: "blur(0px)", transition: { duration: 0.36, ease: [0.2, 0, 0.2, 1] } },
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.h2>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -89,6 +106,40 @@ export default function EntertainersPage() {
             )}
           </p>
         </motion.div>
+      </div>
+
+      {/* ── 키네틱 마키 ── */}
+      <div
+        className="relative overflow-hidden -mx-6 border-y mb-14"
+        style={{ borderColor: "rgba(200,168,106,0.1)" }}
+      >
+        {/* 좌측 페이드 */}
+        <div
+          className="absolute inset-y-0 left-0 w-20 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, #050509, transparent)" }}
+        />
+        {/* 우측 페이드 */}
+        <div
+          className="absolute inset-y-0 right-0 w-20 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, #050509, transparent)" }}
+        />
+        <div className="flex animate-marquee w-max py-3">
+          {([0, 1] as const).map((ri) => (
+            <span key={ri} className="flex items-center">
+              {["ART", "BROADCAST", "MUSIC", "CHARACTER", "PERFORMANCE", "TALENT", "CREATION", "ENTERTAINMENT"].map((word) => (
+                <span key={word} className="flex items-center">
+                  <span
+                    className="text-[9px] tracking-[0.6em] uppercase mx-7"
+                    style={{ color: "rgba(200,168,106,0.35)" }}
+                  >
+                    {word}
+                  </span>
+                  <span className="text-[8px]" style={{ color: "rgba(200,168,106,0.15)" }}>✦</span>
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Origin Banner */}

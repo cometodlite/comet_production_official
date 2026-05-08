@@ -170,3 +170,59 @@ body {
     radial-gradient(ellipse at 55% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
     #05040f;
 }
+
+/* ── Kinetic Typography ─────────────────────────── */
+
+/* ENTERTAINERS: 무한 수평 마키 */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 34s linear infinite;
+  will-change: transform;
+}
+
+/* DEVELOPS: 글리치 오버레이 레이어 1 (red) */
+@keyframes glitch-shift-1 {
+  0%, 91%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  92% { clip-path: inset(18% 0 58% 0); transform: translateX(-5px); }
+  93% { clip-path: inset(62% 0 12% 0); transform: translateX(5px); }
+  94% { clip-path: inset(38% 0 40% 0); transform: translateX(-3px); }
+  95% { clip-path: inset(5%  0 82% 0); transform: translateX(3px); }
+  96% { clip-path: inset(74% 0 8%  0); transform: translateX(-2px); }
+  97% { clip-path: inset(0   0 100% 0); transform: translateX(0); }
+}
+
+/* DEVELOPS: 글리치 오버레이 레이어 2 (cyan) */
+@keyframes glitch-shift-2 {
+  0%, 91%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  92% { clip-path: inset(68% 0 8%  0); transform: translateX(5px); }
+  93% { clip-path: inset(12% 0 68% 0); transform: translateX(-5px); }
+  94% { clip-path: inset(84% 0 3%  0); transform: translateX(3px); }
+  95% { clip-path: inset(28% 0 52% 0); transform: translateX(-3px); }
+  96% { clip-path: inset(48% 0 28% 0); transform: translateX(2px); }
+  97% { clip-path: inset(0   0 100% 0); transform: translateX(0); }
+}
+
+/* DEVELOPS: 타이프라이터 커서 깜빡임 */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.animate-cursor {
+  animation: cursor-blink 0.9s step-end infinite;
+}
+
+/* DEVELOPS: 스캔라인 sweep */
+@keyframes scanline-move {
+  from { top: -2%; }
+  to   { top: 105%; }
+}
+.scanline {
+  position: absolute;
+  left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(108,124,255,0.2) 30%, rgba(108,124,255,0.2) 70%, transparent 100%);
+  animation: scanline-move 5s linear infinite;
+  pointer-events: none;
+}
