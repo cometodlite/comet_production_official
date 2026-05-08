@@ -3,6 +3,7 @@
 import { useLang } from "@/context/LanguageContext";
 import { motion, FadeUp, StaggerContainer, StaggerItem } from "@/components/Motion";
 import PinnedHero from "@/components/PinnedHero";
+import BrandShowcase from "@/components/BrandShowcase";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -46,6 +47,11 @@ export default function HomePage() {
           PINNED HERO
       ══════════════════════════════════════════ */}
       <PinnedHero />
+
+      {/* ══════════════════════════════════════════
+          BRAND SHOWCASE
+      ══════════════════════════════════════════ */}
+      <BrandShowcase />
 
       {/* ══════════════════════════════════════════
           01 / WHO WE ARE
