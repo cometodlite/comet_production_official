@@ -6,7 +6,10 @@ import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:cry
 import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCallback);
-const USERS_FILE = path.join(process.cwd(), ".data", "users.json");
+const LOCAL_USERS_FILE = path.join(process.cwd(), ".data", "users.json");
+const VERCEL_USERS_FILE = "/tmp/comet-production-users.json";
+const USERS_FILE =
+  process.env.AUTH_STORE_PATH || (process.env.VERCEL ? VERCEL_USERS_FILE : LOCAL_USERS_FILE);
 
 export type UserRecord = {
   id: string;
