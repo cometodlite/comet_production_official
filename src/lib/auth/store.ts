@@ -17,10 +17,13 @@ type SqlClient = ReturnType<typeof neon>;
 let sqlClient: SqlClient | null = null;
 let databaseReady: Promise<void> | null = null;
 
+export type UserRole = "public" | "staff";
+
 export type UserRecord = {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
   passwordHash: string;
   salt: string;
   createdAt: string;
@@ -30,6 +33,7 @@ export type PublicUser = {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
   createdAt: string;
 };
 
@@ -38,6 +42,7 @@ function toPublicUser(user: UserRecord): PublicUser {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: user.role,
     createdAt: user.createdAt,
   };
 }
@@ -63,6 +68,7 @@ function mapDatabaseUser(row: Record<string, unknown>): UserRecord {
     id: String(row.id),
     name: String(row.name),
     email: String(row.email),
+    role: row.role === "staff" ? "staff" : "public",
     passwordHash: String(row.password_hash),
     salt: String(row.salt),
     createdAt,
@@ -70,16 +76,23 @@ function mapDatabaseUser(row: Record<string, unknown>): UserRecord {
 }
 
 async function ensureDatabase(sql: SqlClient) {
-  databaseReady ||= sql`
-    CREATE TABLE IF NOT EXISTS comet_users (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL UNIQUE,
-      password_hash TEXT NOT NULL,
-      salt TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `.then(() => undefined);
+  databaseReady ||= (async () => {
+    await sql`
+      CREATE TABLE IF NOT EXISTS comet_users (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        role TEXT NOT NULL DEFAULT 'public',
+        password_hash TEXT NOT NULL,
+        salt TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `;
+    await sql`
+      ALTER TABLE comet_users
+      ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'public'
+    `;
+  })();
   await databaseReady;
 }
 
@@ -92,10 +105,17 @@ async function ensureStore() {
   }
 }
 
+function normalizeUserRecord(user: UserRecord): UserRecord {
+  return {
+    ...user,
+    role: user.role === "staff" ? "staff" : "public",
+  };
+}
+
 async function readUsers(): Promise<UserRecord[]> {
   await ensureStore();
   const raw = await fs.readFile(USERS_FILE, "utf8");
-  return JSON.parse(raw) as UserRecord[];
+  return (JSON.parse(raw) as UserRecord[]).map(normalizeUserRecord);
 }
 
 async function writeUsers(users: UserRecord[]) {
@@ -124,7 +144,7 @@ export async function findUserByEmail(email: string) {
   if (sql) {
     await ensureDatabase(sql);
     const rows = (await sql`
-      SELECT id, name, email, password_hash, salt, created_at
+      SELECT id, name, email, role, password_hash, salt, created_at
       FROM comet_users
       WHERE email = ${email}
       LIMIT 1
@@ -141,7 +161,7 @@ export async function findPublicUserById(id: string) {
   if (sql) {
     await ensureDatabase(sql);
     const rows = (await sql`
-      SELECT id, name, email, password_hash, salt, created_at
+      SELECT id, name, email, role, password_hash, salt, created_at
       FROM comet_users
       WHERE id = ${id}
       LIMIT 1
@@ -154,12 +174,13 @@ export async function findPublicUserById(id: string) {
   return user ? toPublicUser(user) : null;
 }
 
-export async function createUser(input: { name: string; email: string; password: string }) {
+export async function createUser(input: { name: string; email: string; password: string; role?: UserRole }) {
   const password = await hashPassword(input.password);
   const user: UserRecord = {
     id: randomBytes(16).toString("base64url"),
     name: input.name,
     email: input.email,
+    role: input.role || "public",
     ...password,
     createdAt: new Date().toISOString(),
   };
@@ -169,11 +190,12 @@ export async function createUser(input: { name: string; email: string; password:
     await ensureDatabase(sql);
     try {
       await sql`
-        INSERT INTO comet_users (id, name, email, password_hash, salt, created_at)
+        INSERT INTO comet_users (id, name, email, role, password_hash, salt, created_at)
         VALUES (
           ${user.id},
           ${user.name},
           ${user.email},
+          ${user.role},
           ${user.passwordHash},
           ${user.salt},
           ${user.createdAt}
@@ -198,9 +220,9 @@ export async function createUser(input: { name: string; email: string; password:
   return { user: toPublicUser(user) };
 }
 
-export async function authenticateUser(email: string, password: string) {
+export async function authenticateUser(email: string, password: string, role: UserRole = "public") {
   const user = await findUserByEmail(email);
-  if (!user) return null;
+  if (!user || user.role !== role) return null;
   const isValid = await verifyPassword(password, user);
   return isValid ? toPublicUser(user) : null;
 }

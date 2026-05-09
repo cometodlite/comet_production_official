@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import type { UserRole } from "@/lib/auth/store";
 
 export const SESSION_COOKIE = "comet_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
@@ -9,6 +10,7 @@ const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 type SessionPayload = {
   userId: string;
   email: string;
+  role?: UserRole;
   issuedAt: number;
 };
 
@@ -46,19 +48,23 @@ export function verifySessionToken(token: string): SessionPayload | null {
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as SessionPayload;
     const isExpired = Date.now() - payload.issuedAt > SESSION_MAX_AGE * 1000;
     if (!payload.userId || !payload.email || isExpired) return null;
-    return payload;
+    return {
+      ...payload,
+      role: payload.role === "staff" ? "staff" : "public",
+    };
   } catch {
     return null;
   }
 }
 
-export async function setSessionCookie(user: { id: string; email: string }) {
+export async function setSessionCookie(user: { id: string; email: string; role: UserRole }) {
   const cookieStore = await cookies();
   cookieStore.set({
     name: SESSION_COOKIE,
     value: createSessionToken({
       userId: user.id,
       email: user.email,
+      role: user.role,
       issuedAt: Date.now(),
     }),
     httpOnly: true,

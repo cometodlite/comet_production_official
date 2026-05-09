@@ -15,3 +15,9 @@ export async function requireCurrentUser() {
   if (!user) redirect("/login");
   return user;
 }
+
+export async function requireStaffUser() {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "staff") redirect("/staff/login");
+  return user;
+}

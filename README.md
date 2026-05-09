@@ -48,3 +48,10 @@ POSTGRES_PRISMA_URL
 On startup, the app creates a `comet_users` table if it does not already exist. Local development falls back to `.data/users.json` when no database URL is configured.
 
 Set `AUTH_SECRET` in every Vercel environment that serves authenticated routes.
+
+Account roles are separated:
+
+- Public users use `/login`, `/signup`, and `/account`.
+- Staff users use `/staff/login`, `/staff/signup`, and `/staff`.
+
+Staff signup requires `STAFF_SIGNUP_CODE`. If it is not configured, staff account creation is disabled while staff login pages remain available.

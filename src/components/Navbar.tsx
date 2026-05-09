@@ -12,6 +12,7 @@ type AuthUser = {
   id: string;
   name: string;
   email: string;
+  role: "public" | "staff";
 };
 
 export default function Navbar() {
@@ -95,12 +96,14 @@ export default function Navbar() {
               {user ? (
                 <>
                   <Link
-                    href="/account"
+                    href={user.role === "staff" ? "/staff" : "/account"}
                     className={`text-xs transition-colors ${
-                      pathname === "/account" ? "text-white" : "text-[#86868b] hover:text-white"
+                      (user.role === "staff" ? pathname === "/staff" : pathname === "/account")
+                        ? "text-white"
+                        : "text-[#86868b] hover:text-white"
                     }`}
                   >
-                    {t("내 계정", "Account")}
+                    {user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}
                   </Link>
                   <form action={logout}>
                     <button className="text-xs text-[#86868b] transition-colors hover:text-white">
@@ -109,16 +112,26 @@ export default function Navbar() {
                   </form>
                 </>
               ) : (
-                <Link
-                  href="/login"
-                  className={`text-xs transition-colors ${
-                    pathname === "/login" || pathname === "/signup"
-                      ? "text-white"
-                      : "text-[#86868b] hover:text-white"
-                  }`}
-                >
-                  {t("로그인", "Login")}
-                </Link>
+                <>
+                  <Link
+                    href="/login"
+                    className={`text-xs transition-colors ${
+                      pathname === "/login" || pathname === "/signup"
+                        ? "text-white"
+                        : "text-[#86868b] hover:text-white"
+                    }`}
+                  >
+                    {t("일반 로그인", "Login")}
+                  </Link>
+                  <Link
+                    href="/staff/login"
+                    className={`text-xs transition-colors ${
+                      pathname.startsWith("/staff") ? "text-white" : "text-[#86868b] hover:text-white"
+                    }`}
+                  >
+                    {t("사원", "Staff")}
+                  </Link>
+                </>
               )}
             </div>
 
@@ -212,11 +225,11 @@ export default function Navbar() {
                 {user ? (
                   <div className="grid grid-cols-2 gap-3 py-4">
                     <Link
-                      href="/account"
+                      href={user.role === "staff" ? "/staff" : "/account"}
                       onClick={() => setMenuOpen(false)}
                       className="rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80"
                     >
-                      {t("내 계정", "Account")}
+                      {user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}
                     </Link>
                     <form action={logout}>
                       <button className="w-full rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80">
@@ -225,16 +238,25 @@ export default function Navbar() {
                     </form>
                   </div>
                 ) : (
-                  <Link
-                    href="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center justify-between py-4 text-[15px] tracking-wide border-b border-white/5 transition-colors text-white/55 hover:text-white"
-                  >
-                    <span>{t("로그인", "Login")}</span>
-                    {(pathname === "/login" || pathname === "/signup") && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                    )}
-                  </Link>
+                  <div className="grid gap-1">
+                    {[
+                      { href: "/login", label: t("일반 로그인", "Login") },
+                      { href: "/staff/login", label: t("사원 로그인", "Staff Login") },
+                    ].map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center justify-between py-4 text-[15px] tracking-wide border-b border-white/5 transition-colors text-white/55 hover:text-white"
+                      >
+                        <span>{item.label}</span>
+                        {((item.href === "/login" && (pathname === "/login" || pathname === "/signup")) ||
+                          (item.href === "/staff/login" && pathname.startsWith("/staff"))) && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                        )}
+                      </Link>
+                    ))}
+                  </div>
                 )}
               </motion.li>
             </ul>
