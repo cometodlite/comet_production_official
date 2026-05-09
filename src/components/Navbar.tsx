@@ -2,15 +2,38 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { logout } from "@/app/actions/auth";
 import { useLang } from "@/context/LanguageContext";
 import { CometProductionLogo } from "@/components/logos/CometLogo";
+
+type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 export default function Navbar() {
   const { lang, isChanging, toggleLang, t } = useLang();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    let ignore = false;
+    fetch("/api/auth/me", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data: { user: AuthUser | null }) => {
+        if (!ignore) setUser(data.user);
+      })
+      .catch(() => {
+        if (!ignore) setUser(null);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [pathname]);
 
   const navLinks = [
     { href: "/",              label: t("홈", "Home") },
@@ -66,8 +89,39 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* 우측: 언어 토글 + MENU 버튼 */}
+          {/* 우측: 계정 + 언어 토글 + MENU 버튼 */}
           <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-3">
+              {user ? (
+                <>
+                  <Link
+                    href="/account"
+                    className={`text-xs transition-colors ${
+                      pathname === "/account" ? "text-white" : "text-[#86868b] hover:text-white"
+                    }`}
+                  >
+                    {t("내 계정", "Account")}
+                  </Link>
+                  <form action={logout}>
+                    <button className="text-xs text-[#86868b] transition-colors hover:text-white">
+                      {t("로그아웃", "Logout")}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className={`text-xs transition-colors ${
+                    pathname === "/login" || pathname === "/signup"
+                      ? "text-white"
+                      : "text-[#86868b] hover:text-white"
+                  }`}
+                >
+                  {t("로그인", "Login")}
+                </Link>
+              )}
+            </div>
+
             {/* 언어 토글 */}
             <button
               onClick={toggleLang}
@@ -150,6 +204,39 @@ export default function Navbar() {
                   </motion.li>
                 );
               })}
+              <motion.li
+                initial={{ opacity: 0, x: -14 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.04 + 0.04, duration: 0.22 }}
+              >
+                {user ? (
+                  <div className="grid grid-cols-2 gap-3 py-4">
+                    <Link
+                      href="/account"
+                      onClick={() => setMenuOpen(false)}
+                      className="rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80"
+                    >
+                      {t("내 계정", "Account")}
+                    </Link>
+                    <form action={logout}>
+                      <button className="w-full rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80">
+                        {t("로그아웃", "Logout")}
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center justify-between py-4 text-[15px] tracking-wide border-b border-white/5 transition-colors text-white/55 hover:text-white"
+                  >
+                    <span>{t("로그인", "Login")}</span>
+                    {(pathname === "/login" || pathname === "/signup") && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                    )}
+                  </Link>
+                )}
+              </motion.li>
             </ul>
           </motion.nav>
         )}
