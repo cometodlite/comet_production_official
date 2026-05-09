@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Authentication Storage
+
+The COMET account system stores users in Postgres when one of these environment variables is available:
+
+```bash
+DATABASE_URL
+POSTGRES_URL
+POSTGRES_PRISMA_URL
+```
+
+On startup, the app creates a `comet_users` table if it does not already exist. Local development falls back to `.data/users.json` when no database URL is configured.
+
+Set `AUTH_SECRET` in every Vercel environment that serves authenticated routes.

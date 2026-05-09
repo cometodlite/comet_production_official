@@ -13,7 +13,11 @@ type SessionPayload = {
 };
 
 function getSecret() {
-  return process.env.AUTH_SECRET || "comet-production-local-auth-secret";
+  if (process.env.AUTH_SECRET) return process.env.AUTH_SECRET;
+  if (process.env.VERCEL) {
+    throw new Error("AUTH_SECRET is required in Vercel environments.");
+  }
+  return "comet-production-local-auth-secret";
 }
 
 function sign(value: string) {
