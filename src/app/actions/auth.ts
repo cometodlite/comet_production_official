@@ -6,6 +6,8 @@ import { clearSessionCookie, readSession, setSessionCookie } from "@/lib/auth/se
 import { normalizeStaffGroup } from "@/lib/auth/staff-groups";
 import {
   isInitialStaffCodeConfigured,
+  isStaffEmailAllowListConfigured,
+  isStaffSignupEmailAllowed,
   normalizeStaffCode,
   verifyInitialStaffCode,
 } from "@/lib/auth/staff-code-config";
@@ -111,6 +113,10 @@ export async function staffSignup(_state: AuthFormState, formData: FormData): Pr
     errors.staffCode = ["해당 소속의 사원 코드가 아직 설정되지 않았습니다."];
   } else if (!verifyInitialStaffCode(staffGroup, staffCode)) {
     errors.staffCode = ["소속 또는 사원 코드가 올바르지 않습니다."];
+  } else if (staffGroup === "board" && !isStaffEmailAllowListConfigured(staffGroup)) {
+    errors.email = ["이사회 허용 이메일 목록이 아직 설정되지 않았습니다."];
+  } else if (!isStaffSignupEmailAllowed(staffGroup, email)) {
+    errors.email = ["해당 이메일은 선택한 소속 가입 권한이 없습니다."];
   }
 
   if (Object.keys(errors).length) return { errors };

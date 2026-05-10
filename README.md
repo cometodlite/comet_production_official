@@ -68,6 +68,11 @@ Staff codes are separated by staff group and should be configured as server-side
 STAFF_CODE_ENTERTAINERS
 STAFF_CODE_DEVELOPS
 STAFF_CODE_COMET_BOARD
+STAFF_ALLOWED_EMAILS_ENTERTAINERS
+STAFF_ALLOWED_EMAILS_DEVELOPS
+STAFF_ALLOWED_EMAILS_COMET_BOARD
 ```
+
+Board signup requires both `STAFF_CODE_COMET_BOARD` and an email included in `STAFF_ALLOWED_EMAILS_COMET_BOARD` (comma, space, or newline separated). Optional allow-lists can also be configured for `STAFF_ALLOWED_EMAILS_ENTERTAINERS` and `STAFF_ALLOWED_EMAILS_DEVELOPS`.
 
 Staff accounts are created with the group initial code. After signup, a staff user can change their personal staff code in `/staff/settings`; staff login then requires the updated personal code. If a staff user forgets the personal code, an authorized board account can use `/staff/reset-code` to reset the account back to the group initial code.

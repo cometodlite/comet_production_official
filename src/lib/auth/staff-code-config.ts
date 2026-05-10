@@ -9,6 +9,12 @@ const STAFF_CODE_ENV: Record<StaffGroup, string> = {
   board: "STAFF_CODE_COMET_BOARD",
 };
 
+const STAFF_ALLOWED_EMAILS_ENV: Record<StaffGroup, string> = {
+  entertainers: "STAFF_ALLOWED_EMAILS_ENTERTAINERS",
+  develops: "STAFF_ALLOWED_EMAILS_DEVELOPS",
+  board: "STAFF_ALLOWED_EMAILS_COMET_BOARD",
+};
+
 export function normalizeStaffCode(code: FormDataEntryValue | string | null | undefined) {
   return String(code || "").trim();
 }
@@ -28,4 +34,21 @@ export function verifyInitialStaffCode(group: StaffGroup, code: string) {
   const left = Buffer.from(code);
   const right = Buffer.from(expected);
   return left.length === right.length && timingSafeEqual(left, right);
+}
+
+function getAllowedEmails(group: StaffGroup) {
+  return (process.env[STAFF_ALLOWED_EMAILS_ENV[group]] || "")
+    .split(/[\s,;]+/)
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function isStaffEmailAllowListConfigured(group: StaffGroup) {
+  return getAllowedEmails(group).length > 0;
+}
+
+export function isStaffSignupEmailAllowed(group: StaffGroup, email: string) {
+  const allowedEmails = getAllowedEmails(group);
+  if (!allowedEmails.length) return group !== "board";
+  return allowedEmails.includes(email.toLowerCase());
 }
