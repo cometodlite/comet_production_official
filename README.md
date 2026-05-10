@@ -55,3 +55,5 @@ Account roles are separated:
 - Staff users use `/staff/login`, `/staff/signup`, and `/staff`.
 
 Staff signup requires `STAFF_SIGNUP_CODE`. If it is not configured, staff account creation is disabled while staff login pages remain available.
+
+Staff who need a signup code can use `/contact?type=staff-code` to send a staff signup code request through the contact form.

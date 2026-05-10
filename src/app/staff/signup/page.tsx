@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import AuthForm from "@/components/auth/AuthForm";
 import { getCurrentUser } from "@/lib/auth/current-user";
@@ -20,6 +21,13 @@ export default async function StaffSignupPage() {
           회사에서 발급한 가입 코드가 있는 구성원만 사원 계정을 만들 수 있습니다.
         </p>
         <AuthForm mode="staff-signup" />
+        <div className="mt-6 rounded-lg border border-indigo-400/20 bg-indigo-400/10 px-4 py-3 text-sm leading-relaxed text-indigo-100/90">
+          가입 코드가 없으신가요?{" "}
+          <Link href="/contact?type=staff-code" className="font-semibold text-white underline underline-offset-4 hover:text-amber-200">
+            사원 가입 코드 요청
+          </Link>
+          을 보내주세요.
+        </div>
       </section>
     </div>
   );
