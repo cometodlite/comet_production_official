@@ -13,6 +13,7 @@ import {
   authenticateStaffUser,
   authenticateUser,
   createUser,
+  findPublicUserById,
   normalizeEmail,
   resetStaffCodeToInitial,
   updateStaffCode,
@@ -175,6 +176,16 @@ export async function changeStaffCode(_state: AuthFormState, formData: FormData)
 }
 
 export async function resetStaffCode(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
+  const session = await readSession();
+  if (!session || session.role !== "staff") {
+    return { errors: { form: ["이사회 로그인이 필요합니다."] } };
+  }
+
+  const actor = await findPublicUserById(session.userId);
+  if (!actor || actor.role !== "staff" || actor.staffGroup !== "board") {
+    return { errors: { form: ["사원 코드 초기화는 이사회 계정만 사용할 수 있습니다."] } };
+  }
+
   const email = normalizeEmail(formData.get("email"));
   const staffGroup = normalizeStaffGroup(formData.get("staffGroup"));
   const staffCode = normalizeStaffCode(formData.get("staffCode"));

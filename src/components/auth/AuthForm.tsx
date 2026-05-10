@@ -114,8 +114,8 @@ export default function AuthForm({ mode }: { mode: Mode }) {
 
       {mode === "staff-login" && (
         <p className="text-center text-xs text-[#86868b]/70">
-          <Link href="/staff/reset-code" className="hover:text-white">
-            사원 코드를 잊으셨나요?
+          <Link href="/contact?type=staff-code" className="hover:text-white">
+            사원 코드를 잊으셨나요? 초기화 요청
           </Link>
         </p>
       )}

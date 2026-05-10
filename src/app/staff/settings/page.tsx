@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StaffCodeSettingsForm from "@/components/auth/StaffCodeSettingsForm";
-import { getStaffGroupLabel } from "@/lib/auth/staff-groups";
+import { getStaffGroupAreaHref, getStaffGroupLabel } from "@/lib/auth/staff-groups";
 import { requireStaffUser } from "@/lib/auth/current-user";
 
 export const metadata: Metadata = {
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default async function StaffSettingsPage() {
   const user = await requireStaffUser();
   const codeStatus = user.staffCodeChangedAt ? "개인 코드 사용 중" : "초회 코드 사용 중";
+  const canResetCodes = user.staffGroup === "board";
 
   return (
     <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-3xl px-6 py-20">
@@ -31,17 +32,19 @@ export default async function StaffSettingsPage() {
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/staff"
+            href={getStaffGroupAreaHref(user.staffGroup)}
             className="rounded-lg border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
           >
-            사원 페이지로 돌아가기
+            내 소속 공간
           </Link>
-          <Link
-            href="/staff/reset-code"
-            className="rounded-lg border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/60 transition hover:border-white/35 hover:text-white"
-          >
-            코드 초기화
-          </Link>
+          {canResetCodes && (
+            <Link
+              href="/staff/reset-code"
+              className="rounded-lg border border-white/15 px-4 py-2.5 text-sm font-semibold text-white/60 transition hover:border-white/35 hover:text-white"
+            >
+              코드 초기화
+            </Link>
+          )}
         </div>
       </section>
     </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { logout } from "@/app/actions/auth";
-import { getStaffGroupLabel } from "@/lib/auth/staff-groups";
+import { getStaffGroupAreaHref, getStaffGroupLabel } from "@/lib/auth/staff-groups";
 import { requireStaffUser } from "@/lib/auth/current-user";
 
 export const metadata: Metadata = {
@@ -16,6 +16,8 @@ export default async function StaffPage() {
     day: "numeric",
   }).format(new Date(user.createdAt));
   const codeStatus = user.staffCodeChangedAt ? "개인 코드 사용 중" : "초회 코드 사용 중";
+  const areaHref = getStaffGroupAreaHref(user.staffGroup);
+  const canResetCodes = user.staffGroup === "board";
 
   return (
     <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-4xl px-6 py-20">
@@ -23,7 +25,7 @@ export default async function StaffPage() {
         <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET STAFF</p>
         <h1 className="mb-3 text-3xl font-black tracking-tight text-white">사원 페이지</h1>
         <p className="mb-8 text-sm leading-relaxed text-[#86868b]">
-          내부 구성원 전용 공간입니다. 추후 공지, 업무 자료, 지원자 관리 기능을 이곳에 연결할 수 있습니다.
+          내부 구성원 전용 공간입니다. 소속별 업무 공간은 해당 소속 계정만 접근할 수 있습니다.
         </p>
 
         <dl className="divide-y divide-white/10 rounded-lg border border-white/10">
@@ -36,12 +38,25 @@ export default async function StaffPage() {
         </dl>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
-          {["공지", "업무 자료", "관리 도구"].map((item) => (
-            <div key={item} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5">
-              <p className="text-sm font-semibold text-white">{item}</p>
-              <p className="mt-2 text-xs leading-relaxed text-[#86868b]">준비 중</p>
+          <Link href={areaHref} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
+            <p className="text-sm font-semibold text-white">내 소속 공간</p>
+            <p className="mt-2 text-xs leading-relaxed text-[#86868b]">{getStaffGroupLabel(user.staffGroup)} 전용</p>
+          </Link>
+          <Link href="/staff/settings" className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
+            <p className="text-sm font-semibold text-white">설정</p>
+            <p className="mt-2 text-xs leading-relaxed text-[#86868b]">개인 사원 코드 변경</p>
+          </Link>
+          {canResetCodes ? (
+            <Link href="/staff/reset-code" className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
+              <p className="text-sm font-semibold text-white">코드 초기화</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#86868b]">이사회 전용 권한</p>
+            </Link>
+          ) : (
+            <div className="rounded-lg border border-white/10 bg-white/[0.025] px-4 py-5 opacity-70">
+              <p className="text-sm font-semibold text-white">이사회 권한</p>
+              <p className="mt-2 text-xs leading-relaxed text-[#86868b]">해당 소속만 접근 가능</p>
             </div>
-          ))}
+          )}
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -51,12 +66,14 @@ export default async function StaffPage() {
           >
             설정
           </Link>
-          <Link
-            href="/staff/reset-code"
-            className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
-          >
-            코드 초기화
-          </Link>
+          {canResetCodes && (
+            <Link
+              href="/staff/reset-code"
+              className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+            >
+              코드 초기화
+            </Link>
+          )}
         </div>
 
         <form action={logout} className="mt-3">

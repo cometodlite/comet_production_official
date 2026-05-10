@@ -16,3 +16,7 @@ export function normalizeStaffGroup(value: FormDataEntryValue | string | null | 
 export function getStaffGroupLabel(group?: StaffGroup | null) {
   return STAFF_GROUP_OPTIONS.find((item) => item.value === group)?.label || "미지정";
 }
+
+export function getStaffGroupAreaHref(group?: StaffGroup | null) {
+  return group ? `/staff/${group}` : "/staff";
+}
