@@ -18,7 +18,7 @@ export default async function StaffSignupPage() {
         <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET STAFF</p>
         <h1 className="mb-3 text-3xl font-black tracking-tight text-white">사원 계정 생성</h1>
         <p className="mb-8 text-sm leading-relaxed text-[#86868b]">
-          회사에서 발급한 가입 코드가 있는 구성원만 사원 계정을 만들 수 있습니다.
+          소속별로 발급된 초회 사원 코드가 있는 구성원만 사원 계정을 만들 수 있습니다.
         </p>
         <AuthForm mode="staff-signup" />
         <div className="mt-6 rounded-lg border border-indigo-400/20 bg-indigo-400/10 px-4 py-3 text-sm leading-relaxed text-indigo-100/90">

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { logout } from "@/app/actions/auth";
+import { getStaffGroupLabel } from "@/lib/auth/staff-groups";
 import { requireStaffUser } from "@/lib/auth/current-user";
 
 export const metadata: Metadata = {
@@ -13,6 +15,7 @@ export default async function StaffPage() {
     month: "long",
     day: "numeric",
   }).format(new Date(user.createdAt));
+  const codeStatus = user.staffCodeChangedAt ? "개인 코드 사용 중" : "초회 코드 사용 중";
 
   return (
     <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-4xl px-6 py-20">
@@ -27,6 +30,8 @@ export default async function StaffPage() {
           <InfoRow label="이름" value={user.name} />
           <InfoRow label="이메일" value={user.email} />
           <InfoRow label="계정 구분" value="사원" />
+          <InfoRow label="소속" value={getStaffGroupLabel(user.staffGroup)} />
+          <InfoRow label="코드 상태" value={codeStatus} />
           <InfoRow label="가입일" value={joinedAt} />
         </dl>
 
@@ -39,7 +44,22 @@ export default async function StaffPage() {
           ))}
         </div>
 
-        <form action={logout} className="mt-8">
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            href="/staff/settings"
+            className="rounded-lg bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-amber-200"
+          >
+            설정
+          </Link>
+          <Link
+            href="/staff/reset-code"
+            className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+          >
+            코드 초기화
+          </Link>
+        </div>
+
+        <form action={logout} className="mt-3">
           <button className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white">
             로그아웃
           </button>

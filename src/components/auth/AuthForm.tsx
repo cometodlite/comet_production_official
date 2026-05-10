@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { login, signup, staffLogin, staffSignup, type AuthFormState } from "@/app/actions/auth";
+import { STAFF_GROUP_OPTIONS } from "@/lib/auth/staff-groups";
 
 type Mode = "login" | "signup" | "staff-login" | "staff-signup";
 
@@ -39,13 +40,24 @@ export default function AuthForm({ mode }: { mode: Mode }) {
       )}
 
       {mode === "staff-signup" && (
+        <SelectField id="staffGroup" label="소속" name="staffGroup" errors={state.errors?.staffGroup}>
+          <option value="">소속을 선택하세요</option>
+          {STAFF_GROUP_OPTIONS.map((group) => (
+            <option key={group.value} value={group.value}>
+              {group.label}
+            </option>
+          ))}
+        </SelectField>
+      )}
+
+      {isStaff && (
         <Field
           id="staffCode"
-          label="사원 가입 코드"
+          label={mode === "staff-signup" ? "초회 사원 코드" : "사원 코드"}
           name="staffCode"
           type="password"
           autoComplete="off"
-          placeholder="회사에서 발급한 코드"
+          placeholder={mode === "staff-signup" ? "소속별 발급 코드" : "개인 사원 코드"}
           errors={state.errors?.staffCode}
         />
       )}
@@ -99,6 +111,14 @@ export default function AuthForm({ mode }: { mode: Mode }) {
           </Link>
         )}
       </p>
+
+      {mode === "staff-login" && (
+        <p className="text-center text-xs text-[#86868b]/70">
+          <Link href="/staff/reset-code" className="hover:text-white">
+            사원 코드를 잊으셨나요?
+          </Link>
+        </p>
+      )}
     </form>
   );
 }
@@ -126,6 +146,44 @@ function Field({
         className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-indigo-400/70 focus:bg-white/[0.09]"
         {...props}
       />
+      {errors && (
+        <div className="mt-2 space-y-1">
+          {errors.map((error) => (
+            <p key={error} className="text-xs text-red-300">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SelectField({
+  id,
+  label,
+  errors,
+  children,
+  ...props
+}: {
+  id: string;
+  label: string;
+  errors?: string[];
+  children: React.ReactNode;
+} & React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-2 block text-sm font-medium text-white/85">
+        {label}
+      </label>
+      <select
+        id={id}
+        required
+        className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-sm text-white outline-none transition focus:border-indigo-400/70 focus:bg-white/[0.09]"
+        {...props}
+      >
+        {children}
+      </select>
       {errors && (
         <div className="mt-2 space-y-1">
           {errors.map((error) => (

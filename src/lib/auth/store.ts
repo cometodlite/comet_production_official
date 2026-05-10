@@ -5,6 +5,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
+import type { StaffGroup } from "@/lib/auth/staff-groups";
 
 const scrypt = promisify(scryptCallback);
 const LOCAL_USERS_FILE = path.join(process.cwd(), ".data", "users.json");
@@ -24,6 +25,10 @@ export type UserRecord = {
   name: string;
   email: string;
   role: UserRole;
+  staffGroup?: StaffGroup;
+  staffCodeHash?: string;
+  staffCodeSalt?: string;
+  staffCodeChangedAt?: string | null;
   passwordHash: string;
   salt: string;
   createdAt: string;
@@ -34,6 +39,8 @@ export type PublicUser = {
   name: string;
   email: string;
   role: UserRole;
+  staffGroup?: StaffGroup;
+  staffCodeChangedAt?: string | null;
   createdAt: string;
 };
 
@@ -43,6 +50,8 @@ function toPublicUser(user: UserRecord): PublicUser {
     name: user.name,
     email: user.email,
     role: user.role,
+    staffGroup: user.staffGroup,
+    staffCodeChangedAt: user.staffCodeChangedAt || null,
     createdAt: user.createdAt,
   };
 }
@@ -62,6 +71,15 @@ function getSqlClient() {
   return sqlClient;
 }
 
+function normalizeStaffGroupValue(value: unknown): StaffGroup | undefined {
+  return value === "entertainers" || value === "develops" || value === "board" ? value : undefined;
+}
+
+function mapTimestamp(value: unknown) {
+  if (!value) return null;
+  return value instanceof Date ? value.toISOString() : String(value);
+}
+
 function mapDatabaseUser(row: Record<string, unknown>): UserRecord {
   const createdAt = row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at);
   return {
@@ -69,6 +87,10 @@ function mapDatabaseUser(row: Record<string, unknown>): UserRecord {
     name: String(row.name),
     email: String(row.email),
     role: row.role === "staff" ? "staff" : "public",
+    staffGroup: normalizeStaffGroupValue(row.staff_group),
+    staffCodeHash: row.staff_code_hash ? String(row.staff_code_hash) : undefined,
+    staffCodeSalt: row.staff_code_salt ? String(row.staff_code_salt) : undefined,
+    staffCodeChangedAt: mapTimestamp(row.staff_code_changed_at),
     passwordHash: String(row.password_hash),
     salt: String(row.salt),
     createdAt,
@@ -83,6 +105,10 @@ async function ensureDatabase(sql: SqlClient) {
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         role TEXT NOT NULL DEFAULT 'public',
+        staff_group TEXT,
+        staff_code_hash TEXT,
+        staff_code_salt TEXT,
+        staff_code_changed_at TIMESTAMPTZ,
         password_hash TEXT NOT NULL,
         salt TEXT NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -91,6 +117,22 @@ async function ensureDatabase(sql: SqlClient) {
     await sql`
       ALTER TABLE comet_users
       ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'public'
+    `;
+    await sql`
+      ALTER TABLE comet_users
+      ADD COLUMN IF NOT EXISTS staff_group TEXT
+    `;
+    await sql`
+      ALTER TABLE comet_users
+      ADD COLUMN IF NOT EXISTS staff_code_hash TEXT
+    `;
+    await sql`
+      ALTER TABLE comet_users
+      ADD COLUMN IF NOT EXISTS staff_code_salt TEXT
+    `;
+    await sql`
+      ALTER TABLE comet_users
+      ADD COLUMN IF NOT EXISTS staff_code_changed_at TIMESTAMPTZ
     `;
   })();
   await databaseReady;
@@ -109,6 +151,8 @@ function normalizeUserRecord(user: UserRecord): UserRecord {
   return {
     ...user,
     role: user.role === "staff" ? "staff" : "public",
+    staffGroup: normalizeStaffGroupValue(user.staffGroup),
+    staffCodeChangedAt: user.staffCodeChangedAt || null,
   };
 }
 
@@ -123,20 +167,29 @@ async function writeUsers(users: UserRecord[]) {
   await fs.writeFile(USERS_FILE, `${JSON.stringify(users, null, 2)}\n`, "utf8");
 }
 
-async function hashPassword(password: string, salt = randomBytes(16).toString("base64url")) {
-  const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
+async function hashSecret(secret: string, salt = randomBytes(16).toString("base64url")) {
+  const derivedKey = (await scrypt(secret, salt, 64)) as Buffer;
   return {
     salt,
-    passwordHash: derivedKey.toString("base64url"),
+    hash: derivedKey.toString("base64url"),
   };
 }
 
-async function verifyPassword(password: string, user: UserRecord) {
-  const { passwordHash } = await hashPassword(password, user.salt);
-  const left = Buffer.from(passwordHash);
-  const right = Buffer.from(user.passwordHash);
+async function verifySecret(secret: string, hash: string, salt: string) {
+  const result = await hashSecret(secret, salt);
+  const left = Buffer.from(result.hash);
+  const right = Buffer.from(hash);
   if (left.length !== right.length) return false;
   return timingSafeEqual(left, right);
+}
+
+async function verifyPassword(password: string, user: UserRecord) {
+  return verifySecret(password, user.passwordHash, user.salt);
+}
+
+async function verifyStaffCode(staffCode: string, user: UserRecord) {
+  if (!user.staffCodeHash || !user.staffCodeSalt) return false;
+  return verifySecret(staffCode, user.staffCodeHash, user.staffCodeSalt);
 }
 
 export async function findUserByEmail(email: string) {
@@ -144,7 +197,18 @@ export async function findUserByEmail(email: string) {
   if (sql) {
     await ensureDatabase(sql);
     const rows = (await sql`
-      SELECT id, name, email, role, password_hash, salt, created_at
+      SELECT
+        id,
+        name,
+        email,
+        role,
+        staff_group,
+        staff_code_hash,
+        staff_code_salt,
+        staff_code_changed_at,
+        password_hash,
+        salt,
+        created_at
       FROM comet_users
       WHERE email = ${email}
       LIMIT 1
@@ -161,7 +225,18 @@ export async function findPublicUserById(id: string) {
   if (sql) {
     await ensureDatabase(sql);
     const rows = (await sql`
-      SELECT id, name, email, role, password_hash, salt, created_at
+      SELECT
+        id,
+        name,
+        email,
+        role,
+        staff_group,
+        staff_code_hash,
+        staff_code_salt,
+        staff_code_changed_at,
+        password_hash,
+        salt,
+        created_at
       FROM comet_users
       WHERE id = ${id}
       LIMIT 1
@@ -174,14 +249,55 @@ export async function findPublicUserById(id: string) {
   return user ? toPublicUser(user) : null;
 }
 
-export async function createUser(input: { name: string; email: string; password: string; role?: UserRole }) {
-  const password = await hashPassword(input.password);
+async function findUserRecordById(id: string) {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        id,
+        name,
+        email,
+        role,
+        staff_group,
+        staff_code_hash,
+        staff_code_salt,
+        staff_code_changed_at,
+        password_hash,
+        salt,
+        created_at
+      FROM comet_users
+      WHERE id = ${id}
+      LIMIT 1
+    `) as Record<string, unknown>[];
+    return rows[0] ? mapDatabaseUser(rows[0]) : null;
+  }
+
+  const users = await readUsers();
+  return users.find((user) => user.id === id) || null;
+}
+
+export async function createUser(input: {
+  name: string;
+  email: string;
+  password: string;
+  role?: UserRole;
+  staffGroup?: StaffGroup;
+  staffCode?: string;
+}) {
+  const password = await hashSecret(input.password);
+  const staffCode = input.role === "staff" && input.staffCode ? await hashSecret(input.staffCode) : null;
   const user: UserRecord = {
     id: randomBytes(16).toString("base64url"),
     name: input.name,
     email: input.email,
     role: input.role || "public",
-    ...password,
+    staffGroup: input.role === "staff" ? input.staffGroup : undefined,
+    staffCodeHash: staffCode?.hash,
+    staffCodeSalt: staffCode?.salt,
+    staffCodeChangedAt: null,
+    passwordHash: password.hash,
+    salt: password.salt,
     createdAt: new Date().toISOString(),
   };
 
@@ -190,12 +306,28 @@ export async function createUser(input: { name: string; email: string; password:
     await ensureDatabase(sql);
     try {
       await sql`
-        INSERT INTO comet_users (id, name, email, role, password_hash, salt, created_at)
+        INSERT INTO comet_users (
+          id,
+          name,
+          email,
+          role,
+          staff_group,
+          staff_code_hash,
+          staff_code_salt,
+          staff_code_changed_at,
+          password_hash,
+          salt,
+          created_at
+        )
         VALUES (
           ${user.id},
           ${user.name},
           ${user.email},
           ${user.role},
+          ${user.staffGroup || null},
+          ${user.staffCodeHash || null},
+          ${user.staffCodeSalt || null},
+          ${user.staffCodeChangedAt || null},
           ${user.passwordHash},
           ${user.salt},
           ${user.createdAt}
@@ -225,4 +357,95 @@ export async function authenticateUser(email: string, password: string, role: Us
   if (!user || user.role !== role) return null;
   const isValid = await verifyPassword(password, user);
   return isValid ? toPublicUser(user) : null;
+}
+
+export async function authenticateStaffUser(email: string, password: string, staffCode: string) {
+  const user = await findUserByEmail(email);
+  if (!user || user.role !== "staff") return null;
+  const [passwordValid, staffCodeValid] = await Promise.all([
+    verifyPassword(password, user),
+    verifyStaffCode(staffCode, user),
+  ]);
+  return passwordValid && staffCodeValid ? toPublicUser(user) : null;
+}
+
+export async function updateStaffCode(userId: string, currentCode: string, newCode: string) {
+  const user = await findUserRecordById(userId);
+  if (!user || user.role !== "staff") {
+    return { error: "사원 계정을 찾을 수 없습니다." };
+  }
+
+  const currentCodeValid = await verifyStaffCode(currentCode, user);
+  if (!currentCodeValid) {
+    return { error: "현재 사원 코드가 올바르지 않습니다." };
+  }
+
+  const nextCode = await hashSecret(newCode);
+  const changedAt = new Date().toISOString();
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      UPDATE comet_users
+      SET
+        staff_code_hash = ${nextCode.hash},
+        staff_code_salt = ${nextCode.salt},
+        staff_code_changed_at = ${changedAt}
+      WHERE id = ${userId} AND role = 'staff'
+    `;
+    return { user: toPublicUser({ ...user, staffCodeHash: nextCode.hash, staffCodeSalt: nextCode.salt, staffCodeChangedAt: changedAt }) };
+  }
+
+  const users = await readUsers();
+  const nextUsers = users.map((item) =>
+    item.id === userId && item.role === "staff"
+      ? { ...item, staffCodeHash: nextCode.hash, staffCodeSalt: nextCode.salt, staffCodeChangedAt: changedAt }
+      : item
+  );
+  await writeUsers(nextUsers);
+  return { user: toPublicUser({ ...user, staffCodeHash: nextCode.hash, staffCodeSalt: nextCode.salt, staffCodeChangedAt: changedAt }) };
+}
+
+export async function resetStaffCodeToInitial(input: { email: string; staffGroup: StaffGroup; initialCode: string }) {
+  const user = await findUserByEmail(input.email);
+  if (!user || user.role !== "staff") {
+    return { error: "대상 사원 계정을 찾을 수 없습니다." };
+  }
+
+  if (user.staffGroup && user.staffGroup !== input.staffGroup) {
+    return { error: "선택한 소속이 사원 계정 정보와 일치하지 않습니다." };
+  }
+
+  const initialStaffCode = await hashSecret(input.initialCode);
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      UPDATE comet_users
+      SET
+        staff_group = ${input.staffGroup},
+        staff_code_hash = ${initialStaffCode.hash},
+        staff_code_salt = ${initialStaffCode.salt},
+        staff_code_changed_at = NULL
+      WHERE id = ${user.id} AND role = 'staff'
+    `;
+    return { user: toPublicUser({ ...user, staffGroup: input.staffGroup, staffCodeHash: initialStaffCode.hash, staffCodeSalt: initialStaffCode.salt, staffCodeChangedAt: null }) };
+  }
+
+  const users = await readUsers();
+  const nextUsers = users.map((item) =>
+    item.id === user.id && item.role === "staff"
+      ? {
+          ...item,
+          staffGroup: input.staffGroup,
+          staffCodeHash: initialStaffCode.hash,
+          staffCodeSalt: initialStaffCode.salt,
+          staffCodeChangedAt: null,
+        }
+      : item
+  );
+  await writeUsers(nextUsers);
+  return { user: toPublicUser({ ...user, staffGroup: input.staffGroup, staffCodeHash: initialStaffCode.hash, staffCodeSalt: initialStaffCode.salt, staffCodeChangedAt: null }) };
 }

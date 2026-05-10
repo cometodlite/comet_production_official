@@ -54,6 +54,16 @@ Account roles are separated:
 - Public users use `/login`, `/signup`, and `/account`.
 - Staff users use `/staff/login`, `/staff/signup`, and `/staff`.
 
-Staff signup requires `STAFF_SIGNUP_CODE`. If it is not configured, staff account creation is disabled while staff login pages remain available.
+Staff signup requires the matching group code. If a group code is not configured, signup for that staff group is disabled while staff login pages remain available.
 
 Staff who need a signup code can use `/contact?type=staff-code` to send a staff signup code request through the contact form.
+
+Staff codes are separated by staff group and should be configured as server-side environment variables:
+
+```bash
+STAFF_CODE_ENTERTAINERS
+STAFF_CODE_DEVELOPS
+STAFF_CODE_COMET_BOARD
+```
+
+Staff accounts are created with the group initial code. After signup, a staff user can change their personal staff code in `/staff/settings`; staff login then requires the updated personal code. If a staff user forgets the personal code, `/staff/reset-code` can reset the account back to the group initial code.
