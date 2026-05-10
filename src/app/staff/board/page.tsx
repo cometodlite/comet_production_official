@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import StaffAreaShell from "@/components/staff/StaffAreaShell";
+import BoardAdminPanel from "@/components/staff/BoardAdminPanel";
 import { requireStaffGroup } from "@/lib/auth/current-user";
+import { listBoardNotices, listStaffUsers } from "@/lib/auth/store";
 
 export const metadata: Metadata = {
   title: "COMET 이사회 공간",
@@ -9,22 +9,34 @@ export const metadata: Metadata = {
 
 export default async function StaffBoardPage() {
   const user = await requireStaffGroup("board");
+  const [staffUsers, notices] = await Promise.all([listStaffUsers(), listBoardNotices()]);
 
   return (
-    <StaffAreaShell
-      eyebrow="COMET BOARD"
-      title="COMET 이사회 공간"
-      description="COMET 이사회 계정만 접근할 수 있는 내부 권한 공간입니다."
-      group="board"
-      user={user}
-      items={["권한 관리", "계정 초기화", "이사회 공지"]}
-    >
-      <Link
-        href="/staff/reset-code"
-        className="rounded-lg bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-amber-200"
-      >
-        사원 코드 초기화
-      </Link>
-    </StaffAreaShell>
+    <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-5xl px-6 py-20">
+      <section className="rounded-lg border border-white/[0.08] bg-black/40 p-7 backdrop-blur-xl">
+        <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET BOARD</p>
+        <h1 className="mb-3 text-3xl font-black tracking-tight text-white">COMET 이사회 공간</h1>
+        <p className="mb-8 text-sm leading-relaxed text-[#86868b]">
+          권한 관리, 계정 초기화, 이사회 공지를 처리하는 내부 운영 공간입니다.
+        </p>
+
+        <dl className="grid gap-3 sm:grid-cols-3">
+          <InfoCard label="접속 계정" value={user.email} />
+          <InfoCard label="권한" value="COMET 이사회" />
+          <InfoCard label="운영 기능" value="3개 활성화" />
+        </dl>
+
+        <BoardAdminPanel staffUsers={staffUsers} notices={notices} />
+      </section>
+    </div>
+  );
+}
+
+function InfoCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-4">
+      <p className="text-xs font-semibold text-[#86868b]">{label}</p>
+      <p className="mt-2 break-words text-sm font-semibold text-white">{value}</p>
+    </div>
   );
 }

@@ -9,9 +9,12 @@ import type { StaffGroup } from "@/lib/auth/staff-groups";
 
 const scrypt = promisify(scryptCallback);
 const LOCAL_USERS_FILE = path.join(process.cwd(), ".data", "users.json");
+const LOCAL_BOARD_NOTICES_FILE = path.join(process.cwd(), ".data", "board-notices.json");
 const VERCEL_USERS_FILE = "/tmp/comet-production-users.json";
+const VERCEL_BOARD_NOTICES_FILE = "/tmp/comet-production-board-notices.json";
 const USERS_FILE =
   process.env.AUTH_STORE_PATH || (process.env.VERCEL ? VERCEL_USERS_FILE : LOCAL_USERS_FILE);
+const BOARD_NOTICES_FILE = process.env.BOARD_NOTICES_STORE_PATH || (process.env.VERCEL ? VERCEL_BOARD_NOTICES_FILE : LOCAL_BOARD_NOTICES_FILE);
 
 type SqlClient = ReturnType<typeof neon>;
 
@@ -41,6 +44,14 @@ export type PublicUser = {
   role: UserRole;
   staffGroup?: StaffGroup;
   staffCodeChangedAt?: string | null;
+  createdAt: string;
+};
+
+export type BoardNotice = {
+  id: string;
+  title: string;
+  body: string;
+  authorEmail: string;
   createdAt: string;
 };
 
@@ -115,6 +126,15 @@ async function ensureDatabase(sql: SqlClient) {
       )
     `;
     await sql`
+      CREATE TABLE IF NOT EXISTS comet_board_notices (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        author_email TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `;
+    await sql`
       ALTER TABLE comet_users
       ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'public'
     `;
@@ -165,6 +185,26 @@ async function readUsers(): Promise<UserRecord[]> {
 async function writeUsers(users: UserRecord[]) {
   await ensureStore();
   await fs.writeFile(USERS_FILE, `${JSON.stringify(users, null, 2)}\n`, "utf8");
+}
+
+async function ensureBoardNoticeStore() {
+  await fs.mkdir(path.dirname(BOARD_NOTICES_FILE), { recursive: true });
+  try {
+    await fs.access(BOARD_NOTICES_FILE);
+  } catch {
+    await fs.writeFile(BOARD_NOTICES_FILE, "[]\n", "utf8");
+  }
+}
+
+async function readBoardNotices(): Promise<BoardNotice[]> {
+  await ensureBoardNoticeStore();
+  const raw = await fs.readFile(BOARD_NOTICES_FILE, "utf8");
+  return JSON.parse(raw) as BoardNotice[];
+}
+
+async function writeBoardNotices(notices: BoardNotice[]) {
+  await ensureBoardNoticeStore();
+  await fs.writeFile(BOARD_NOTICES_FILE, `${JSON.stringify(notices, null, 2)}\n`, "utf8");
 }
 
 async function hashSecret(secret: string, salt = randomBytes(16).toString("base64url")) {
@@ -247,6 +287,34 @@ export async function findPublicUserById(id: string) {
   const users = await readUsers();
   const user = users.find((item) => item.id === id);
   return user ? toPublicUser(user) : null;
+}
+
+export async function listStaffUsers() {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        id,
+        name,
+        email,
+        role,
+        staff_group,
+        staff_code_hash,
+        staff_code_salt,
+        staff_code_changed_at,
+        password_hash,
+        salt,
+        created_at
+      FROM comet_users
+      WHERE role = 'staff'
+      ORDER BY created_at DESC
+    `) as Record<string, unknown>[];
+    return rows.map((row) => toPublicUser(mapDatabaseUser(row)));
+  }
+
+  const users = await readUsers();
+  return users.filter((user) => user.role === "staff").map(toPublicUser);
 }
 
 async function findUserRecordById(id: string) {
@@ -448,4 +516,93 @@ export async function resetStaffCodeToInitial(input: { email: string; staffGroup
   );
   await writeUsers(nextUsers);
   return { user: toPublicUser({ ...user, staffGroup: input.staffGroup, staffCodeHash: initialStaffCode.hash, staffCodeSalt: initialStaffCode.salt, staffCodeChangedAt: null }) };
+}
+
+export async function updateStaffGroupByEmail(input: { email: string; staffGroup: StaffGroup }) {
+  const user = await findUserByEmail(input.email);
+  if (!user || user.role !== "staff") {
+    return { error: "대상 사원 계정을 찾을 수 없습니다." };
+  }
+
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      UPDATE comet_users
+      SET staff_group = ${input.staffGroup}
+      WHERE id = ${user.id} AND role = 'staff'
+    `;
+    return { user: toPublicUser({ ...user, staffGroup: input.staffGroup }) };
+  }
+
+  const users = await readUsers();
+  const nextUsers = users.map((item) =>
+    item.id === user.id && item.role === "staff" ? { ...item, staffGroup: input.staffGroup } : item
+  );
+  await writeUsers(nextUsers);
+  return { user: toPublicUser({ ...user, staffGroup: input.staffGroup }) };
+}
+
+export async function createBoardNotice(input: { title: string; body: string; authorEmail: string }) {
+  const notice: BoardNotice = {
+    id: randomBytes(16).toString("base64url"),
+    title: input.title,
+    body: input.body,
+    authorEmail: input.authorEmail,
+    createdAt: new Date().toISOString(),
+  };
+
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      INSERT INTO comet_board_notices (
+        id,
+        title,
+        body,
+        author_email,
+        created_at
+      )
+      VALUES (
+        ${notice.id},
+        ${notice.title},
+        ${notice.body},
+        ${notice.authorEmail},
+        ${notice.createdAt}
+      )
+    `;
+    return { notice };
+  }
+
+  const notices = await readBoardNotices();
+  await writeBoardNotices([notice, ...notices]);
+  return { notice };
+}
+
+export async function listBoardNotices() {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        id,
+        title,
+        body,
+        author_email,
+        created_at
+      FROM comet_board_notices
+      ORDER BY created_at DESC
+      LIMIT 10
+    `) as Record<string, unknown>[];
+    return rows.map((row) => ({
+      id: String(row.id),
+      title: String(row.title),
+      body: String(row.body),
+      authorEmail: String(row.author_email),
+      createdAt: mapTimestamp(row.created_at) || new Date().toISOString(),
+    }));
+  }
+
+  const notices = await readBoardNotices();
+  return notices.slice(0, 10);
 }

@@ -14,10 +14,12 @@ import {
 import {
   authenticateStaffUser,
   authenticateUser,
+  createBoardNotice,
   createUser,
   findPublicUserById,
   normalizeEmail,
   resetStaffCodeToInitial,
+  updateStaffGroupByEmail,
   updateStaffCode,
 } from "@/lib/auth/store";
 
@@ -31,6 +33,9 @@ export type AuthFormState = {
     currentStaffCode?: string[];
     newStaffCode?: string[];
     confirmStaffCode?: string[];
+    targetStaffGroup?: string[];
+    noticeTitle?: string[];
+    noticeBody?: string[];
     form?: string[];
   };
   success?: string;
@@ -53,6 +58,18 @@ function validateStaffCodeFormat(code: string) {
   if (code.length < 6) errors.push("사원 코드는 6자 이상이어야 합니다.");
   if (code.length > 64) errors.push("사원 코드는 64자 이하로 입력해 주세요.");
   return errors;
+}
+
+async function requireBoardActor() {
+  const session = await readSession();
+  if (!session || session.role !== "staff") return { error: "이사회 로그인이 필요합니다." };
+
+  const actor = await findPublicUserById(session.userId);
+  if (!actor || actor.role !== "staff" || actor.staffGroup !== "board") {
+    return { error: "이사회 계정만 사용할 수 있습니다." };
+  }
+
+  return { actor };
 }
 
 export async function signup(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
@@ -182,15 +199,8 @@ export async function changeStaffCode(_state: AuthFormState, formData: FormData)
 }
 
 export async function resetStaffCode(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
-  const session = await readSession();
-  if (!session || session.role !== "staff") {
-    return { errors: { form: ["이사회 로그인이 필요합니다."] } };
-  }
-
-  const actor = await findPublicUserById(session.userId);
-  if (!actor || actor.role !== "staff" || actor.staffGroup !== "board") {
-    return { errors: { form: ["사원 코드 초기화는 이사회 계정만 사용할 수 있습니다."] } };
-  }
+  const boardActor = await requireBoardActor();
+  if (boardActor.error) return { errors: { form: [boardActor.error] } };
 
   const email = normalizeEmail(formData.get("email"));
   const staffGroup = normalizeStaffGroup(formData.get("staffGroup"));
@@ -214,7 +224,59 @@ export async function resetStaffCode(_state: AuthFormState, formData: FormData):
   }
 
   revalidatePath("/staff");
+  revalidatePath("/staff/board");
   return { success: "사원 코드가 초회 코드로 초기화되었습니다. 이제 사원 로그인에서 해당 코드를 사용할 수 있습니다." };
+}
+
+export async function changeStaffGroup(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
+  const boardActor = await requireBoardActor();
+  if (boardActor.error || !boardActor.actor) return { errors: { form: [boardActor.error || "이사회 권한 확인에 실패했습니다."] } };
+
+  const email = normalizeEmail(formData.get("email"));
+  const targetStaffGroup = normalizeStaffGroup(formData.get("targetStaffGroup"));
+  const errors: NonNullable<AuthFormState["errors"]> = {};
+
+  if (!validateEmail(email)) errors.email = ["권한을 변경할 사원 이메일을 입력해 주세요."];
+  if (!targetStaffGroup) errors.targetStaffGroup = ["변경할 소속 권한을 선택해 주세요."];
+  if (email && email === boardActor.actor.email) {
+    errors.email = ["현재 로그인한 이사회 계정의 권한은 여기서 변경할 수 없습니다."];
+  }
+
+  if (Object.keys(errors).length || !targetStaffGroup) return { errors };
+
+  const result = await updateStaffGroupByEmail({ email, staffGroup: targetStaffGroup });
+  if (result.error) {
+    return { errors: { form: [result.error] } };
+  }
+
+  revalidatePath("/staff/board");
+  revalidatePath("/staff");
+  return { success: "사원 권한이 변경되었습니다." };
+}
+
+export async function publishBoardNotice(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
+  const boardActor = await requireBoardActor();
+  if (boardActor.error || !boardActor.actor) return { errors: { form: [boardActor.error || "이사회 권한 확인에 실패했습니다."] } };
+
+  const noticeTitle = String(formData.get("noticeTitle") || "").trim();
+  const noticeBody = String(formData.get("noticeBody") || "").trim();
+  const errors: NonNullable<AuthFormState["errors"]> = {};
+
+  if (noticeTitle.length < 2) errors.noticeTitle = ["공지 제목은 2자 이상 입력해 주세요."];
+  if (noticeTitle.length > 80) errors.noticeTitle = ["공지 제목은 80자 이하로 입력해 주세요."];
+  if (noticeBody.length < 5) errors.noticeBody = ["공지 내용은 5자 이상 입력해 주세요."];
+  if (noticeBody.length > 1200) errors.noticeBody = ["공지 내용은 1200자 이하로 입력해 주세요."];
+
+  if (Object.keys(errors).length) return { errors };
+
+  await createBoardNotice({
+    title: noticeTitle,
+    body: noticeBody,
+    authorEmail: boardActor.actor.email,
+  });
+
+  revalidatePath("/staff/board");
+  return { success: "이사회 공지가 게시되었습니다." };
 }
 
 export async function logout() {
