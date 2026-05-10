@@ -37,7 +37,7 @@ export default async function StaffPage() {
           <InfoRow label="가입일" value={joinedAt} />
         </dl>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+        <div className={`mt-8 grid gap-3 ${canResetCodes ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
           <Link href={areaHref} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
             <p className="text-sm font-semibold text-white">내 소속 공간</p>
             <p className="mt-2 text-xs leading-relaxed text-[#86868b]">{getStaffGroupLabel(user.staffGroup)} 전용</p>
@@ -46,16 +46,11 @@ export default async function StaffPage() {
             <p className="text-sm font-semibold text-white">설정</p>
             <p className="mt-2 text-xs leading-relaxed text-[#86868b]">개인 사원 코드 변경</p>
           </Link>
-          {canResetCodes ? (
+          {canResetCodes && (
             <Link href="/staff/reset-code" className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
               <p className="text-sm font-semibold text-white">코드 초기화</p>
               <p className="mt-2 text-xs leading-relaxed text-[#86868b]">이사회 전용 권한</p>
             </Link>
-          ) : (
-            <div className="rounded-lg border border-white/10 bg-white/[0.025] px-4 py-5 opacity-70">
-              <p className="text-sm font-semibold text-white">이사회 권한</p>
-              <p className="mt-2 text-xs leading-relaxed text-[#86868b]">해당 소속만 접근 가능</p>
-            </div>
           )}
         </div>
 
