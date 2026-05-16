@@ -2,12 +2,14 @@ import "server-only";
 
 import { timingSafeEqual } from "node:crypto";
 import { getInitialStaffCode, normalizeStaffCode } from "@/lib/auth/staff-code-config";
+import type { EvaluationTrack } from "@/lib/auth/evaluation-tracks";
 import type { StaffGroup } from "@/lib/auth/staff-groups";
 
 type EvaluationMember = {
   id: string;
   name: string;
   group: StaffGroup;
+  track: EvaluationTrack;
   codePrefix?: string;
   code?: string;
 };
@@ -16,6 +18,7 @@ export type EvaluationMemberAccess = {
   id: string;
   name: string;
   group: StaffGroup;
+  track: EvaluationTrack;
 };
 
 const EVALUATION_MEMBERS: EvaluationMember[] = [
@@ -23,12 +26,14 @@ const EVALUATION_MEMBERS: EvaluationMember[] = [
     id: "redo",
     name: "레도",
     group: "entertainers",
+    track: "entertainers-illustrator-writer",
     codePrefix: "5037",
   },
   {
     id: "admin",
     name: "admin",
     group: "entertainers",
+    track: "entertainers-illustrator-writer",
     code: "admin1215",
   },
 ];
@@ -67,5 +72,6 @@ export function verifyEvaluationMember(input: { name: FormDataEntryValue | strin
     id: member.id,
     name: member.name,
     group: member.group,
+    track: member.track,
   } satisfies EvaluationMemberAccess;
 }

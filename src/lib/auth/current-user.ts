@@ -3,6 +3,7 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { readSession } from "@/lib/auth/session";
 import { findPublicUserById } from "@/lib/auth/store";
+import type { EvaluationTrack } from "@/lib/auth/evaluation-tracks";
 import type { StaffGroup } from "@/lib/auth/staff-groups";
 
 export type EvaluationUser = {
@@ -11,6 +12,7 @@ export type EvaluationUser = {
   email: string;
   role: "evaluation";
   staffGroup?: StaffGroup;
+  evaluationTrack?: EvaluationTrack;
 };
 
 export async function getCurrentUser() {
@@ -23,6 +25,7 @@ export async function getCurrentUser() {
       email: session.email,
       role: "evaluation",
       staffGroup: session.staffGroup,
+      evaluationTrack: session.evaluationTrack,
     } satisfies EvaluationUser;
   }
   return findPublicUserById(session.userId);
@@ -56,5 +59,6 @@ export async function requireEvaluationUser() {
     email: session.email,
     role: "evaluation",
     staffGroup: session.staffGroup,
+    evaluationTrack: session.evaluationTrack,
   } satisfies EvaluationUser;
 }

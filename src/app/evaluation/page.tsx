@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 export default async function EvaluationPage() {
   const user = await requireEvaluationUser();
 
-  return <EvaluationWorkspace memberName={user.name} />;
+  return <EvaluationWorkspace memberName={user.name} evaluationTrack={user.evaluationTrack} />;
 }

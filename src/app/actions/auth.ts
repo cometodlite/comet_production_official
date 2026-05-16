@@ -300,6 +300,7 @@ export async function evaluationLogin(_state: AuthFormState, formData: FormData)
     id: member.id,
     name: member.name,
     staffGroup: member.group,
+    evaluationTrack: member.track,
   });
   redirect("/evaluation");
 }

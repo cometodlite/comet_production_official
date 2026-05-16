@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import type { EvaluationTrack } from "@/lib/auth/evaluation-tracks";
 import type { UserRole } from "@/lib/auth/store";
 import type { StaffGroup } from "@/lib/auth/staff-groups";
 
@@ -14,6 +15,7 @@ type SessionPayload = {
   role?: UserRole | "evaluation";
   name?: string;
   staffGroup?: StaffGroup;
+  evaluationTrack?: EvaluationTrack;
   issuedAt: number;
 };
 
@@ -84,7 +86,7 @@ export async function setSessionCookie(user: { id: string; email: string; role: 
   });
 }
 
-export async function setEvaluationSessionCookie(member: { id: string; name: string; staffGroup: StaffGroup }) {
+export async function setEvaluationSessionCookie(member: { id: string; name: string; staffGroup: StaffGroup; evaluationTrack: EvaluationTrack }) {
   const cookieStore = await cookies();
   cookieStore.set({
     name: SESSION_COOKIE,
@@ -94,6 +96,7 @@ export async function setEvaluationSessionCookie(member: { id: string; name: str
       role: "evaluation",
       name: member.name,
       staffGroup: member.staffGroup,
+      evaluationTrack: member.evaluationTrack,
       issuedAt: Date.now(),
     }),
     httpOnly: true,

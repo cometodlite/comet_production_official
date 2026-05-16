@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { EVALUATION_TRACK_LABELS, type EvaluationTrack } from "@/lib/auth/evaluation-tracks";
 
 const DURATION_SECONDS = 50 * 60;
 const STORAGE_KEY_PREFIX = "comet-evaluation-attempt";
@@ -11,16 +12,24 @@ const documents = [
   {
     id: "document-1",
     title: "일반형 역량평가 연습 1차",
+    track: "entertainers-illustrator-writer",
     pdfPath: "/evaluation/illustrator-general-practice-1.pdf",
     solutionPdfPath: "/evaluation/illustrator-general-practice-1-solution.pdf",
   },
   {
     id: "document-2",
     title: "일반형 역량평가 연습 2차",
+    track: "entertainers-illustrator-writer",
     pdfPath: "/evaluation/illustrator-general-practice-2.pdf",
     solutionPdfPath: "/evaluation/illustrator-general-practice-2-solution.pdf",
   },
-];
+] satisfies Array<{
+  id: string;
+  title: string;
+  track: EvaluationTrack;
+  pdfPath: string;
+  solutionPdfPath: string;
+}>;
 
 type WorkspaceStatus = "ready" | "running" | "ended";
 type QuestionConfig = {
@@ -68,13 +77,13 @@ function createEmptyAnswer() {
   } satisfies DocumentAnswer;
 }
 
-function createInitialAnswers(): Record<string, DocumentAnswer> {
-  return Object.fromEntries(documents.map((document) => [document.id, createEmptyAnswer()]));
+function createInitialAnswers(availableDocuments = documents): Record<string, DocumentAnswer> {
+  return Object.fromEntries(availableDocuments.map((document) => [document.id, createEmptyAnswer()]));
 }
 
-function createInitialAttempts(): Record<string, DocumentAttempt> {
+function createInitialAttempts(availableDocuments = documents): Record<string, DocumentAttempt> {
   return Object.fromEntries(
-    documents.map((document) => [
+    availableDocuments.map((document) => [
       document.id,
       {
         status: "ready",
@@ -84,12 +93,16 @@ function createInitialAttempts(): Record<string, DocumentAttempt> {
   );
 }
 
-export default function EvaluationWorkspace({ memberName }: { memberName: string }) {
-  const [activeDocument, setActiveDocument] = useState(documents[0].id);
-  const [documentAttempts, setDocumentAttempts] = useState<Record<string, DocumentAttempt>>(createInitialAttempts);
-  const [answers, setAnswers] = useState<Record<string, DocumentAnswer>>(createInitialAnswers);
+export default function EvaluationWorkspace({ memberName, evaluationTrack }: { memberName: string; evaluationTrack?: EvaluationTrack }) {
+  const availableDocuments = useMemo(
+    () => documents.filter((document) => document.track === evaluationTrack),
+    [evaluationTrack],
+  );
+  const [activeDocument, setActiveDocument] = useState(availableDocuments[0]?.id || "");
+  const [documentAttempts, setDocumentAttempts] = useState<Record<string, DocumentAttempt>>(() => createInitialAttempts(availableDocuments));
+  const [answers, setAnswers] = useState<Record<string, DocumentAnswer>>(() => createInitialAnswers(availableDocuments));
   const [isHydrated, setIsHydrated] = useState(false);
-  const storageKey = `${STORAGE_KEY_PREFIX}:${memberName}`;
+  const storageKey = `${STORAGE_KEY_PREFIX}:${memberName}:${evaluationTrack || "unassigned"}`;
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -107,12 +120,12 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
           answers?: Record<string, DocumentAnswer | string>;
         };
         if (parsed.documentAttempts) {
-          setDocumentAttempts(normalizeAttempts(parsed.documentAttempts));
+          setDocumentAttempts(normalizeAttempts(parsed.documentAttempts, availableDocuments));
         } else if (parsed.status) {
-          setDocumentAttempts(normalizeLegacyAttempt(parsed.status, parsed.endsAt));
+          setDocumentAttempts(normalizeLegacyAttempt(parsed.status, parsed.endsAt, availableDocuments));
         }
         if (parsed.answers) {
-          setAnswers(normalizeAnswers(parsed.answers));
+          setAnswers(normalizeAnswers(parsed.answers, availableDocuments));
         }
       } catch {
         window.localStorage.removeItem(storageKey);
@@ -121,7 +134,7 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
     }, 0);
 
     return () => window.clearTimeout(timeoutId);
-  }, [storageKey]);
+  }, [availableDocuments, storageKey]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -168,8 +181,23 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
     return () => window.clearInterval(intervalId);
   }, []);
 
-  const currentDocument = documents.find((document) => document.id === activeDocument) || documents[0];
-  const currentAttempt = documentAttempts[currentDocument.id] || createInitialAttempts()[currentDocument.id];
+  const currentDocument = availableDocuments.find((document) => document.id === activeDocument) || availableDocuments[0];
+  if (!currentDocument) {
+    return (
+      <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-6 py-20">
+        <section className="rounded-lg border border-white/[0.08] bg-black/40 p-7 backdrop-blur-xl">
+          <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
+          <h1 className="text-3xl font-black tracking-tight text-white">접근 가능한 평가가 없습니다</h1>
+          <p className="mt-4 text-sm leading-relaxed text-[#86868b]">
+            {memberName}님 계정에는 현재 표시할 평가 문서가 배정되어 있지 않습니다.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
+  const currentAttempt = documentAttempts[currentDocument.id] || createInitialAttempts(availableDocuments)[currentDocument.id];
+  const evaluationTrackLabel = evaluationTrack ? EVALUATION_TRACK_LABELS[evaluationTrack] : "미배정";
   const locked = currentAttempt.status !== "running";
   const currentAnswer = answers[currentDocument.id] || createEmptyAnswer();
   const currentPdfPath = currentAttempt.status === "ended" ? currentDocument.solutionPdfPath : currentDocument.pdfPath;
@@ -186,8 +214,8 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
   const endEvaluation = (documentId: string) => {
     setDocumentAttempts((current) => ({
       ...current,
-      [documentId]: {
-        ...(current[documentId] || createInitialAttempts()[documentId]),
+        [documentId]: {
+        ...(current[documentId] || createInitialAttempts(availableDocuments)[documentId]),
         status: "ended",
         remainingSeconds: 0,
         endsAt: undefined,
@@ -230,7 +258,7 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
             <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
             <h1 className="text-3xl font-black tracking-tight text-white">평가 페이지</h1>
             <p className="mt-3 text-sm leading-relaxed text-[#86868b]">
-              {memberName}님 인증 세션입니다. 문서별 제한 시간 50분이 종료되면 해당 문서의 답안 입력이 자동으로 잠깁니다.
+              {memberName}님 인증 세션입니다. {evaluationTrackLabel} 평가만 표시됩니다.
             </p>
           </div>
 
@@ -277,7 +305,7 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
         <div className="mt-8 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.9fr)]">
           <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] lg:sticky lg:top-20">
             <div className="flex border-b border-white/10">
-              {documents.map((document) => (
+              {availableDocuments.map((document) => (
                 <button
                   key={document.id}
                   type="button"
@@ -476,9 +504,9 @@ function WrittenQuestion({
   );
 }
 
-function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>) {
-  const normalized = createInitialAnswers();
-  for (const document of documents) {
+function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>, availableDocuments = documents) {
+  const normalized = createInitialAnswers(availableDocuments);
+  for (const document of availableDocuments) {
     const savedAnswer = savedAnswers[document.id];
     if (!savedAnswer) continue;
     if (typeof savedAnswer === "string") {
@@ -503,9 +531,9 @@ function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>)
   return normalized;
 }
 
-function normalizeAttempts(savedAttempts: Record<string, DocumentAttempt>) {
-  const normalized = createInitialAttempts();
-  for (const document of documents) {
+function normalizeAttempts(savedAttempts: Record<string, DocumentAttempt>, availableDocuments = documents) {
+  const normalized = createInitialAttempts(availableDocuments);
+  for (const document of availableDocuments) {
     const savedAttempt = savedAttempts[document.id];
     if (!savedAttempt) continue;
 
@@ -535,14 +563,16 @@ function normalizeAttempts(savedAttempts: Record<string, DocumentAttempt>) {
   return normalized;
 }
 
-function normalizeLegacyAttempt(status: WorkspaceStatus, endsAt?: number) {
-  const normalized = createInitialAttempts();
+function normalizeLegacyAttempt(status: WorkspaceStatus, endsAt?: number, availableDocuments = documents) {
+  const normalized = createInitialAttempts(availableDocuments);
   if (status === "ready") return normalized;
+  const firstDocument = availableDocuments[0];
+  if (!firstDocument) return normalized;
 
   const remainingSeconds =
     status === "running" && endsAt ? Math.max(0, Math.ceil((endsAt - Date.now()) / 1000)) : 0;
 
-  normalized[documents[0].id] = {
+  normalized[firstDocument.id] = {
     status: remainingSeconds > 0 ? "running" : "ended",
     remainingSeconds,
     endsAt: remainingSeconds > 0 ? endsAt : undefined,
