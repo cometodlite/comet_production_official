@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 const DURATION_SECONDS = 50 * 60;
 const STORAGE_KEY_PREFIX = "comet-evaluation-attempt";
-const DEFAULT_OBJECTIVE_COUNT = 10;
-const choiceOptions = ["1", "2", "3", "4", "5"];
+const fiveChoiceOptions = ["1", "2", "3", "4", "5"];
+const fourChoiceOptions = ["1", "2", "3", "4"];
 
 const documents = [
   {
@@ -21,15 +21,43 @@ const documents = [
 ];
 
 type WorkspaceStatus = "ready" | "running" | "ended";
-type DocumentAnswer = {
-  objective: string[];
-  written: string;
+type QuestionConfig = {
+  number: number;
+  type: "choice" | "written";
+  choices?: string[];
 };
+type DocumentAnswer = {
+  applicantName: string;
+  evaluationDate: string;
+  responses: Record<string, string>;
+};
+
+const questionConfigs: QuestionConfig[] = [
+  ...Array.from({ length: 10 }, (_, index) => ({
+    number: index + 1,
+    type: "choice" as const,
+    choices: fiveChoiceOptions,
+  })),
+  ...Array.from({ length: 4 }, (_, index) => ({
+    number: index + 11,
+    type: "written" as const,
+  })),
+  ...Array.from({ length: 4 }, (_, index) => ({
+    number: index + 15,
+    type: "choice" as const,
+    choices: fourChoiceOptions,
+  })),
+  ...Array.from({ length: 2 }, (_, index) => ({
+    number: index + 19,
+    type: "written" as const,
+  })),
+];
 
 function createEmptyAnswer() {
   return {
-    objective: Array.from({ length: DEFAULT_OBJECTIVE_COUNT }, () => ""),
-    written: "",
+    applicantName: "",
+    evaluationDate: new Date().toISOString().slice(0, 10),
+    responses: Object.fromEntries(questionConfigs.map((question) => [String(question.number), ""])),
   } satisfies DocumentAnswer;
 }
 
@@ -123,51 +151,29 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
     setRemainingSeconds(0);
     setStatus("ended");
   };
-  const updateObjectiveAnswer = (documentId: string, questionIndex: number, choice: string) => {
+  const updateApplicantField = (documentId: string, field: "applicantName" | "evaluationDate", value: string) => {
     setAnswers((current) => {
       const answer = current[documentId] || createEmptyAnswer();
       return {
         ...current,
         [documentId]: {
           ...answer,
-          objective: answer.objective.map((value, index) => (index === questionIndex ? choice : value)),
+          [field]: value,
         },
       };
     });
   };
-  const addObjectiveQuestion = (documentId: string) => {
+  const updateQuestionResponse = (documentId: string, questionNumber: number, value: string) => {
     setAnswers((current) => {
       const answer = current[documentId] || createEmptyAnswer();
       return {
         ...current,
         [documentId]: {
           ...answer,
-          objective: [...answer.objective, ""],
-        },
-      };
-    });
-  };
-  const removeObjectiveQuestion = (documentId: string) => {
-    setAnswers((current) => {
-      const answer = current[documentId] || createEmptyAnswer();
-      if (answer.objective.length <= 1) return current;
-      return {
-        ...current,
-        [documentId]: {
-          ...answer,
-          objective: answer.objective.slice(0, -1),
-        },
-      };
-    });
-  };
-  const updateWrittenAnswer = (documentId: string, written: string) => {
-    setAnswers((current) => {
-      const answer = current[documentId] || createEmptyAnswer();
-      return {
-        ...current,
-        [documentId]: {
-          ...answer,
-          written,
+          responses: {
+            ...answer.responses,
+            [String(questionNumber)]: value,
+          },
         },
       };
     });
@@ -261,63 +267,92 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
             <h2 className="text-lg font-bold text-white">답안 작성</h2>
             <p className="mt-2 text-sm leading-relaxed text-[#86868b]">{currentDocument.title} 답안</p>
 
-            <div className="mt-5">
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="text-sm font-bold text-white/90">객관식 답안</h3>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => addObjectiveQuestion(currentDocument.id)}
-                    disabled={locked}
-                    className="rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-white/75 transition hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-45"
-                  >
-                    문항 추가
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => removeObjectiveQuestion(currentDocument.id)}
-                    disabled={locked || currentAnswer.objective.length <= 1}
-                    className="rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-white/75 transition hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-45"
-                  >
-                    문항 삭제
-                  </button>
-                </div>
-              </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-white/85">이름</span>
+                <input
+                  value={currentAnswer.applicantName}
+                  onChange={(event) => updateApplicantField(currentDocument.id, "applicantName", event.target.value)}
+                  disabled={locked}
+                  placeholder="응시자 이름"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-indigo-400/70 disabled:cursor-not-allowed disabled:opacity-55"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold text-white/85">날짜</span>
+                <input
+                  type="date"
+                  value={currentAnswer.evaluationDate}
+                  onChange={(event) => updateApplicantField(currentDocument.id, "evaluationDate", event.target.value)}
+                  disabled={locked}
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition focus:border-indigo-400/70 disabled:cursor-not-allowed disabled:opacity-55"
+                />
+              </label>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="text-sm font-bold text-white/90">1~10번 객관식 답안</h3>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {currentAnswer.objective.map((choice, questionIndex) => (
-                  <fieldset key={`${currentDocument.id}-${questionIndex}`} disabled={locked} className="rounded-lg border border-white/10 bg-white/[0.04] p-3 disabled:opacity-55">
-                    <legend className="px-1 text-xs font-bold text-white/80">{questionIndex + 1}번</legend>
-                    <div className="grid grid-cols-5 gap-1">
-                      {choiceOptions.map((option) => (
-                        <label key={option} className="flex aspect-square cursor-pointer items-center justify-center rounded-md border border-white/10 text-xs font-bold text-white/70 has-[:checked]:border-indigo-300 has-[:checked]:bg-indigo-400/25 has-[:checked]:text-white">
-                          <input
-                            type="radio"
-                            name={`${currentDocument.id}-${questionIndex}`}
-                            value={option}
-                            checked={choice === option}
-                            onChange={(event) => updateObjectiveAnswer(currentDocument.id, questionIndex, event.target.value)}
-                            className="sr-only"
-                          />
-                          {option}
-                        </label>
-                      ))}
-                    </div>
-                  </fieldset>
+                {questionConfigs.slice(0, 10).map((question) => (
+                  <ChoiceQuestion
+                    key={`${currentDocument.id}-${question.number}`}
+                    documentId={currentDocument.id}
+                    question={question}
+                    value={currentAnswer.responses[String(question.number)] || ""}
+                    locked={locked}
+                    onChange={updateQuestionResponse}
+                  />
                 ))}
               </div>
             </div>
 
-            <label className="mt-6 block">
-              <span className="mb-2 block text-sm font-semibold text-white/85">서술형 및 풀이 답안</span>
-              <textarea
-                value={currentAnswer.written}
-                onChange={(event) => updateWrittenAnswer(currentDocument.id, event.target.value)}
-                disabled={locked}
-                rows={10}
-                placeholder={locked ? "평가 시작 후 입력할 수 있습니다." : "답안을 입력하세요."}
-                className="w-full resize-y rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm leading-relaxed text-white outline-none transition placeholder:text-white/28 focus:border-indigo-400/70 disabled:cursor-not-allowed disabled:opacity-55"
-              />
-            </label>
+            <div className="mt-6">
+              <h3 className="text-sm font-bold text-white/90">11~14번 단답 / 서술형</h3>
+              <div className="mt-3 space-y-3">
+                {questionConfigs.slice(10, 14).map((question) => (
+                  <WrittenQuestion
+                    key={`${currentDocument.id}-${question.number}`}
+                    documentId={currentDocument.id}
+                    question={question}
+                    value={currentAnswer.responses[String(question.number)] || ""}
+                    locked={locked}
+                    onChange={updateQuestionResponse}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="text-sm font-bold text-white/90">15~18번 객관식 답안</h3>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {questionConfigs.slice(14, 18).map((question) => (
+                  <ChoiceQuestion
+                    key={`${currentDocument.id}-${question.number}`}
+                    documentId={currentDocument.id}
+                    question={question}
+                    value={currentAnswer.responses[String(question.number)] || ""}
+                    locked={locked}
+                    onChange={updateQuestionResponse}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="text-sm font-bold text-white/90">19~20번 단답 / 서술형</h3>
+              <div className="mt-3 space-y-3">
+                {questionConfigs.slice(18, 20).map((question) => (
+                  <WrittenQuestion
+                    key={`${currentDocument.id}-${question.number}`}
+                    documentId={currentDocument.id}
+                    question={question}
+                    value={currentAnswer.responses[String(question.number)] || ""}
+                    locked={locked}
+                    onChange={updateQuestionResponse}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -331,6 +366,72 @@ function formatTime(totalSeconds: number) {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
+function ChoiceQuestion({
+  documentId,
+  question,
+  value,
+  locked,
+  onChange,
+}: {
+  documentId: string;
+  question: QuestionConfig;
+  value: string;
+  locked: boolean;
+  onChange: (documentId: string, questionNumber: number, value: string) => void;
+}) {
+  return (
+    <fieldset disabled={locked} className="rounded-lg border border-white/10 bg-white/[0.04] p-3 disabled:opacity-55">
+      <legend className="px-1 text-xs font-bold text-white/80">{question.number}번</legend>
+      <div className={`grid gap-1 ${question.choices?.length === 4 ? "grid-cols-4" : "grid-cols-5"}`}>
+        {question.choices?.map((option) => (
+          <label
+            key={option}
+            className="flex aspect-square cursor-pointer items-center justify-center rounded-md border border-white/10 text-xs font-bold text-white/70 has-[:checked]:border-indigo-300 has-[:checked]:bg-indigo-400/25 has-[:checked]:text-white"
+          >
+            <input
+              type="radio"
+              name={`${documentId}-${question.number}`}
+              value={option}
+              checked={value === option}
+              onChange={(event) => onChange(documentId, question.number, event.target.value)}
+              className="sr-only"
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function WrittenQuestion({
+  documentId,
+  question,
+  value,
+  locked,
+  onChange,
+}: {
+  documentId: string;
+  question: QuestionConfig;
+  value: string;
+  locked: boolean;
+  onChange: (documentId: string, questionNumber: number, value: string) => void;
+}) {
+  return (
+    <label className="block rounded-lg border border-white/10 bg-white/[0.04] p-3">
+      <span className="mb-2 block text-xs font-bold text-white/80">{question.number}번</span>
+      <textarea
+        value={value}
+        onChange={(event) => onChange(documentId, question.number, event.target.value)}
+        disabled={locked}
+        rows={question.number >= 19 ? 5 : 3}
+        placeholder={locked ? "평가 시작 후 입력할 수 있습니다." : "답안을 입력하세요."}
+        className="w-full resize-y rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm leading-relaxed text-white outline-none transition placeholder:text-white/28 focus:border-indigo-400/70 disabled:cursor-not-allowed disabled:opacity-55"
+      />
+    </label>
+  );
+}
+
 function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>) {
   const normalized = createInitialAnswers();
   for (const document of documents) {
@@ -339,13 +440,20 @@ function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>)
     if (typeof savedAnswer === "string") {
       normalized[document.id] = {
         ...normalized[document.id],
-        written: savedAnswer,
+        responses: {
+          ...normalized[document.id].responses,
+          "11": savedAnswer,
+        },
       };
       continue;
     }
     normalized[document.id] = {
-      objective: savedAnswer.objective?.length ? savedAnswer.objective : normalized[document.id].objective,
-      written: savedAnswer.written || "",
+      applicantName: savedAnswer.applicantName || "",
+      evaluationDate: savedAnswer.evaluationDate || normalized[document.id].evaluationDate,
+      responses: {
+        ...normalized[document.id].responses,
+        ...(savedAnswer.responses || {}),
+      },
     };
   }
   return normalized;
