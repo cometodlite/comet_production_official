@@ -8,6 +8,18 @@ type Category = "all" | "production" | "entertainers" | "develops";
 
 const newsData = [
   {
+    id: 4,
+    category: "develops" as Category,
+    date: "2026.05.16",
+    titleKo: "HCSiG II 개발 프로젝트 착수",
+    titleEn: "HCSiG II Development Project Begins",
+    descKo: "COMET DEVELOPS가 HCSiG의 후속 프로젝트인 HCSiG II 개발에 착수했습니다. 전작의 해킹 코드 시뮬레이션 콘셉트를 확장해, 더 깊어진 시스템 구조와 새로운 플레이 흐름을 갖춘 웹게임 경험을 준비하고 있습니다.",
+    descEn: "COMET DEVELOPS has begun development on HCSiG II, the follow-up project to HCSiG. Building on the original hacking code simulation concept, the team is preparing a web game experience with deeper systems and a refreshed gameplay flow.",
+    tag: "DEVELOPS",
+    tagColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+    accentBar: "bg-gradient-to-r from-blue-500/70 to-transparent",
+  },
+  {
     id: 1,
     category: "production" as Category,
     date: "2026.05.05",
