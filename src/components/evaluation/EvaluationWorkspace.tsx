@@ -180,7 +180,7 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
   };
 
   return (
-    <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-6xl px-6 py-20">
+    <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-7xl px-6 py-20">
       <section className="rounded-lg border border-white/[0.08] bg-black/40 p-7 backdrop-blur-xl">
         <div className="flex flex-col gap-5 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -231,8 +231,8 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
           )}
         </div>
 
-        <div className="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-lg border border-white/10 bg-white/[0.03]">
+        <div className="mt-8 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.9fr)]">
+          <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] lg:sticky lg:top-20">
             <div className="flex border-b border-white/10">
               {documents.map((document) => (
                 <button
@@ -247,11 +247,11 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
                 </button>
               ))}
             </div>
-            <div className="min-h-[620px] p-4">
+            <div className="h-[68svh] min-h-[460px] max-h-[700px] p-2">
               {currentDocument.pdfPath ? (
-                <iframe title={currentDocument.title} src={currentDocument.pdfPath} className="h-[620px] w-full rounded-lg border border-white/10 bg-white" />
+                <iframe title={currentDocument.title} src={currentDocument.pdfPath} className="h-full w-full rounded-md border border-white/10 bg-white" />
               ) : (
-                <div className="flex h-[620px] items-center justify-center rounded-lg border border-dashed border-white/15 bg-black/25 px-6 text-center">
+                <div className="flex h-full items-center justify-center rounded-md border border-dashed border-white/15 bg-black/25 px-6 text-center">
                   <div>
                     <p className="text-sm font-semibold text-white">{currentDocument.title} PDF 준비 중</p>
                     <p className="mt-2 text-xs leading-relaxed text-[#86868b]">
@@ -263,7 +263,7 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
             </div>
           </div>
 
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5">
+          <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5 lg:h-[68svh] lg:max-h-[700px] lg:min-h-[460px] lg:overflow-y-auto">
             <h2 className="text-lg font-bold text-white">답안 작성</h2>
             <p className="mt-2 text-sm leading-relaxed text-[#86868b]">{currentDocument.title} 답안</p>
 
