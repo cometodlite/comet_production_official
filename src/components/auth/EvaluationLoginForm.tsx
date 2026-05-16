@@ -28,7 +28,7 @@ export default function EvaluationLoginForm() {
         label="평가 회원 이름"
         name="evaluationName"
         autoComplete="name"
-        placeholder="레도"
+        placeholder="회사에서 안내받은 이름"
         errors={state.errors?.evaluationName}
       />
 
