@@ -10,11 +10,14 @@ import type { StaffGroup } from "@/lib/auth/staff-groups";
 const scrypt = promisify(scryptCallback);
 const LOCAL_USERS_FILE = path.join(process.cwd(), ".data", "users.json");
 const LOCAL_BOARD_NOTICES_FILE = path.join(process.cwd(), ".data", "board-notices.json");
+const LOCAL_SCORES_FILE = path.join(process.cwd(), ".data", "evaluation-scores.json");
 const VERCEL_USERS_FILE = "/tmp/comet-production-users.json";
 const VERCEL_BOARD_NOTICES_FILE = "/tmp/comet-production-board-notices.json";
+const VERCEL_SCORES_FILE = "/tmp/comet-evaluation-scores.json";
 const USERS_FILE =
   process.env.AUTH_STORE_PATH || (process.env.VERCEL ? VERCEL_USERS_FILE : LOCAL_USERS_FILE);
 const BOARD_NOTICES_FILE = process.env.BOARD_NOTICES_STORE_PATH || (process.env.VERCEL ? VERCEL_BOARD_NOTICES_FILE : LOCAL_BOARD_NOTICES_FILE);
+const SCORES_FILE = process.env.SCORES_STORE_PATH || (process.env.VERCEL ? VERCEL_SCORES_FILE : LOCAL_SCORES_FILE);
 
 type SqlClient = ReturnType<typeof neon>;
 
@@ -53,6 +56,19 @@ export type BoardNotice = {
   body: string;
   authorEmail: string;
   createdAt: string;
+};
+
+export type EvaluationScore = {
+  id: string;
+  memberId: string;
+  memberName: string;
+  evaluationTrack: string;
+  documentId: string;
+  documentTitle: string;
+  applicantName: string;
+  evaluationDate: string;
+  responses: Record<string, string>;
+  submittedAt: string;
 };
 
 function toPublicUser(user: UserRecord): PublicUser {
@@ -153,6 +169,21 @@ async function ensureDatabase(sql: SqlClient) {
     await sql`
       ALTER TABLE comet_users
       ADD COLUMN IF NOT EXISTS staff_code_changed_at TIMESTAMPTZ
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS comet_evaluation_scores (
+        id TEXT PRIMARY KEY,
+        member_id TEXT NOT NULL,
+        member_name TEXT NOT NULL,
+        evaluation_track TEXT NOT NULL,
+        document_id TEXT NOT NULL,
+        document_title TEXT NOT NULL,
+        applicant_name TEXT NOT NULL,
+        evaluation_date TEXT NOT NULL,
+        responses JSONB NOT NULL,
+        submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        UNIQUE (member_id, document_id)
+      )
     `;
   })();
   await databaseReady;
@@ -577,6 +608,106 @@ export async function createBoardNotice(input: { title: string; body: string; au
   const notices = await readBoardNotices();
   await writeBoardNotices([notice, ...notices]);
   return { notice };
+}
+
+async function ensureScoreStore() {
+  await fs.mkdir(path.dirname(SCORES_FILE), { recursive: true });
+  try {
+    await fs.access(SCORES_FILE);
+  } catch {
+    await fs.writeFile(SCORES_FILE, "[]\n", "utf8");
+  }
+}
+
+async function readScores(): Promise<EvaluationScore[]> {
+  await ensureScoreStore();
+  const raw = await fs.readFile(SCORES_FILE, "utf8");
+  return JSON.parse(raw) as EvaluationScore[];
+}
+
+async function writeScores(scores: EvaluationScore[]) {
+  await ensureScoreStore();
+  await fs.writeFile(SCORES_FILE, `${JSON.stringify(scores, null, 2)}\n`, "utf8");
+}
+
+export async function saveEvaluationScore(
+  input: Omit<EvaluationScore, "id" | "submittedAt">,
+) {
+  const submittedAt = new Date().toISOString();
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      INSERT INTO comet_evaluation_scores (
+        id, member_id, member_name, evaluation_track,
+        document_id, document_title, applicant_name,
+        evaluation_date, responses, submitted_at
+      ) VALUES (
+        ${randomBytes(12).toString("base64url")},
+        ${input.memberId}, ${input.memberName}, ${input.evaluationTrack},
+        ${input.documentId}, ${input.documentTitle}, ${input.applicantName},
+        ${input.evaluationDate}, ${JSON.stringify(input.responses)}, ${submittedAt}
+      )
+      ON CONFLICT (member_id, document_id)
+      DO UPDATE SET
+        member_name      = EXCLUDED.member_name,
+        applicant_name   = EXCLUDED.applicant_name,
+        evaluation_date  = EXCLUDED.evaluation_date,
+        responses        = EXCLUDED.responses,
+        submitted_at     = EXCLUDED.submitted_at
+    `;
+    return;
+  }
+
+  const scores = await readScores();
+  const idx = scores.findIndex(
+    (s) => s.memberId === input.memberId && s.documentId === input.documentId,
+  );
+  const record: EvaluationScore = {
+    id: randomBytes(12).toString("base64url"),
+    ...input,
+    submittedAt,
+  };
+  if (idx >= 0) {
+    scores[idx] = record;
+  } else {
+    scores.push(record);
+  }
+  await writeScores(scores);
+}
+
+export async function listEvaluationScores(): Promise<EvaluationScore[]> {
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        id, member_id, member_name, evaluation_track,
+        document_id, document_title, applicant_name,
+        evaluation_date, responses, submitted_at
+      FROM comet_evaluation_scores
+      ORDER BY submitted_at DESC
+    `) as Record<string, unknown>[];
+    return rows.map((row) => ({
+      id: String(row.id),
+      memberId: String(row.member_id),
+      memberName: String(row.member_name),
+      evaluationTrack: String(row.evaluation_track),
+      documentId: String(row.document_id),
+      documentTitle: String(row.document_title),
+      applicantName: String(row.applicant_name),
+      evaluationDate: String(row.evaluation_date),
+      responses: row.responses as Record<string, string>,
+      submittedAt: mapTimestamp(row.submitted_at) || new Date().toISOString(),
+    }));
+  }
+
+  const scores = await readScores();
+  return [...scores].sort(
+    (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
+  );
 }
 
 export async function listBoardNotices() {

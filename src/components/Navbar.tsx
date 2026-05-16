@@ -95,16 +95,33 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               {user ? (
                 <>
-                  <Link
-                    href={user.role === "staff" ? "/staff" : user.role === "evaluation" ? "/evaluation" : "/account"}
-                    className={`text-xs transition-colors ${
-                      (user.role === "staff" ? pathname === "/staff" : user.role === "evaluation" ? pathname === "/evaluation" : pathname === "/account")
-                        ? "text-white"
-                        : "text-[#86868b] hover:text-white"
-                    }`}
-                  >
-                    {user.role === "staff" ? t("사원 페이지", "Staff") : user.role === "evaluation" ? t("평가 페이지", "Evaluation") : t("내 계정", "Account")}
-                  </Link>
+                  {user.role === "evaluation" ? (
+                    <>
+                      <Link
+                        href="/evaluation"
+                        className={`text-xs transition-colors ${pathname === "/evaluation" ? "text-white" : "text-[#86868b] hover:text-white"}`}
+                      >
+                        {t("연습 문제", "Practice")}
+                      </Link>
+                      <Link
+                        href="/evaluation/real"
+                        className={`text-xs transition-colors ${pathname === "/evaluation/real" ? "text-white" : "text-[#86868b] hover:text-white"}`}
+                      >
+                        {t("실전 문제", "Real Exam")}
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      href={user.role === "staff" ? "/staff" : "/account"}
+                      className={`text-xs transition-colors ${
+                        (user.role === "staff" ? pathname === "/staff" : pathname === "/account")
+                          ? "text-white"
+                          : "text-[#86868b] hover:text-white"
+                      }`}
+                    >
+                      {user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}
+                    </Link>
+                  )}
                   <form action={logout}>
                     <button className="text-xs text-[#86868b] transition-colors hover:text-white">
                       {t("로그아웃", "Logout")}
@@ -223,16 +240,42 @@ export default function Navbar() {
                 transition={{ delay: navLinks.length * 0.04 + 0.04, duration: 0.22 }}
               >
                 {user ? (
-                  <div className="grid grid-cols-2 gap-3 py-4">
-                    <Link
-                      href={user.role === "staff" ? "/staff" : user.role === "evaluation" ? "/evaluation" : "/account"}
-                      onClick={() => setMenuOpen(false)}
-                      className="rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80"
-                    >
-                      {user.role === "staff" ? t("사원 페이지", "Staff") : user.role === "evaluation" ? t("평가 페이지", "Evaluation") : t("내 계정", "Account")}
-                    </Link>
+                  <div className="py-4 space-y-2">
+                    {user.role === "evaluation" ? (
+                      <>
+                        <Link
+                          href="/evaluation"
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center justify-between py-3 text-[15px] tracking-wide border-b border-white/5 transition-colors ${pathname === "/evaluation" ? "text-white font-bold" : "text-white/55 hover:text-white"}`}
+                        >
+                          <span>{t("연습 문제", "Practice")}</span>
+                          {pathname === "/evaluation" && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />}
+                        </Link>
+                        <Link
+                          href="/evaluation/real"
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center justify-between py-3 text-[15px] tracking-wide border-b border-white/5 transition-colors ${pathname === "/evaluation/real" ? "text-white font-bold" : "text-white/55 hover:text-white"}`}
+                        >
+                          <span>{t("실전 문제", "Real Exam")}</span>
+                          {pathname === "/evaluation/real" && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />}
+                        </Link>
+                      </>
+                    ) : (
+                      <Link
+                        href={user.role === "staff" ? "/staff" : "/account"}
+                        onClick={() => setMenuOpen(false)}
+                        className={`flex items-center justify-between py-3 text-[15px] tracking-wide border-b border-white/5 transition-colors ${
+                          (user.role === "staff" ? pathname === "/staff" : pathname === "/account") ? "text-white font-bold" : "text-white/55 hover:text-white"
+                        }`}
+                      >
+                        <span>{user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}</span>
+                        {((user.role === "staff" && pathname === "/staff") || (user.role !== "staff" && pathname === "/account")) && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                        )}
+                      </Link>
+                    )}
                     <form action={logout}>
-                      <button className="w-full rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80">
+                      <button className="w-full rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80 mt-1">
                         {t("로그아웃", "Logout")}
                       </button>
                     </form>

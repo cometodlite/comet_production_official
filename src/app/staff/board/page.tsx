@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import BoardAdminPanel from "@/components/staff/BoardAdminPanel";
+import EvaluationScoresPanel from "@/components/staff/EvaluationScoresPanel";
 import { requireStaffGroup } from "@/lib/auth/current-user";
-import { listBoardNotices, listStaffUsers } from "@/lib/auth/store";
+import { listBoardNotices, listEvaluationScores, listStaffUsers } from "@/lib/auth/store";
 
 export const metadata: Metadata = {
   title: "COMET 이사회 공간",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 
 export default async function StaffBoardPage() {
   const user = await requireStaffGroup("board");
-  const [staffUsers, notices] = await Promise.all([listStaffUsers(), listBoardNotices()]);
+  const [staffUsers, notices, scores] = await Promise.all([
+    listStaffUsers(),
+    listBoardNotices(),
+    listEvaluationScores(),
+  ]);
 
   return (
     <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-5xl px-6 py-20">
@@ -23,10 +28,13 @@ export default async function StaffBoardPage() {
         <dl className="grid gap-3 sm:grid-cols-3">
           <InfoCard label="접속 계정" value={user.email} />
           <InfoCard label="권한" value="COMET 이사회" />
-          <InfoCard label="운영 기능" value="3개 활성화" />
+          <InfoCard label="운영 기능" value="4개 활성화" />
         </dl>
 
         <BoardAdminPanel staffUsers={staffUsers} notices={notices} />
+        <div className="mt-5">
+          <EvaluationScoresPanel scores={scores} />
+        </div>
       </section>
     </div>
   );
