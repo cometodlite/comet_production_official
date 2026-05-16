@@ -12,11 +12,13 @@ const documents = [
     id: "document-1",
     title: "일반형 역량평가 연습 1차",
     pdfPath: "/evaluation/illustrator-general-practice-1.pdf",
+    solutionPdfPath: "/evaluation/illustrator-general-practice-1-solution.pdf",
   },
   {
     id: "document-2",
     title: "일반형 역량평가 연습 2차",
     pdfPath: "/evaluation/illustrator-general-practice-2.pdf",
+    solutionPdfPath: "/evaluation/illustrator-general-practice-2-solution.pdf",
   },
 ];
 
@@ -30,6 +32,11 @@ type DocumentAnswer = {
   applicantName: string;
   evaluationDate: string;
   responses: Record<string, string>;
+};
+type DocumentAttempt = {
+  status: WorkspaceStatus;
+  remainingSeconds: number;
+  endsAt?: number;
 };
 
 const questionConfigs: QuestionConfig[] = [
@@ -65,10 +72,21 @@ function createInitialAnswers(): Record<string, DocumentAnswer> {
   return Object.fromEntries(documents.map((document) => [document.id, createEmptyAnswer()]));
 }
 
+function createInitialAttempts(): Record<string, DocumentAttempt> {
+  return Object.fromEntries(
+    documents.map((document) => [
+      document.id,
+      {
+        status: "ready",
+        remainingSeconds: DURATION_SECONDS,
+      },
+    ]),
+  );
+}
+
 export default function EvaluationWorkspace({ memberName }: { memberName: string }) {
-  const [status, setStatus] = useState<WorkspaceStatus>("ready");
   const [activeDocument, setActiveDocument] = useState(documents[0].id);
-  const [remainingSeconds, setRemainingSeconds] = useState(DURATION_SECONDS);
+  const [documentAttempts, setDocumentAttempts] = useState<Record<string, DocumentAttempt>>(createInitialAttempts);
   const [answers, setAnswers] = useState<Record<string, DocumentAnswer>>(createInitialAnswers);
   const [isHydrated, setIsHydrated] = useState(false);
   const storageKey = `${STORAGE_KEY_PREFIX}:${memberName}`;
@@ -85,21 +103,16 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
         const parsed = JSON.parse(savedAttempt) as {
           status?: WorkspaceStatus;
           endsAt?: number;
+          documentAttempts?: Record<string, DocumentAttempt>;
           answers?: Record<string, DocumentAnswer | string>;
         };
+        if (parsed.documentAttempts) {
+          setDocumentAttempts(normalizeAttempts(parsed.documentAttempts));
+        } else if (parsed.status) {
+          setDocumentAttempts(normalizeLegacyAttempt(parsed.status, parsed.endsAt));
+        }
         if (parsed.answers) {
           setAnswers(normalizeAnswers(parsed.answers));
-        }
-        if (parsed.status === "ended") {
-          setStatus("ended");
-          setRemainingSeconds(0);
-          setIsHydrated(true);
-          return;
-        }
-        if (parsed.status === "running" && parsed.endsAt) {
-          const secondsLeft = Math.max(0, Math.ceil((parsed.endsAt - Date.now()) / 1000));
-          setStatus(secondsLeft > 0 ? "running" : "ended");
-          setRemainingSeconds(secondsLeft);
         }
       } catch {
         window.localStorage.removeItem(storageKey);
@@ -116,40 +129,70 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
     window.localStorage.setItem(
       storageKey,
       JSON.stringify({
-        status,
-        endsAt: status === "running" ? Date.now() + remainingSeconds * 1000 : undefined,
+        documentAttempts,
         answers,
       }),
     );
-  }, [answers, isHydrated, remainingSeconds, status, storageKey]);
+  }, [answers, documentAttempts, isHydrated, storageKey]);
 
   useEffect(() => {
-    if (status !== "running") return;
-
     const intervalId = window.setInterval(() => {
-      setRemainingSeconds((current) => {
-        if (current <= 1) {
-          window.clearInterval(intervalId);
-          setStatus("ended");
-          return 0;
+      setDocumentAttempts((current) => {
+        let changed = false;
+        const next: Record<string, DocumentAttempt> = {};
+
+        for (const [documentId, attempt] of Object.entries(current)) {
+          if (attempt.status !== "running" || !attempt.endsAt) {
+            next[documentId] = attempt;
+            continue;
+          }
+
+          const remainingSeconds = Math.max(0, Math.ceil((attempt.endsAt - Date.now()) / 1000));
+          if (remainingSeconds === attempt.remainingSeconds && remainingSeconds > 0) {
+            next[documentId] = attempt;
+            continue;
+          }
+
+          changed = true;
+          next[documentId] = {
+            ...attempt,
+            status: remainingSeconds > 0 ? "running" : "ended",
+            remainingSeconds,
+          };
         }
-        return current - 1;
+
+        return changed ? next : current;
       });
     }, 1000);
 
     return () => window.clearInterval(intervalId);
-  }, [status]);
+  }, []);
 
   const currentDocument = documents.find((document) => document.id === activeDocument) || documents[0];
-  const locked = status !== "running";
+  const currentAttempt = documentAttempts[currentDocument.id] || createInitialAttempts()[currentDocument.id];
+  const locked = currentAttempt.status !== "running";
   const currentAnswer = answers[currentDocument.id] || createEmptyAnswer();
-  const startEvaluation = () => {
-    setRemainingSeconds(DURATION_SECONDS);
-    setStatus("running");
+  const currentPdfPath = currentAttempt.status === "ended" ? currentDocument.solutionPdfPath : currentDocument.pdfPath;
+  const startEvaluation = (documentId: string) => {
+    setDocumentAttempts((current) => ({
+      ...current,
+      [documentId]: {
+        status: "running",
+        remainingSeconds: DURATION_SECONDS,
+        endsAt: Date.now() + DURATION_SECONDS * 1000,
+      },
+    }));
   };
-  const endEvaluation = () => {
-    setRemainingSeconds(0);
-    setStatus("ended");
+  const endEvaluation = (documentId: string) => {
+    setDocumentAttempts((current) => ({
+      ...current,
+      [documentId]: {
+        ...(current[documentId] || createInitialAttempts()[documentId]),
+        status: "ended",
+        remainingSeconds: 0,
+        endsAt: undefined,
+      },
+    }));
   };
   const updateApplicantField = (documentId: string, field: "applicantName" | "evaluationDate", value: string) => {
     setAnswers((current) => {
@@ -187,46 +230,46 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
             <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
             <h1 className="text-3xl font-black tracking-tight text-white">평가 페이지</h1>
             <p className="mt-3 text-sm leading-relaxed text-[#86868b]">
-              {memberName}님 인증 세션입니다. 제한 시간 50분이 종료되면 답안 입력이 자동으로 잠깁니다.
+              {memberName}님 인증 세션입니다. 문서별 제한 시간 50분이 종료되면 해당 문서의 답안 입력이 자동으로 잠깁니다.
             </p>
           </div>
 
           <div className="rounded-lg border border-white/10 bg-white/[0.04] px-5 py-4 text-right">
             <p className="text-xs font-semibold text-[#86868b]">남은 시간</p>
-            <p className={`mt-1 font-mono text-2xl font-black ${remainingSeconds <= 300 ? "text-red-300" : "text-white"}`}>
-              {formatTime(remainingSeconds)}
+            <p className={`mt-1 font-mono text-2xl font-black ${currentAttempt.remainingSeconds <= 300 ? "text-red-300" : "text-white"}`}>
+              {formatTime(currentAttempt.remainingSeconds)}
             </p>
           </div>
         </div>
 
-        {status === "ready" && (
+        {currentAttempt.status === "ready" && (
           <div className="mt-6 rounded-lg border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm leading-relaxed text-amber-100">
-            평가를 시작하면 타이머가 작동합니다. 문제 PDF를 확인하며 객관식과 서술형 답안을 작성합니다.
+            현재 선택된 문서의 평가를 시작하면 타이머가 작동합니다. 문서별로 풀이를 종료할 수 있습니다.
           </div>
         )}
-        {status === "ended" && (
+        {currentAttempt.status === "ended" && (
           <div className="mt-6 rounded-lg border border-red-400/25 bg-red-500/10 px-4 py-3 text-sm leading-relaxed text-red-100">
-            제한 시간이 종료되어 문제 풀이가 잠겼습니다.
+            현재 문서의 풀이가 종료되어 답안 입력이 잠겼습니다. 문제 PDF 대신 정답 및 해설 PDF가 표시됩니다.
           </div>
         )}
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {status === "ready" && (
+          {currentAttempt.status === "ready" && (
             <button
               type="button"
-              onClick={startEvaluation}
+              onClick={() => startEvaluation(currentDocument.id)}
               className="rounded-lg bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-amber-200"
             >
-              평가 시작
+              {currentDocument.title} 시작
             </button>
           )}
-          {status === "running" && (
+          {currentAttempt.status === "running" && (
             <button
               type="button"
-              onClick={endEvaluation}
+              onClick={() => endEvaluation(currentDocument.id)}
               className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
             >
-              풀이 종료
+              {currentDocument.title} 풀이 종료
             </button>
           )}
         </div>
@@ -243,13 +286,14 @@ export default function EvaluationWorkspace({ memberName }: { memberName: string
                     activeDocument === document.id ? "bg-white/[0.08] text-white" : "text-[#86868b] hover:text-white"
                   }`}
                 >
-                  {document.title}
+                  <span className="block">{document.title}</span>
+                  <span className="mt-1 block text-[11px] font-medium text-white/45">{getAttemptLabel(documentAttempts[document.id]?.status || "ready")}</span>
                 </button>
               ))}
             </div>
             <div className="h-[68svh] min-h-[460px] max-h-[700px] p-2">
-              {currentDocument.pdfPath ? (
-                <iframe title={currentDocument.title} src={currentDocument.pdfPath} className="h-full w-full rounded-md border border-white/10 bg-white" />
+              {currentPdfPath ? (
+                <iframe title={currentDocument.title} src={currentPdfPath} className="h-full w-full rounded-md border border-white/10 bg-white" />
               ) : (
                 <div className="flex h-full items-center justify-center rounded-md border border-dashed border-white/15 bg-black/25 px-6 text-center">
                   <div>
@@ -457,4 +501,57 @@ function normalizeAnswers(savedAnswers: Record<string, DocumentAnswer | string>)
     };
   }
   return normalized;
+}
+
+function normalizeAttempts(savedAttempts: Record<string, DocumentAttempt>) {
+  const normalized = createInitialAttempts();
+  for (const document of documents) {
+    const savedAttempt = savedAttempts[document.id];
+    if (!savedAttempt) continue;
+
+    if (savedAttempt.status === "ended") {
+      normalized[document.id] = {
+        status: "ended",
+        remainingSeconds: 0,
+      };
+      continue;
+    }
+
+    if (savedAttempt.status === "running" && savedAttempt.endsAt) {
+      const remainingSeconds = Math.max(0, Math.ceil((savedAttempt.endsAt - Date.now()) / 1000));
+      normalized[document.id] = {
+        status: remainingSeconds > 0 ? "running" : "ended",
+        remainingSeconds,
+        endsAt: remainingSeconds > 0 ? savedAttempt.endsAt : undefined,
+      };
+      continue;
+    }
+
+    normalized[document.id] = {
+      status: "ready",
+      remainingSeconds: DURATION_SECONDS,
+    };
+  }
+  return normalized;
+}
+
+function normalizeLegacyAttempt(status: WorkspaceStatus, endsAt?: number) {
+  const normalized = createInitialAttempts();
+  if (status === "ready") return normalized;
+
+  const remainingSeconds =
+    status === "running" && endsAt ? Math.max(0, Math.ceil((endsAt - Date.now()) / 1000)) : 0;
+
+  normalized[documents[0].id] = {
+    status: remainingSeconds > 0 ? "running" : "ended",
+    remainingSeconds,
+    endsAt: remainingSeconds > 0 ? endsAt : undefined,
+  };
+  return normalized;
+}
+
+function getAttemptLabel(status: WorkspaceStatus) {
+  if (status === "running") return "풀이 중";
+  if (status === "ended") return "해설 확인";
+  return "대기";
 }
