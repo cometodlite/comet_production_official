@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function StaffEvaluationPage() {
   const user = await getCurrentUser();
-  if (user) redirect(user.role === "staff" ? "/staff" : "/account");
+  if (user) redirect(user.role === "staff" ? "/staff" : user.role === "evaluation" ? "/evaluation" : "/account");
 
   return (
     <div className="mx-auto flex min-h-[calc(100svh-4rem)] max-w-md items-center px-6 py-20">

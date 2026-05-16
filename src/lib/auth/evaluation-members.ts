@@ -12,6 +12,7 @@ type EvaluationMember = {
 };
 
 export type EvaluationMemberAccess = {
+  id: string;
   name: string;
   group: StaffGroup;
 };
@@ -55,6 +56,7 @@ export function verifyEvaluationMember(input: { name: FormDataEntryValue | strin
   if (!expectedCode || !safeEqual(code, expectedCode)) return null;
 
   return {
+    id: member.id,
     name: member.name,
     group: member.group,
   } satisfies EvaluationMemberAccess;

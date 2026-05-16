@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { clearSessionCookie, readSession, setSessionCookie } from "@/lib/auth/session";
+import { clearSessionCookie, readSession, setEvaluationSessionCookie, setSessionCookie } from "@/lib/auth/session";
 import { verifyEvaluationMember } from "@/lib/auth/evaluation-members";
 import { normalizeStaffGroup } from "@/lib/auth/staff-groups";
 import {
@@ -296,11 +296,16 @@ export async function evaluationLogin(_state: AuthFormState, formData: FormData)
     return { errors: { form: ["평가 회원 이름 또는 코드가 올바르지 않습니다."] } };
   }
 
-  return { success: `${member.name}님, 평가 회원 인증이 완료되었습니다. 입사 준비 안내를 확인해 주세요.` };
+  await setEvaluationSessionCookie({
+    id: member.id,
+    name: member.name,
+    staffGroup: member.group,
+  });
+  redirect("/evaluation");
 }
 
 export async function logout() {
   const session = await readSession();
   await clearSessionCookie();
-  redirect(session?.role === "staff" ? "/staff/login" : "/login");
+  redirect(session?.role === "staff" || session?.role === "evaluation" ? "/staff/login" : "/login");
 }

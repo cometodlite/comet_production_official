@@ -5,9 +5,26 @@ import { readSession } from "@/lib/auth/session";
 import { findPublicUserById } from "@/lib/auth/store";
 import type { StaffGroup } from "@/lib/auth/staff-groups";
 
+export type EvaluationUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: "evaluation";
+  staffGroup?: StaffGroup;
+};
+
 export async function getCurrentUser() {
   const session = await readSession();
   if (!session) return null;
+  if (session.role === "evaluation") {
+    return {
+      id: session.userId,
+      name: session.name || "평가 회원",
+      email: session.email,
+      role: "evaluation",
+      staffGroup: session.staffGroup,
+    } satisfies EvaluationUser;
+  }
   return findPublicUserById(session.userId);
 }
 
@@ -27,4 +44,17 @@ export async function requireStaffGroup(group: StaffGroup) {
   const user = await requireStaffUser();
   if (user.staffGroup !== group) redirect("/staff/unauthorized");
   return user;
+}
+
+export async function requireEvaluationUser() {
+  const session = await readSession();
+  if (!session || session.role !== "evaluation") redirect("/staff/evaluation");
+
+  return {
+    id: session.userId,
+    name: session.name || "평가 회원",
+    email: session.email,
+    role: "evaluation",
+    staffGroup: session.staffGroup,
+  } satisfies EvaluationUser;
 }

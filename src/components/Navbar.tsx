@@ -12,7 +12,7 @@ type AuthUser = {
   id: string;
   name: string;
   email: string;
-  role: "public" | "staff";
+  role: "public" | "staff" | "evaluation";
 };
 
 export default function Navbar() {
@@ -96,14 +96,14 @@ export default function Navbar() {
               {user ? (
                 <>
                   <Link
-                    href={user.role === "staff" ? "/staff" : "/account"}
+                    href={user.role === "staff" ? "/staff" : user.role === "evaluation" ? "/evaluation" : "/account"}
                     className={`text-xs transition-colors ${
-                      (user.role === "staff" ? pathname === "/staff" : pathname === "/account")
+                      (user.role === "staff" ? pathname === "/staff" : user.role === "evaluation" ? pathname === "/evaluation" : pathname === "/account")
                         ? "text-white"
                         : "text-[#86868b] hover:text-white"
                     }`}
                   >
-                    {user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}
+                    {user.role === "staff" ? t("사원 페이지", "Staff") : user.role === "evaluation" ? t("평가 페이지", "Evaluation") : t("내 계정", "Account")}
                   </Link>
                   <form action={logout}>
                     <button className="text-xs text-[#86868b] transition-colors hover:text-white">
@@ -225,11 +225,11 @@ export default function Navbar() {
                 {user ? (
                   <div className="grid grid-cols-2 gap-3 py-4">
                     <Link
-                      href={user.role === "staff" ? "/staff" : "/account"}
+                      href={user.role === "staff" ? "/staff" : user.role === "evaluation" ? "/evaluation" : "/account"}
                       onClick={() => setMenuOpen(false)}
                       className="rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80"
                     >
-                      {user.role === "staff" ? t("사원 페이지", "Staff") : t("내 계정", "Account")}
+                      {user.role === "staff" ? t("사원 페이지", "Staff") : user.role === "evaluation" ? t("평가 페이지", "Evaluation") : t("내 계정", "Account")}
                     </Link>
                     <form action={logout}>
                       <button className="w-full rounded-lg border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/80">

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 export default async function AccountPage() {
   const user = await requireCurrentUser();
   if (user.role === "staff") redirect("/staff");
+  if (user.role === "evaluation") redirect("/evaluation");
   const joinedAt = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "long",

@@ -3,6 +3,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { UserRole } from "@/lib/auth/store";
+import type { StaffGroup } from "@/lib/auth/staff-groups";
 
 export const SESSION_COOKIE = "comet_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
@@ -10,7 +11,9 @@ const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 type SessionPayload = {
   userId: string;
   email: string;
-  role?: UserRole;
+  role?: UserRole | "evaluation";
+  name?: string;
+  staffGroup?: StaffGroup;
   issuedAt: number;
 };
 
@@ -48,6 +51,12 @@ export function verifySessionToken(token: string): SessionPayload | null {
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as SessionPayload;
     const isExpired = Date.now() - payload.issuedAt > SESSION_MAX_AGE * 1000;
     if (!payload.userId || !payload.email || isExpired) return null;
+    if (payload.role === "evaluation") {
+      return {
+        ...payload,
+        role: "evaluation",
+      };
+    }
     return {
       ...payload,
       role: payload.role === "staff" ? "staff" : "public",
@@ -65,6 +74,26 @@ export async function setSessionCookie(user: { id: string; email: string; role: 
       userId: user.id,
       email: user.email,
       role: user.role,
+      issuedAt: Date.now(),
+    }),
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: SESSION_MAX_AGE,
+  });
+}
+
+export async function setEvaluationSessionCookie(member: { id: string; name: string; staffGroup: StaffGroup }) {
+  const cookieStore = await cookies();
+  cookieStore.set({
+    name: SESSION_COOKIE,
+    value: createSessionToken({
+      userId: `evaluation:${member.id}`,
+      email: `${member.id}@evaluation.local`,
+      role: "evaluation",
+      name: member.name,
+      staffGroup: member.staffGroup,
       issuedAt: Date.now(),
     }),
     httpOnly: true,
