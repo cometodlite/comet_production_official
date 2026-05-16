@@ -8,7 +8,8 @@ type EvaluationMember = {
   id: string;
   name: string;
   group: StaffGroup;
-  codePrefix: string;
+  codePrefix?: string;
+  code?: string;
 };
 
 export type EvaluationMemberAccess = {
@@ -23,6 +24,12 @@ const EVALUATION_MEMBERS: EvaluationMember[] = [
     name: "레도",
     group: "entertainers",
     codePrefix: "5037",
+  },
+  {
+    id: "admin",
+    name: "admin",
+    group: "entertainers",
+    code: "admin1215",
   },
 ];
 
@@ -41,8 +48,9 @@ function normalizeName(value: FormDataEntryValue | string | null | undefined) {
 }
 
 function buildEvaluationCode(member: EvaluationMember) {
+  if (member.code) return member.code;
   const initialCode = getInitialStaffCode(member.group);
-  return initialCode ? `${member.codePrefix}-${initialCode}` : null;
+  return initialCode && member.codePrefix ? `${member.codePrefix}-${initialCode}` : null;
 }
 
 export function verifyEvaluationMember(input: { name: FormDataEntryValue | string | null; code: FormDataEntryValue | string | null }) {
