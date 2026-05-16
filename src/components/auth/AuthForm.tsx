@@ -113,11 +113,18 @@ export default function AuthForm({ mode }: { mode: Mode }) {
       </p>
 
       {mode === "staff-login" && (
-        <p className="text-center text-xs text-[#86868b]/70">
-          <Link href="/contact?type=staff-code" className="hover:text-white">
-            사원 코드를 잊으셨나요? 초기화 요청
-          </Link>
-        </p>
+        <div className="space-y-2 text-center text-xs text-[#86868b]/70">
+          <p>
+            <Link href="/staff/evaluation" className="hover:text-white">
+              입사 준비중이신가요? 평가 회원으로 이동
+            </Link>
+          </p>
+          <p>
+            <Link href="/contact?type=staff-code" className="hover:text-white">
+              사원 코드를 잊으셨나요? 초기화 요청
+            </Link>
+          </p>
+        </div>
       )}
     </form>
   );

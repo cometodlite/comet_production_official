@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { clearSessionCookie, readSession, setSessionCookie } from "@/lib/auth/session";
+import { verifyEvaluationMember } from "@/lib/auth/evaluation-members";
 import { normalizeStaffGroup } from "@/lib/auth/staff-groups";
 import {
   isInitialStaffCodeConfigured,
@@ -36,6 +37,8 @@ export type AuthFormState = {
     targetStaffGroup?: string[];
     noticeTitle?: string[];
     noticeBody?: string[];
+    evaluationName?: string[];
+    evaluationCode?: string[];
     form?: string[];
   };
   success?: string;
@@ -277,6 +280,23 @@ export async function publishBoardNotice(_state: AuthFormState, formData: FormDa
 
   revalidatePath("/staff/board");
   return { success: "이사회 공지가 게시되었습니다." };
+}
+
+export async function evaluationLogin(_state: AuthFormState, formData: FormData): Promise<AuthFormState> {
+  const evaluationName = String(formData.get("evaluationName") || "").trim();
+  const evaluationCode = normalizeStaffCode(formData.get("evaluationCode"));
+  const errors: NonNullable<AuthFormState["errors"]> = {};
+
+  if (!evaluationName) errors.evaluationName = ["평가 회원 이름을 입력해 주세요."];
+  if (!evaluationCode) errors.evaluationCode = ["평가 회원 코드를 입력해 주세요."];
+  if (Object.keys(errors).length) return { errors };
+
+  const member = verifyEvaluationMember({ name: evaluationName, code: evaluationCode });
+  if (!member) {
+    return { errors: { form: ["평가 회원 이름 또는 코드가 올바르지 않습니다."] } };
+  }
+
+  return { success: `${member.name}님, 평가 회원 인증이 완료되었습니다. 입사 준비 안내를 확인해 주세요.` };
 }
 
 export async function logout() {
