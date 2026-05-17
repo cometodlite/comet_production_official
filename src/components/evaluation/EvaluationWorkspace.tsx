@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { EVALUATION_TRACK_LABELS, type EvaluationTrack } from "@/lib/auth/evaluation-tracks";
+import { EVALUATION_DOCUMENTS, getEvaluationFileUrl } from "@/lib/evaluation/documents";
 import { useLang } from "@/context/LanguageContext";
 import { submitEvaluationScore } from "@/app/actions/evaluation";
 
@@ -10,35 +11,7 @@ const STORAGE_KEY_PREFIX = "comet-evaluation-attempt";
 const fiveChoiceOptions = ["1", "2", "3", "4", "5"];
 const fourChoiceOptions = ["1", "2", "3", "4"];
 
-const documents = [
-  {
-    id: "document-1",
-    title: "일반형 역량평가 연습 1차",
-    track: "entertainers-illustrator-writer",
-    pdfPath: "/evaluation/illustrator-general-practice-1.pdf",
-    solutionPdfPath: "/evaluation/illustrator-general-practice-1-solution.pdf",
-  },
-  {
-    id: "document-2",
-    title: "일반형 역량평가 연습 2차",
-    track: "entertainers-illustrator-writer",
-    pdfPath: "/evaluation/illustrator-general-practice-2.pdf",
-    solutionPdfPath: "/evaluation/illustrator-general-practice-2-solution.pdf",
-  },
-  {
-    id: "document-3",
-    title: "일반형 역량평가 연습 3차",
-    track: "entertainers-illustrator-writer",
-    pdfPath: "/evaluation/illustrator-general-practice-3.pdf",
-    solutionPdfPath: "/evaluation/illustrator-general-practice-3-solution.pdf",
-  },
-] satisfies Array<{
-  id: string;
-  title: string;
-  track: EvaluationTrack;
-  pdfPath: string;
-  solutionPdfPath: string;
-}>;
+const documents = EVALUATION_DOCUMENTS;
 
 type WorkspaceStatus = "ready" | "running" | "ended";
 type QuestionConfig = {
@@ -354,7 +327,7 @@ export default function EvaluationWorkspace({
   const evaluationTrackLabel = evaluationTrack ? EVALUATION_TRACK_LABELS[evaluationTrack] : "미배정";
   const locked = currentAttempt.status !== "running";
   const currentAnswer = answers[currentDocument.id] || createEmptyAnswer();
-  const currentPdfPath = currentAttempt.status === "ended" ? currentDocument.solutionPdfPath : currentDocument.pdfPath;
+  const currentPdfPath = getEvaluationFileUrl(currentAttempt.status === "ended" ? currentDocument.solutionFile : currentDocument.pdfFile);
   const startEvaluation = (documentId: string) => {
     setDocumentAttempts((current) => ({
       ...current,
@@ -499,15 +472,15 @@ export default function EvaluationWorkspace({
                     className={`flex-1 px-4 py-3 text-sm font-semibold transition ${
                       isDone
                         ? isActive
-                          ? "bg-green-500/15 text-green-300"
-                          : "text-green-400/70 hover:text-green-300"
+                          ? "border-b-2 border-green-300 bg-green-500 text-black"
+                          : "bg-green-500/75 text-black hover:bg-green-400"
                         : isActive
                           ? "bg-white/[0.08] text-white"
                           : "text-[#86868b] hover:text-white"
                     }`}
                   >
                     <span className="block">{document.title}</span>
-                    <span className={`mt-1 block text-[11px] font-medium ${isDone ? "text-green-400/60" : "text-white/45"}`}>
+                    <span className={`mt-1 block text-[11px] font-medium ${isDone ? "text-black/65" : "text-white/45"}`}>
                       {getAttemptLabel(docStatus, t)}
                     </span>
                   </button>
