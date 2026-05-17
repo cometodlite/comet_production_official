@@ -132,6 +132,7 @@ export default function EvaluationWorkspace({
   const { t, lang } = useLang();
 
   const [activeDocument, setActiveDocument] = useState(availableDocuments[0]?.id || "");
+  const [mobileView, setMobileView] = useState<"pdf" | "answers">("pdf");
   const [documentAttempts, setDocumentAttempts] = useState<Record<string, DocumentAttempt>>(() => createInitialAttempts(availableDocuments));
   const [answers, setAnswers] = useState<Record<string, DocumentAnswer>>(() => createInitialAnswers(availableDocuments));
   const [isHydrated, setIsHydrated] = useState(false);
@@ -270,8 +271,8 @@ export default function EvaluationWorkspace({
       setAnswers(createInitialAnswers(trackDocuments.filter((d) => pendingPicks.includes(d.id))));
     };
     return (
-      <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-6 py-20">
-        <section className="rounded-lg border border-white/[0.08] bg-black/40 p-8 backdrop-blur-xl">
+      <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-4 py-10 lg:px-6 lg:py-20">
+        <section className="rounded-lg border border-white/[0.08] bg-black/40 p-5 backdrop-blur-xl lg:p-8">
           <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
           <h1 className="text-2xl font-black tracking-tight text-white">{t("평가 문서 선택", "Select Documents")}</h1>
           <p className="mt-2 text-sm leading-relaxed text-[#86868b]">
@@ -337,8 +338,8 @@ export default function EvaluationWorkspace({
   const currentDocument = availableDocuments.find((document) => document.id === activeDocument) || availableDocuments[0];
   if (!currentDocument) {
     return (
-      <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-6 py-20">
-        <section className="rounded-lg border border-white/[0.08] bg-black/40 p-7 backdrop-blur-xl">
+      <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-4 py-10 lg:px-6 lg:py-20">
+        <section className="rounded-lg border border-white/[0.08] bg-black/40 p-5 backdrop-blur-xl lg:p-7">
           <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
           <h1 className="text-3xl font-black tracking-tight text-white">{t("접근 가능한 평가가 없습니다", "No Evaluation Available")}</h1>
           <p className="mt-4 text-sm leading-relaxed text-[#86868b]">
@@ -404,22 +405,24 @@ export default function EvaluationWorkspace({
   };
 
   return (
-    <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-7xl px-6 py-20">
-      <section className="rounded-lg border border-white/[0.08] bg-black/40 p-7 backdrop-blur-xl">
-        <div className="flex flex-col gap-5 border-b border-white/10 pb-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="mb-3 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
-            <h1 className="text-3xl font-black tracking-tight text-white">{t("연습 문제", "Practice")}</h1>
-            <p className="mt-3 text-sm leading-relaxed text-[#86868b]">
+    <div className="mx-auto min-h-[calc(100svh-4rem)] max-w-7xl px-4 py-8 lg:px-6 lg:py-20">
+      <section className="rounded-lg border border-white/[0.08] bg-black/40 p-4 backdrop-blur-xl lg:p-7">
+        {/* 헤더 */}
+        <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5 lg:pb-6">
+          <div className="min-w-0">
+            <p className="mb-2 text-[11px] font-semibold tracking-[0.28em] text-indigo-300/80">COMET EVALUATION</p>
+            <h1 className="text-2xl font-black tracking-tight text-white lg:text-3xl">{t("연습 문제", "Practice")}</h1>
+            <p className="mt-2 text-xs leading-relaxed text-[#86868b] lg:text-sm">
               {lang === "ko"
-                ? <>{memberName}님 인증 세션입니다. {evaluationTrackLabel} 평가만 표시됩니다.</>
-                : <>{memberName}'s session. Showing {evaluationTrackLabel} evaluation only.</>}
+                ? <>{memberName}님 인증 세션 · {evaluationTrackLabel}</>
+                : <>{memberName} · {evaluationTrackLabel}</>}
             </p>
           </div>
 
-          <div className="rounded-lg border border-white/10 bg-white/[0.04] px-5 py-4 text-right">
-            <p className="text-xs font-semibold text-[#86868b]">{t("남은 시간", "Time Left")}</p>
-            <p className={`mt-1 font-mono text-2xl font-black ${currentAttempt.remainingSeconds <= 300 ? "text-red-300" : "text-white"}`}>
+          {/* 타이머: 모바일에서 콤팩트 */}
+          <div className="flex-shrink-0 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-right lg:px-5 lg:py-4">
+            <p className="text-[10px] font-semibold text-[#86868b] lg:text-xs">{t("남은 시간", "Time Left")}</p>
+            <p className={`mt-0.5 font-mono text-xl font-black lg:mt-1 lg:text-2xl ${currentAttempt.remainingSeconds <= 300 ? "text-red-300" : "text-white"}`}>
               {formatTime(currentAttempt.remainingSeconds)}
             </p>
           </div>
@@ -436,12 +439,12 @@ export default function EvaluationWorkspace({
           </div>
         )}
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap gap-3 lg:mt-6">
           {currentAttempt.status === "ready" && (
             <button
               type="button"
-              onClick={() => startEvaluation(currentDocument.id)}
-              className="rounded-lg bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-amber-200"
+              onClick={() => { startEvaluation(currentDocument.id); setMobileView("pdf"); }}
+              className="rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-black transition hover:bg-amber-200 lg:py-3"
             >
               {t(`${currentDocument.title} 시작`, `Start ${currentDocument.title}`)}
             </button>
@@ -450,15 +453,39 @@ export default function EvaluationWorkspace({
             <button
               type="button"
               onClick={() => endEvaluation(currentDocument.id)}
-              className="rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white"
+              className="rounded-lg border border-white/15 px-5 py-2.5 text-sm font-semibold text-white/80 transition hover:border-white/35 hover:text-white lg:py-3"
             >
               {t(`${currentDocument.title} 풀이 종료`, `End ${currentDocument.title}`)}
             </button>
           )}
         </div>
 
-        <div className="mt-8 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.9fr)]">
-          <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] lg:sticky lg:top-20">
+        {/* 모바일 전용: 문제 보기 / 답안 작성 탭 */}
+        <div className="mt-4 flex overflow-hidden rounded-lg border border-white/10 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMobileView("pdf")}
+            className={`flex-1 py-3 text-sm font-semibold transition ${
+              mobileView === "pdf" ? "bg-white/[0.09] text-white" : "text-[#86868b] hover:text-white"
+            }`}
+          >
+            📄 {t("문제 보기", "Questions")}
+          </button>
+          <div className="w-px bg-white/10" />
+          <button
+            type="button"
+            onClick={() => setMobileView("answers")}
+            className={`flex-1 py-3 text-sm font-semibold transition ${
+              mobileView === "answers" ? "bg-white/[0.09] text-white" : "text-[#86868b] hover:text-white"
+            }`}
+          >
+            ✏️ {t("답안 작성", "Answers")}
+          </button>
+        </div>
+
+        <div className="mt-4 grid items-start gap-4 lg:mt-8 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.9fr)] lg:gap-5">
+          {/* PDF 패널 */}
+          <div className={`overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] lg:sticky lg:top-20 ${mobileView === "answers" ? "hidden lg:block" : ""}`}>
             <div className="flex border-b border-white/10">
               {availableDocuments.map((document) => {
                 const docStatus = documentAttempts[document.id]?.status || "ready";
@@ -468,7 +495,7 @@ export default function EvaluationWorkspace({
                   <button
                     key={document.id}
                     type="button"
-                    onClick={() => setActiveDocument(document.id)}
+                    onClick={() => { setActiveDocument(document.id); setMobileView("pdf"); }}
                     className={`flex-1 px-4 py-3 text-sm font-semibold transition ${
                       isDone
                         ? isActive
@@ -487,7 +514,7 @@ export default function EvaluationWorkspace({
                 );
               })}
             </div>
-            <div className="h-[68svh] min-h-[460px] max-h-[700px] p-2">
+            <div className="h-[58svh] min-h-[320px] max-h-[600px] p-2 lg:h-[68svh] lg:min-h-[460px] lg:max-h-[700px]">
               {currentPdfPath ? (
                 <iframe title={currentDocument.title} src={currentPdfPath} className="h-full w-full rounded-md border border-white/10 bg-white" />
               ) : (
@@ -503,7 +530,8 @@ export default function EvaluationWorkspace({
             </div>
           </div>
 
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5 lg:h-[68svh] lg:max-h-[700px] lg:min-h-[460px] lg:overflow-y-auto">
+          {/* 답안 패널 */}
+          <div className={`rounded-lg border border-white/10 bg-white/[0.03] p-4 lg:h-[68svh] lg:max-h-[700px] lg:min-h-[460px] lg:overflow-y-auto lg:p-5 ${mobileView === "pdf" ? "hidden lg:block" : ""}`}>
             <h2 className="text-lg font-bold text-white">{t("답안 작성", "Write Answers")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[#86868b]">{t(`${currentDocument.title} 답안`, `${currentDocument.title} Answers`)}</p>
 
