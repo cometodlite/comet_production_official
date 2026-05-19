@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import EvaluationWorkspace from "@/components/evaluation/EvaluationWorkspace";
 import { requireEvaluationUser } from "@/lib/auth/current-user";
-import { isRealExamDay } from "@/lib/evaluation-schedule";
+import { getEvaluationPeriod } from "@/lib/evaluation-schedule";
 
 export const metadata: Metadata = {
   title: "평가 페이지",
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 export default async function EvaluationPage() {
   const user = await requireEvaluationUser();
 
-  if (isRealExamDay()) {
+  // 등록 기간(4·14·24일) 또는 실전 기간(5·15·25일)엔 연습 불가 → 실전 페이지로
+  if (getEvaluationPeriod() !== "practice") {
     redirect("/evaluation/real");
   }
 
