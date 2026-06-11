@@ -6,18 +6,25 @@ import path from "node:path";
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 import type { StaffGroup } from "@/lib/auth/staff-groups";
+import type { ExamQuestionData, ExamSetMeta } from "@/lib/evaluation/exam-types";
 
 const scrypt = promisify(scryptCallback);
 const LOCAL_USERS_FILE = path.join(process.cwd(), ".data", "users.json");
 const LOCAL_BOARD_NOTICES_FILE = path.join(process.cwd(), ".data", "board-notices.json");
 const LOCAL_SCORES_FILE = path.join(process.cwd(), ".data", "evaluation-scores.json");
+const LOCAL_EXAM_QUESTIONS_FILE = path.join(process.cwd(), ".data", "exam-questions.json");
+const LOCAL_WRITTEN_GRADES_FILE = path.join(process.cwd(), ".data", "written-grades.json");
 const VERCEL_USERS_FILE = "/tmp/comet-production-users.json";
 const VERCEL_BOARD_NOTICES_FILE = "/tmp/comet-production-board-notices.json";
 const VERCEL_SCORES_FILE = "/tmp/comet-evaluation-scores.json";
+const VERCEL_EXAM_QUESTIONS_FILE = "/tmp/comet-exam-questions.json";
+const VERCEL_WRITTEN_GRADES_FILE = "/tmp/comet-written-grades.json";
 const USERS_FILE =
   process.env.AUTH_STORE_PATH || (process.env.VERCEL ? VERCEL_USERS_FILE : LOCAL_USERS_FILE);
 const BOARD_NOTICES_FILE = process.env.BOARD_NOTICES_STORE_PATH || (process.env.VERCEL ? VERCEL_BOARD_NOTICES_FILE : LOCAL_BOARD_NOTICES_FILE);
 const SCORES_FILE = process.env.SCORES_STORE_PATH || (process.env.VERCEL ? VERCEL_SCORES_FILE : LOCAL_SCORES_FILE);
+const EXAM_QUESTIONS_FILE = process.env.EXAM_QUESTIONS_STORE_PATH || (process.env.VERCEL ? VERCEL_EXAM_QUESTIONS_FILE : LOCAL_EXAM_QUESTIONS_FILE);
+const WRITTEN_GRADES_FILE = process.env.WRITTEN_GRADES_STORE_PATH || (process.env.VERCEL ? VERCEL_WRITTEN_GRADES_FILE : LOCAL_WRITTEN_GRADES_FILE);
 
 type SqlClient = ReturnType<typeof neon>;
 
@@ -58,6 +65,8 @@ export type BoardNotice = {
   createdAt: string;
 };
 
+export type EvaluationVerdict = "pass" | "fail";
+
 export type EvaluationScore = {
   id: string;
   memberId: string;
@@ -69,6 +78,23 @@ export type EvaluationScore = {
   evaluationDate: string;
   responses: Record<string, string>;
   submittedAt: string;
+  /** 이사회가 지정한 합불 결과. null = 미결정 */
+  verdict?: EvaluationVerdict | null;
+  /** 합불 결정 사유 메모 */
+  verdictNote?: string | null;
+  /** 합불 결정 시각 (ISO) */
+  verdictAt?: string | null;
+};
+
+export type WrittenGrade = {
+  id: string;
+  evaluationScoreId: string;
+  questionKey: string;   // "11", "19" 등 문항 번호 문자열
+  score: number;
+  maxScore: number;
+  comment: string;
+  gradedBy: string;      // 채점자 이름
+  gradedAt: string;
 };
 
 function toPublicUser(user: UserRecord): PublicUser {
@@ -171,6 +197,29 @@ async function ensureDatabase(sql: SqlClient) {
       ADD COLUMN IF NOT EXISTS staff_code_changed_at TIMESTAMPTZ
     `;
     await sql`
+      CREATE TABLE IF NOT EXISTS comet_exam_questions (
+        id TEXT PRIMARY KEY,
+        set_id TEXT NOT NULL,
+        question_type TEXT NOT NULL,
+        question_text TEXT NOT NULL,
+        choices JSONB DEFAULT NULL,
+        correct_answer TEXT DEFAULT NULL,
+        explanation TEXT DEFAULT NULL,
+        model_answer TEXT DEFAULT NULL,
+        rows_hint INTEGER DEFAULT 6,
+        is_fixed_last BOOLEAN DEFAULT false,
+        sort_order INTEGER DEFAULT 0,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS comet_exam_config (
+        config_key TEXT PRIMARY KEY,
+        config_value TEXT NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+    await sql`
       CREATE TABLE IF NOT EXISTS comet_evaluation_scores (
         id TEXT PRIMARY KEY,
         member_id TEXT NOT NULL,
@@ -183,6 +232,24 @@ async function ensureDatabase(sql: SqlClient) {
         responses JSONB NOT NULL,
         submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         UNIQUE (member_id, document_id)
+      )
+    `;
+    // 합불 컬럼 추가 (이미 존재하면 무시)
+    await sql`ALTER TABLE comet_evaluation_scores ADD COLUMN IF NOT EXISTS verdict TEXT`;
+    await sql`ALTER TABLE comet_evaluation_scores ADD COLUMN IF NOT EXISTS verdict_note TEXT`;
+    await sql`ALTER TABLE comet_evaluation_scores ADD COLUMN IF NOT EXISTS verdict_at TIMESTAMPTZ`;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS comet_written_grades (
+        id TEXT PRIMARY KEY,
+        evaluation_score_id TEXT NOT NULL,
+        question_key TEXT NOT NULL,
+        score INTEGER NOT NULL DEFAULT 0,
+        max_score INTEGER NOT NULL DEFAULT 10,
+        comment TEXT NOT NULL DEFAULT '',
+        graded_by TEXT NOT NULL,
+        graded_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        UNIQUE (evaluation_score_id, question_key)
       )
     `;
   })();
@@ -318,6 +385,18 @@ export async function findPublicUserById(id: string) {
   const users = await readUsers();
   const user = users.find((item) => item.id === id);
   return user ? toPublicUser(user) : null;
+}
+
+/** 회원 ID로 이메일 주소를 조회합니다 (이메일 알림용). */
+export async function getMemberEmailById(memberId: string): Promise<string | null> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = await sql`SELECT email FROM comet_users WHERE id = ${memberId} LIMIT 1` as Record<string, unknown>[];
+    return rows[0] ? String(rows[0].email) : null;
+  }
+  const users = await readUsers();
+  return users.find((u) => u.id === memberId)?.email ?? null;
 }
 
 export async function listStaffUsers() {
@@ -686,7 +765,8 @@ export async function listEvaluationScores(): Promise<EvaluationScore[]> {
       SELECT
         id, member_id, member_name, evaluation_track,
         document_id, document_title, applicant_name,
-        evaluation_date, responses, submitted_at
+        evaluation_date, responses, submitted_at,
+        verdict, verdict_note, verdict_at
       FROM comet_evaluation_scores
       ORDER BY submitted_at DESC
     `) as Record<string, unknown>[];
@@ -701,6 +781,9 @@ export async function listEvaluationScores(): Promise<EvaluationScore[]> {
       evaluationDate: String(row.evaluation_date),
       responses: row.responses as Record<string, string>,
       submittedAt: mapTimestamp(row.submitted_at) || new Date().toISOString(),
+      verdict: (row.verdict as EvaluationVerdict | null) ?? null,
+      verdictNote: (row.verdict_note as string | null) ?? null,
+      verdictAt: mapTimestamp(row.verdict_at) ?? null,
     }));
   }
 
@@ -708,6 +791,446 @@ export async function listEvaluationScores(): Promise<EvaluationScore[]> {
   return [...scores].sort(
     (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
   );
+}
+
+export async function getMyEvaluationScores(memberId: string): Promise<EvaluationScore[]> {
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        id, member_id, member_name, evaluation_track,
+        document_id, document_title, applicant_name,
+        evaluation_date, responses, submitted_at,
+        verdict, verdict_note, verdict_at
+      FROM comet_evaluation_scores
+      WHERE member_id = ${memberId}
+      ORDER BY submitted_at DESC
+    `) as Record<string, unknown>[];
+    return rows.map((row) => ({
+      id: String(row.id),
+      memberId: String(row.member_id),
+      memberName: String(row.member_name),
+      evaluationTrack: String(row.evaluation_track),
+      documentId: String(row.document_id),
+      documentTitle: String(row.document_title),
+      applicantName: String(row.applicant_name),
+      evaluationDate: String(row.evaluation_date),
+      responses: row.responses as Record<string, string>,
+      submittedAt: mapTimestamp(row.submitted_at) || new Date().toISOString(),
+      verdict: (row.verdict as EvaluationVerdict | null) ?? null,
+      verdictNote: (row.verdict_note as string | null) ?? null,
+      verdictAt: mapTimestamp(row.verdict_at) ?? null,
+    }));
+  }
+
+  const scores = await readScores();
+  return scores
+    .filter((s) => s.memberId === memberId)
+    .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+}
+
+export type VerdictLookup = {
+  applicantName: string;
+  evaluationTrack: string;
+  evaluationDate: string;
+  documentTitle: string;
+  verdict: EvaluationVerdict | null;
+  verdictNote: string | null;
+  verdictAt: string | null;
+};
+
+/**
+ * 응시자 이름으로 합불 결과를 조회합니다 (공개 조회 페이지용).
+ * 이름은 대소문자·공백 trim 무시 비교.
+ */
+export async function getVerdictByApplicantName(name: string): Promise<VerdictLookup[]> {
+  const trimmed = name.trim();
+  if (!trimmed) return [];
+
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT
+        applicant_name, evaluation_track, evaluation_date,
+        document_title, verdict, verdict_note, verdict_at
+      FROM comet_evaluation_scores
+      WHERE LOWER(TRIM(applicant_name)) = LOWER(${trimmed})
+      ORDER BY submitted_at DESC
+    `) as Record<string, unknown>[];
+    return rows.map((row) => ({
+      applicantName: String(row.applicant_name),
+      evaluationTrack: String(row.evaluation_track),
+      evaluationDate: String(row.evaluation_date),
+      documentTitle: String(row.document_title),
+      verdict: (row.verdict as EvaluationVerdict | null) ?? null,
+      verdictNote: (row.verdict_note as string | null) ?? null,
+      verdictAt: mapTimestamp(row.verdict_at) ?? null,
+    }));
+  }
+
+  const scores = await readScores();
+  return scores
+    .filter((s) => s.applicantName.trim().toLowerCase() === trimmed.toLowerCase())
+    .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
+    .map((s) => ({
+      applicantName: s.applicantName,
+      evaluationTrack: s.evaluationTrack,
+      evaluationDate: s.evaluationDate,
+      documentTitle: s.documentTitle,
+      verdict: s.verdict ?? null,
+      verdictNote: s.verdictNote ?? null,
+      verdictAt: s.verdictAt ?? null,
+    }));
+}
+
+/**
+ * 이사회 전용: 특정 평가 답안의 합불 결과를 저장합니다.
+ * verdict = null 이면 결정을 취소(미결정)합니다.
+ */
+export async function setEvaluationVerdict(input: {
+  evaluationScoreId: string;
+  verdict: EvaluationVerdict | null;
+  note: string;
+}): Promise<void> {
+  const verdictAt = input.verdict ? new Date().toISOString() : null;
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      UPDATE comet_evaluation_scores
+      SET
+        verdict      = ${input.verdict ?? null},
+        verdict_note = ${input.note || null},
+        verdict_at   = ${verdictAt}
+      WHERE id = ${input.evaluationScoreId}
+    `;
+    return;
+  }
+
+  // File-based fallback
+  const scores = await readScores();
+  const idx = scores.findIndex((s) => s.id === input.evaluationScoreId);
+  if (idx >= 0) {
+    scores[idx] = {
+      ...scores[idx],
+      verdict: input.verdict ?? null,
+      verdictNote: input.note || null,
+      verdictAt,
+    };
+    await writeScores(scores);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exam question management
+// ─────────────────────────────────────────────────────────────────────────────
+
+type ExamQuestionsFile = {
+  questions: (ExamQuestionData & { setId: string; sortOrder: number })[];
+  config: Record<string, string>;
+};
+
+async function ensureExamQuestionsStore() {
+  await fs.mkdir(path.dirname(EXAM_QUESTIONS_FILE), { recursive: true });
+  try { await fs.access(EXAM_QUESTIONS_FILE); } catch {
+    await fs.writeFile(EXAM_QUESTIONS_FILE, JSON.stringify({ questions: [], config: {} }, null, 2) + "\n", "utf8");
+  }
+}
+
+async function readExamQuestionsFile(): Promise<ExamQuestionsFile> {
+  await ensureExamQuestionsStore();
+  const raw = await fs.readFile(EXAM_QUESTIONS_FILE, "utf8");
+  return JSON.parse(raw) as ExamQuestionsFile;
+}
+
+async function writeExamQuestionsFile(data: ExamQuestionsFile) {
+  await ensureExamQuestionsStore();
+  await fs.writeFile(EXAM_QUESTIONS_FILE, JSON.stringify(data, null, 2) + "\n", "utf8");
+}
+
+function mapDbRowToQuestion(row: Record<string, unknown>): ExamQuestionData & { setId: string; sortOrder: number } {
+  return {
+    id: String(row.id),
+    setId: String(row.set_id),
+    type: row.question_type === "written" ? "written" : "choice",
+    text: String(row.question_text),
+    choices: Array.isArray(row.choices) && row.choices.length === 5
+      ? row.choices as [string, string, string, string, string]
+      : undefined,
+    correctAnswer: row.correct_answer ? String(row.correct_answer) : undefined,
+    explanation: row.explanation ? String(row.explanation) : undefined,
+    modelAnswer: row.model_answer ? String(row.model_answer) : undefined,
+    rows: row.rows_hint ? Number(row.rows_hint) : 6,
+    fixedLast: Boolean(row.is_fixed_last),
+    sortOrder: Number(row.sort_order ?? 0),
+  };
+}
+
+// ── 평가 일정 설정 ─────────────────────────────────────────────────────────────
+
+export type ExamScheduleConfig = {
+  registrationDays: number[];
+  realExamDays: number[];
+};
+
+export async function getExamScheduleConfig(track?: string): Promise<ExamScheduleConfig> {
+  const [regRaw, examRaw] = await Promise.all([
+    track
+      ? getExamConfig(`schedule_registration_days:${track}`).then((v) => v ?? getExamConfig("schedule_registration_days"))
+      : getExamConfig("schedule_registration_days"),
+    track
+      ? getExamConfig(`schedule_real_exam_days:${track}`).then((v) => v ?? getExamConfig("schedule_real_exam_days"))
+      : getExamConfig("schedule_real_exam_days"),
+  ]);
+  return {
+    registrationDays: regRaw ? (JSON.parse(regRaw) as number[]) : [4, 14, 24],
+    realExamDays:     examRaw ? (JSON.parse(examRaw) as number[]) : [5, 15, 25],
+  };
+}
+
+export async function setExamScheduleConfig(
+  config: ExamScheduleConfig,
+  track?: string,
+): Promise<void> {
+  const regKey  = track ? `schedule_registration_days:${track}` : "schedule_registration_days";
+  const examKey = track ? `schedule_real_exam_days:${track}`    : "schedule_real_exam_days";
+  await Promise.all([
+    setExamConfig(regKey,  JSON.stringify(config.registrationDays)),
+    setExamConfig(examKey, JSON.stringify(config.realExamDays)),
+  ]);
+}
+
+// ── 트랙 관리 ───────────────────────────────────────────────────────────────────
+
+/** 현재 존재하는 모든 평가 트랙 이름을 반환합니다. */
+export async function listEvaluationTracks(): Promise<string[]> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = await sql`
+      SELECT DISTINCT evaluation_track FROM comet_evaluation_scores ORDER BY evaluation_track
+    ` as Record<string, unknown>[];
+    return rows.map((r) => String(r.evaluation_track));
+  }
+  const scores = await readScores();
+  return [...new Set(scores.map((s) => s.evaluationTrack))].sort();
+}
+
+/** 특정 트랙에 활성 문제 세트를 지정합니다. null 이면 글로벌 세트 사용. */
+export async function setTrackActiveSet(track: string, setId: string | null): Promise<void> {
+  const key = `active_exam_set_id:${track}`;
+  if (setId) {
+    await setExamConfig(key, setId);
+  } else {
+    await deleteExamConfig(key);
+  }
+}
+
+export async function getExamConfig(key: string): Promise<string | null> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = await sql`SELECT config_value FROM comet_exam_config WHERE config_key = ${key} LIMIT 1` as Record<string, unknown>[];
+    return rows[0] ? String(rows[0].config_value) : null;
+  }
+  const data = await readExamQuestionsFile();
+  return data.config[key] ?? null;
+}
+
+export async function setExamConfig(key: string, value: string) {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      INSERT INTO comet_exam_config (config_key, config_value, updated_at)
+      VALUES (${key}, ${value}, NOW())
+      ON CONFLICT (config_key) DO UPDATE SET config_value = EXCLUDED.config_value, updated_at = NOW()
+    `;
+    return;
+  }
+  const data = await readExamQuestionsFile();
+  data.config[key] = value;
+  await writeExamQuestionsFile(data);
+}
+
+export async function deleteExamConfig(key: string) {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`DELETE FROM comet_exam_config WHERE config_key = ${key}`;
+    return;
+  }
+  const data = await readExamQuestionsFile();
+  delete data.config[key];
+  await writeExamQuestionsFile(data);
+}
+
+export async function listExamQuestionSets(): Promise<ExamSetMeta[]> {
+  const activeSetId = await getExamConfig("active_exam_set_id");
+  const sql = getSqlClient();
+
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = await sql`
+      SELECT set_id, COUNT(*) as total,
+        SUM(CASE WHEN question_type = 'choice' THEN 1 ELSE 0 END) as mc_count,
+        SUM(CASE WHEN question_type = 'written' THEN 1 ELSE 0 END) as written_count
+      FROM comet_exam_questions
+      GROUP BY set_id
+      ORDER BY MIN(created_at) DESC
+    ` as Record<string, unknown>[];
+    return rows.map((r) => ({
+      setId: String(r.set_id),
+      label: String(r.set_id),
+      questionCount: Number(r.total),
+      mcCount: Number(r.mc_count),
+      writtenCount: Number(r.written_count),
+      isActive: String(r.set_id) === activeSetId,
+    }));
+  }
+
+  const data = await readExamQuestionsFile();
+  const bySet = new Map<string, { mc: number; written: number }>();
+  for (const q of data.questions) {
+    const cur = bySet.get(q.setId) ?? { mc: 0, written: 0 };
+    if (q.type === "choice") cur.mc++;
+    else cur.written++;
+    bySet.set(q.setId, cur);
+  }
+  return Array.from(bySet.entries()).map(([setId, counts]) => ({
+    setId,
+    label: setId,
+    questionCount: counts.mc + counts.written,
+    mcCount: counts.mc,
+    writtenCount: counts.written,
+    isActive: setId === activeSetId,
+  }));
+}
+
+export async function listExamQuestionsForSet(setId: string): Promise<(ExamQuestionData & { setId: string; sortOrder: number })[]> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = await sql`
+      SELECT * FROM comet_exam_questions WHERE set_id = ${setId} ORDER BY sort_order ASC, created_at ASC
+    ` as Record<string, unknown>[];
+    return rows.map(mapDbRowToQuestion);
+  }
+  const data = await readExamQuestionsFile();
+  return data.questions.filter((q) => q.setId === setId).sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export async function createExamQuestion(input: {
+  setId: string;
+  type: "choice" | "written";
+  text: string;
+  choices?: [string, string, string, string, string];
+  correctAnswer?: string;
+  explanation?: string;
+  modelAnswer?: string;
+  rows?: number;
+  fixedLast?: boolean;
+  sortOrder?: number;
+}) {
+  const id = randomBytes(12).toString("base64url");
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      INSERT INTO comet_exam_questions
+        (id, set_id, question_type, question_text, choices, correct_answer, explanation, model_answer, rows_hint, is_fixed_last, sort_order)
+      VALUES (
+        ${id}, ${input.setId}, ${input.type}, ${input.text},
+        ${input.choices ? JSON.stringify(input.choices) : null},
+        ${input.correctAnswer || null}, ${input.explanation || null},
+        ${input.modelAnswer || null}, ${input.rows || 6},
+        ${input.fixedLast ?? input.type === "written"},
+        ${input.sortOrder ?? 0}
+      )
+    `;
+    return id;
+  }
+  const data = await readExamQuestionsFile();
+  data.questions.push({
+    id, setId: input.setId, type: input.type, text: input.text,
+    choices: input.choices, correctAnswer: input.correctAnswer,
+    explanation: input.explanation, modelAnswer: input.modelAnswer,
+    rows: input.rows || 6,
+    fixedLast: input.fixedLast ?? input.type === "written",
+    sortOrder: input.sortOrder ?? 0,
+  });
+  await writeExamQuestionsFile(data);
+  return id;
+}
+
+export async function updateExamQuestion(id: string, input: {
+  text?: string;
+  choices?: [string, string, string, string, string];
+  correctAnswer?: string;
+  explanation?: string;
+  modelAnswer?: string;
+  rows?: number;
+  fixedLast?: boolean;
+  sortOrder?: number;
+}) {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      UPDATE comet_exam_questions SET
+        question_text   = COALESCE(${input.text ?? null}, question_text),
+        choices         = COALESCE(${input.choices ? JSON.stringify(input.choices) : null}::jsonb, choices),
+        correct_answer  = COALESCE(${input.correctAnswer ?? null}, correct_answer),
+        explanation     = COALESCE(${input.explanation ?? null}, explanation),
+        model_answer    = COALESCE(${input.modelAnswer ?? null}, model_answer),
+        rows_hint       = COALESCE(${input.rows ?? null}, rows_hint),
+        is_fixed_last   = COALESCE(${input.fixedLast ?? null}, is_fixed_last),
+        sort_order      = COALESCE(${input.sortOrder ?? null}, sort_order)
+      WHERE id = ${id}
+    `;
+    return;
+  }
+  const data = await readExamQuestionsFile();
+  const idx = data.questions.findIndex((q) => q.id === id);
+  if (idx >= 0) {
+    data.questions[idx] = { ...data.questions[idx], ...input };
+    await writeExamQuestionsFile(data);
+  }
+}
+
+export async function deleteExamQuestion(id: string) {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`DELETE FROM comet_exam_questions WHERE id = ${id}`;
+    return;
+  }
+  const data = await readExamQuestionsFile();
+  data.questions = data.questions.filter((q) => q.id !== id);
+  await writeExamQuestionsFile(data);
+}
+
+/**
+ * Returns questions for the currently active set, or null if no active set
+ * (caller should fall back to hardcoded Set A).
+ */
+export async function getActiveExamQuestions(track?: string): Promise<ExamQuestionData[] | null> {
+  // 트랙별 세트 → 글로벌 세트 순으로 fallback
+  let activeSetId: string | null = null;
+  if (track) {
+    activeSetId = await getExamConfig(`active_exam_set_id:${track}`);
+  }
+  if (!activeSetId) {
+    activeSetId = await getExamConfig("active_exam_set_id");
+  }
+  if (!activeSetId) return null;
+  const questions = await listExamQuestionsForSet(activeSetId);
+  if (questions.length === 0) return null;
+  return questions;
 }
 
 export async function listBoardNotices() {
@@ -736,4 +1259,102 @@ export async function listBoardNotices() {
 
   const notices = await readBoardNotices();
   return notices.slice(0, 10);
+}
+
+// ── Written grade helpers (file fallback) ────────────────────────────────────
+
+async function ensureWrittenGradesStore() {
+  await fs.mkdir(path.dirname(WRITTEN_GRADES_FILE), { recursive: true });
+  try {
+    await fs.access(WRITTEN_GRADES_FILE);
+  } catch {
+    await fs.writeFile(WRITTEN_GRADES_FILE, "[]\n", "utf8");
+  }
+}
+
+async function readWrittenGrades(): Promise<WrittenGrade[]> {
+  await ensureWrittenGradesStore();
+  const raw = await fs.readFile(WRITTEN_GRADES_FILE, "utf8");
+  return JSON.parse(raw) as WrittenGrade[];
+}
+
+async function writeWrittenGrades(grades: WrittenGrade[]) {
+  await ensureWrittenGradesStore();
+  await fs.writeFile(WRITTEN_GRADES_FILE, `${JSON.stringify(grades, null, 2)}\n`, "utf8");
+}
+
+function mapGradeRow(row: Record<string, unknown>): WrittenGrade {
+  return {
+    id: String(row.id),
+    evaluationScoreId: String(row.evaluation_score_id),
+    questionKey: String(row.question_key),
+    score: Number(row.score),
+    maxScore: Number(row.max_score),
+    comment: String(row.comment ?? ""),
+    gradedBy: String(row.graded_by),
+    gradedAt: mapTimestamp(row.graded_at) || new Date().toISOString(),
+  };
+}
+
+// ── Public store functions ───────────────────────────────────────────────────
+
+/**
+ * 서술형 답안 채점 결과를 저장합니다. (같은 문항은 덮어씁니다)
+ */
+export async function saveWrittenGrade(input: {
+  evaluationScoreId: string;
+  questionKey: string;
+  score: number;
+  maxScore: number;
+  comment: string;
+  gradedBy: string;
+}): Promise<void> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    await sql`
+      INSERT INTO comet_written_grades
+        (id, evaluation_score_id, question_key, score, max_score, comment, graded_by, graded_at)
+      VALUES (
+        ${randomBytes(12).toString("base64url")},
+        ${input.evaluationScoreId}, ${input.questionKey},
+        ${input.score}, ${input.maxScore}, ${input.comment},
+        ${input.gradedBy}, ${new Date().toISOString()}
+      )
+      ON CONFLICT (evaluation_score_id, question_key)
+      DO UPDATE SET
+        score     = EXCLUDED.score,
+        max_score = EXCLUDED.max_score,
+        comment   = EXCLUDED.comment,
+        graded_by = EXCLUDED.graded_by,
+        graded_at = EXCLUDED.graded_at
+    `;
+    return;
+  }
+  const grades = await readWrittenGrades();
+  const idx = grades.findIndex(
+    (g) => g.evaluationScoreId === input.evaluationScoreId && g.questionKey === input.questionKey,
+  );
+  const record: WrittenGrade = {
+    id: randomBytes(12).toString("base64url"),
+    ...input,
+    gradedAt: new Date().toISOString(),
+  };
+  if (idx >= 0) { grades[idx] = record; } else { grades.push(record); }
+  await writeWrittenGrades(grades);
+}
+
+/**
+ * 모든 서술형 채점 결과를 반환합니다. (이사회 전용)
+ */
+export async function listAllWrittenGrades(): Promise<WrittenGrade[]> {
+  const sql = getSqlClient();
+  if (sql) {
+    await ensureDatabase(sql);
+    const rows = (await sql`
+      SELECT * FROM comet_written_grades ORDER BY graded_at DESC
+    `) as Record<string, unknown>[];
+    return rows.map(mapGradeRow);
+  }
+  return readWrittenGrades();
 }

@@ -5,6 +5,8 @@ import { EVALUATION_TRACK_LABELS, type EvaluationTrack } from "@/lib/auth/evalua
 import { EVALUATION_DOCUMENTS, getEvaluationFileUrl } from "@/lib/evaluation/documents";
 import { useLang } from "@/context/LanguageContext";
 import { submitEvaluationScore } from "@/app/actions/evaluation";
+import PeriodCountdownBanner from "./PeriodCountdownBanner";
+import type { ExamScheduleConfig } from "@/lib/evaluation-schedule";
 
 const DURATION_SECONDS = 50 * 60;
 const STORAGE_KEY_PREFIX = "comet-evaluation-attempt";
@@ -78,9 +80,11 @@ function createInitialAttempts(availableDocuments = documents): Record<string, D
 export default function EvaluationWorkspace({
   memberName,
   evaluationTrack,
+  scheduleConfig,
 }: {
   memberName: string;
   evaluationTrack?: EvaluationTrack;
+  scheduleConfig?: ExamScheduleConfig;
 }) {
   const trackDocuments = useMemo(
     () => documents.filter((document) => document.track === evaluationTrack),
@@ -390,6 +394,8 @@ export default function EvaluationWorkspace({
                 ? <>{memberName}님 인증 세션 · {evaluationTrackLabel}</>
                 : <>{memberName} · {evaluationTrackLabel}</>}
             </p>
+            {/* 다음 실전 시험까지 카운트다운 */}
+            <PeriodCountdownBanner variant="compact" scheduleConfig={scheduleConfig} />
           </div>
 
           {/* 타이머: 모바일에서 콤팩트 */}
