@@ -129,7 +129,7 @@ export default function NewsPage() {
                         {news.tag}
                       </span>
                       <span className="text-white/30 text-xs font-mono">{news.date}</span>
-                      <span className="text-white/12 text-[9px] tracking-[0.5em] uppercase ml-auto hidden sm:block">
+                      <span className="text-white/[0.12] text-[9px] tracking-[0.5em] uppercase ml-auto hidden sm:block">
                         PRESS RELEASE
                       </span>
                     </div>

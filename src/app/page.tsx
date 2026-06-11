@@ -248,6 +248,36 @@ export default function HomePage() {
         <div className="h-20 md:h-28" />
       </section>
 
+      {/* ══════════════════════════════════════════
+          04 / EVALUATION RESULTS
+      ══════════════════════════════════════════ */}
+      <section className="border-t border-white/[0.07] px-8 md:px-16 lg:px-24 py-20 md:py-28">
+        <FadeUp>
+          <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-8">
+            04 / EVALUATION RESULTS
+          </p>
+        </FadeUp>
+        <FadeUp delay={0.1}>
+          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-12">
+            <div className="flex-1">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white leading-tight mb-3">
+                {t("합격 여부 조회", "Check Your Result")}
+              </h2>
+              <p className="text-[#86868b] text-sm md:text-base leading-relaxed max-w-md">
+                {t(
+                  "실전 역량평가에 응시하셨나요? 이사회의 채점이 완료되면 이름으로 결과를 조회할 수 있습니다.",
+                  "Did you take the real evaluation? Once the board has finalized grading, you can check your result by name.",
+                )}
+              </p>
+            </div>
+            <Link href="/results" className="btn-ghost group flex-shrink-0">
+              <span>{t("결과 조회하기", "Check Result")}</span>
+              <span className="text-white/40 transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+            </Link>
+          </div>
+        </FadeUp>
+      </section>
+
     </div>
   );
 }

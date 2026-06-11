@@ -6,11 +6,17 @@
   --foreground:    #f5f5f7;   /* Apple Warm White */
   --bg-soft:       #1d1d1f;   /* Apple Secondary */
   --comet-blue:    #6C7CFF;   /* Comet Blue — 핵심 포인트 */
+  --accent-blue:   #2997ff;   /* Apple Link Blue (on dark) */
   --text-sub:      #86868b;   /* Apple Gray */
   --line-gray:     #3a3a3c;   /* Apple Divider */
   --warm-accent:   #C8A86A;   /* Entertainers Gold */
   --develops-bg:   #060d1f;   /* Develops Dark */
   --ent-bg:        #100b07;   /* Entertainers Dark */
+
+  /* ── 모션 이징 토큰 (Apple-grade) ── */
+  --ease-out-soft:  cubic-bezier(0.22, 0.61, 0.36, 1);   /* 부드러운 감속 */
+  --ease-in-out-ap: cubic-bezier(0.4, 0, 0.2, 1);        /* 표준 인앤아웃 */
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* 살짝 튀는 스프링 */
 }
 
 * {
@@ -20,19 +26,90 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden; /* body 단독 설정 시 Safari에서 sticky 오작동 방지 */
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Pretendard", sans-serif;
   font-size: 17px;
-  line-height: 1.47;
+  line-height: 1.47059;
   min-height: 100svh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.022em; /* Apple body tracking */
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* ── 타이포그래피 정밀화 ─────────────────────────────
+   큰 헤드라인은 균형 잡힌 줄바꿈, 본문은 깔끔한 줄바꿈 */
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+/* 숫자는 표 형태(tabular)로 정렬 — 카운트다운/통계용 */
+.tabular-nums,
+[class*="tabular"] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "kern" 1;
+}
+
+/* ── 텍스트 선택 색상 ── */
+::selection {
+  background: rgba(108, 124, 255, 0.28);
+  color: #ffffff;
+}
+
+/* ── 포커스 링 (키보드 접근성, 깔끔하게) ── */
+:focus-visible {
+  outline: 2px solid var(--comet-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── 스크롤바 (얇고 단정하게, Apple 다크 스타일) ── */
+@media (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.28);
+  }
+}
+
+/* ── 모션 민감 사용자 배려 ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── 기존 애니메이션 ── */
@@ -157,37 +234,6 @@ body {
   will-change: transform;
 }
 
-/* DEVELOPS: 글리치 오버레이 레이어 1 (red) */
-@keyframes glitch-shift-1 {
-  0%, 91%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-  92% { clip-path: inset(18% 0 58% 0); transform: translateX(-5px); }
-  93% { clip-path: inset(62% 0 12% 0); transform: translateX(5px); }
-  94% { clip-path: inset(38% 0 40% 0); transform: translateX(-3px); }
-  95% { clip-path: inset(5%  0 82% 0); transform: translateX(3px); }
-  96% { clip-path: inset(74% 0 8%  0); transform: translateX(-2px); }
-  97% { clip-path: inset(0   0 100% 0); transform: translateX(0); }
-}
-
-/* DEVELOPS: 글리치 오버레이 레이어 2 (cyan) */
-@keyframes glitch-shift-2 {
-  0%, 91%, 100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-  92% { clip-path: inset(68% 0 8%  0); transform: translateX(5px); }
-  93% { clip-path: inset(12% 0 68% 0); transform: translateX(-5px); }
-  94% { clip-path: inset(84% 0 3%  0); transform: translateX(3px); }
-  95% { clip-path: inset(28% 0 52% 0); transform: translateX(-3px); }
-  96% { clip-path: inset(48% 0 28% 0); transform: translateX(2px); }
-  97% { clip-path: inset(0   0 100% 0); transform: translateX(0); }
-}
-
-/* DEVELOPS: 타이프라이터 커서 깜빡임 */
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-.animate-cursor {
-  animation: cursor-blink 0.9s step-end infinite;
-}
-
 /* DEVELOPS: 스캔라인 sweep */
 @keyframes scanline-move {
   from { top: -2%; }
@@ -199,4 +245,127 @@ body {
   background: linear-gradient(90deg, transparent 0%, rgba(108,124,255,0.2) 30%, rgba(108,124,255,0.2) 70%, transparent 100%);
   animation: scanline-move 5s linear infinite;
   pointer-events: none;
+}
+
+/* ── Apple-grade 버튼 시스템 ────────────────────────── */
+
+/* 채워진 강조 버튼 (Primary CTA) — 색상은 변수로 제어 */
+.btn-primary {
+  --btn-bg:       var(--comet-blue);
+  --btn-bg-hover: #7d8bff;
+  --btn-fg:       #fff;
+  --btn-glow:     rgba(108, 124, 255, 0.35);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 980px;            /* Apple full-pill */
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.4s var(--ease-out-soft),
+    background-color 0.3s var(--ease-in-out-ap),
+    box-shadow 0.4s var(--ease-out-soft);
+  will-change: transform;
+}
+.btn-primary:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px var(--btn-glow);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px var(--btn-glow);
+}
+
+/* 골드 변형 — ENTERTAINERS 브랜드 */
+.btn-primary.btn-gold {
+  --btn-bg:       #C8A86A;
+  --btn-bg-hover: #d6b97f;
+  --btn-fg:       #14100a;
+  --btn-glow:     rgba(200, 168, 106, 0.35);
+}
+
+/* 외곽선 보조 버튼 (Ghost CTA) — 색상은 변수로 제어 */
+.btn-ghost {
+  --ghost-fg:           rgba(255, 255, 255, 0.78);
+  --ghost-fg-hover:     #fff;
+  --ghost-border:       rgba(255, 255, 255, 0.2);
+  --ghost-border-hover: rgba(255, 255, 255, 0.45);
+  --ghost-bg:           rgba(255, 255, 255, 0.015);
+  --ghost-bg-hover:     rgba(255, 255, 255, 0.05);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 980px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ghost-fg);
+  border: 1px solid var(--ghost-border);
+  background: var(--ghost-bg);
+  transition:
+    transform 0.4s var(--ease-out-soft),
+    border-color 0.3s var(--ease-in-out-ap),
+    color 0.3s var(--ease-in-out-ap),
+    background-color 0.3s var(--ease-in-out-ap);
+  will-change: transform;
+}
+.btn-ghost:hover {
+  color: var(--ghost-fg-hover);
+  border-color: var(--ghost-border-hover);
+  background: var(--ghost-bg-hover);
+  transform: translateY(-2px);
+}
+.btn-ghost:active {
+  transform: translateY(0);
+}
+
+/* 골드 변형 — ENTERTAINERS 브랜드 */
+.btn-ghost.btn-gold {
+  --ghost-fg:           rgba(232, 207, 160, 0.9);
+  --ghost-fg-hover:     #f0ddb5;
+  --ghost-border:       rgba(200, 168, 106, 0.4);
+  --ghost-border-hover: rgba(200, 168, 106, 0.75);
+  --ghost-bg:           rgba(200, 168, 106, 0.02);
+  --ghost-bg-hover:     rgba(200, 168, 106, 0.08);
+}
+
+/* 블루 변형 — DEVELOPS 브랜드 */
+.btn-ghost.btn-blue {
+  --ghost-fg:           rgba(155, 168, 255, 0.9);
+  --ghost-fg-hover:     #b9c2ff;
+  --ghost-border:       rgba(108, 124, 255, 0.45);
+  --ghost-border-hover: rgba(108, 124, 255, 0.8);
+  --ghost-bg:           rgba(108, 124, 255, 0.03);
+  --ghost-bg-hover:     rgba(108, 124, 255, 0.1);
+}
+
+/* ── 머리카락 두께 구분선 (Apple hairline) ── */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(255, 255, 255, 0.08) 82%,
+    transparent 100%
+  );
+}
+
+/* ── 섹션 등장 시 미세 패럴랙스용 기본 트랜지션 ── */
+.lift-on-hover {
+  transition: transform 0.5s var(--ease-out-soft), box-shadow 0.5s var(--ease-out-soft);
+}
+.lift-on-hover:hover {
+  transform: translateY(-4px);
 }

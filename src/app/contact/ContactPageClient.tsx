@@ -152,7 +152,7 @@ export default function ContactPageClient({ initialSubject }: { initialSubject?:
                   name="from_name"
                   required
                   placeholder={t("이름을 입력하세요", "Enter your name")}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm"
                 />
               </motion.div>
 
@@ -170,7 +170,7 @@ export default function ContactPageClient({ initialSubject }: { initialSubject?:
                   name="reply_to"
                   required
                   placeholder={t("이메일을 입력하세요", "Enter your email")}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm"
                 />
               </motion.div>
 
@@ -188,7 +188,7 @@ export default function ContactPageClient({ initialSubject }: { initialSubject?:
                   required
                   rows={5}
                   placeholder={messagePlaceholder}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-colors text-sm resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-1 focus:ring-indigo-500/25 transition-all text-sm resize-none"
                 />
               </motion.div>
 
@@ -197,7 +197,7 @@ export default function ContactPageClient({ initialSubject }: { initialSubject?:
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45 }}
-                className="flex items-start gap-3 p-4 rounded-lg border border-white/8 bg-white/[0.02]"
+                className="flex items-start gap-3 p-4 rounded-lg border border-white/[0.08] bg-white/[0.02]"
               >
                 <input
                   type="checkbox"
@@ -233,9 +233,7 @@ export default function ContactPageClient({ initialSubject }: { initialSubject?:
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
-                whileTap={{ scale: status === "sending" ? 1 : 0.98 }}
-                className="w-full py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all"
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === "sending" ? t("전송 중...", "Sending...") : t("문의 보내기", "Send Inquiry")}
               </motion.button>

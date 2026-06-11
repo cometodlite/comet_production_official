@@ -183,10 +183,10 @@ export default function AboutPage() {
       <div className="mb-20">
         <FadeUp className="text-center mb-12">
           <p className="text-[#86868b] text-[11px] tracking-widest uppercase mb-3">
-            {t("핵심 가치", "CORE VALUES")}
+            CORE VALUES
           </p>
           <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">
-            {t("핵심 가치", "Core Values")}
+            {t("우리가 믿는 가치", "What We Believe")}
           </h2>
           <p className="text-white/25 text-xs tracking-[0.35em]">
             TALENT · CARE · KNOWLEDGE · CONNECTION
@@ -201,11 +201,10 @@ export default function AboutPage() {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 {/* 컬러 액센트 라인 */}
-                <div className={`w-8 h-0.5 mx-auto mb-5 rounded-full ${v.border} border-0`}
-                  style={{ backgroundColor: "currentColor" }}
-                >
-                  <div className={`w-full h-full rounded-full ${v.color}`} style={{ background: "currentColor", opacity: 0.7 }} />
-                </div>
+                <div
+                  className={`mx-auto mb-5 h-0.5 w-8 rounded-full ${v.color}`}
+                  style={{ backgroundColor: "currentColor", opacity: 0.75 }}
+                />
                 <h4 className={`text-lg font-black tracking-[0.15em] uppercase mb-1.5 ${v.color}`}>
                   {v.name}
                 </h4>

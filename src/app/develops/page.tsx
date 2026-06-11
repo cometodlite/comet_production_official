@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
-import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
+import { FadeUp, StaggerContainer, StaggerItem, motion, AnimatePresence } from "@/components/Motion";
+import { IconGamepad, IconPackage, IconWrench, IconOrbit } from "@/components/icons/LineIcons";
 
 // ── Kinetic Typography ────────────────────────────
 
@@ -15,53 +16,33 @@ const TECH_WORDS = [
   "IDEAS → STRUCTURE",
 ];
 
-/** COMET 타이틀 글리치 효과 (RGB split, 7s 주기) */
-function GlitchText({ text, baseClassName }: { text: string; baseClassName?: string }) {
-  return (
-    <span className="relative inline-block">
-      <span className={baseClassName}>{text}</span>
-      <span aria-hidden className="absolute inset-0 select-none pointer-events-none"
-        style={{ WebkitTextFillColor: "#f87171", animation: "glitch-shift-1 7s steps(1) infinite" }}>
-        {text}
-      </span>
-      <span aria-hidden className="absolute inset-0 select-none pointer-events-none"
-        style={{ WebkitTextFillColor: "#22d3ee", animation: "glitch-shift-2 7s steps(1) infinite 0.12s" }}>
-        {text}
-      </span>
-    </span>
-  );
-}
-
-/** 기술 키워드 타이프라이터 순환 */
-function TypewriterCycle() {
-  const [wordIdx, setWordIdx]   = useState(0);
-  const [text, setText]         = useState("");
-  const [deleting, setDeleting] = useState(false);
+/** 기술 키워드 부드러운 순환 (blur 크로스페이드) */
+function WordCycle() {
+  const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const target = TECH_WORDS[wordIdx];
-    const delay  = deleting ? 40 : text.length === target.length ? 1700 : 72;
-    const timer  = setTimeout(() => {
-      if (!deleting && text.length < target.length) {
-        setText(target.slice(0, text.length + 1));
-      } else if (!deleting) {
-        setDeleting(true);
-      } else if (text.length > 0) {
-        setText(text.slice(0, -1));
-      } else {
-        setDeleting(false);
-        setWordIdx((i) => (i + 1) % TECH_WORDS.length);
-      }
-    }, delay);
-    return () => clearTimeout(timer);
-  }, [text, deleting, wordIdx]);
+    const id = setInterval(() => setIdx((i) => (i + 1) % TECH_WORDS.length), 2600);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <p className="font-mono text-sm tracking-[0.18em] mt-5 h-5" style={{ color: "rgba(108,124,255,0.6)" }}>
-      <span style={{ color: "rgba(108,124,255,0.35)" }}>&gt; </span>
-      {text}
-      <span className="animate-cursor inline-block w-0.5 h-3.5 ml-px align-middle"
-        style={{ backgroundColor: "rgba(108,124,255,0.6)" }} />
+    <p className="font-mono text-sm tracking-[0.18em] mt-5 h-5 flex items-center"
+      style={{ color: "rgba(108,124,255,0.65)" }}>
+      <span style={{ color: "rgba(108,124,255,0.35)" }}>&gt;&nbsp;</span>
+      <span className="relative inline-flex">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={idx}
+            initial={{ opacity: 0, y: 6, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -6, filter: "blur(6px)" }}
+            transition={{ duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }}
+            className="inline-block"
+          >
+            {TECH_WORDS[idx]}
+          </motion.span>
+        </AnimatePresence>
+      </span>
     </p>
   );
 }
@@ -196,14 +177,24 @@ export default function DevelopsPage() {
                   style={{ color: "rgba(108,124,255,0.65)" }}>
                   COMET DEVELOPS
                 </p>
-                <h1 className="font-black tracking-tight mb-3"
-                  style={{ fontSize: "clamp(42px, 9.5vw, 128px)" }}>
-                  <GlitchText text="COMET" baseClassName="gradient-text" />
-                </h1>
-                <h2 className="font-light tracking-[0.45em] mb-8"
-                  style={{ fontSize: "clamp(18px, 2.5vw, 36px)", color: "rgba(108,124,255,0.75)" }}>
+                <motion.h1
+                  initial={{ opacity: 0, y: 24, filter: "blur(12px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+                  className="font-black tracking-tight mb-3 gradient-text"
+                  style={{ fontSize: "clamp(42px, 9.5vw, 128px)" }}
+                >
+                  COMET
+                </motion.h1>
+                <motion.h2
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 0.61, 0.36, 1] }}
+                  className="font-light tracking-[0.45em] mb-8"
+                  style={{ fontSize: "clamp(18px, 2.5vw, 36px)", color: "rgba(108,124,255,0.75)" }}
+                >
                   DEVELOPS
-                </h2>
+                </motion.h2>
                 <p className="text-base md:text-lg leading-relaxed max-w-xl mb-2"
                   style={{ color: "rgba(244,247,255,0.5)" }}>
                   {t(
@@ -211,7 +202,7 @@ export default function DevelopsPage() {
                     "We pioneer a new universe called games, expanding the technological possibilities of COMET PRODUCTION."
                   )}
                 </p>
-                <TypewriterCycle />
+                <WordCycle />
               </div>
             </div>
 
@@ -240,19 +231,19 @@ export default function DevelopsPage() {
                 <div className="grid md:grid-cols-3 gap-5">
                   {[
                     {
-                      icon: "🎮",
+                      Icon: IconGamepad,
                       title: t("게임 개발", "Game Development"),
                       desc:  t("독창적인 게임 콘텐츠를 기획하고 개발합니다. 플레이어에게 새로운 경험을 선사합니다.",
                                "We plan and develop original game content, delivering new experiences to players."),
                     },
                     {
-                      icon: "📦",
+                      Icon: IconPackage,
                       title: t("게임 관리 및 배급", "Game Management & Publishing"),
                       desc:  t("개발된 게임의 서비스 운영, 업데이트 관리, 배급을 전담합니다.",
                                "We are dedicated to service operations, update management, and publishing of developed games."),
                     },
                     {
-                      icon: "🔧",
+                      Icon: IconWrench,
                       title: t("KE 그룹 추가 지원", "KE Group Extended Support"),
                       desc:  t("모기업 KE 네트워크 및 계열사에 대한 기술적 개발 지원을 수행합니다.",
                                "We provide technical development support for the parent KE Network and affiliated companies."),
@@ -260,7 +251,12 @@ export default function DevelopsPage() {
                   ].map((s, i) => (
                     <div key={i} className="rounded-2xl p-7 border"
                       style={{ borderColor: "rgba(108,124,255,0.18)", background: "rgba(108,124,255,0.05)" }}>
-                      <div className="text-3xl mb-4">{s.icon}</div>
+                      <div
+                        className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border"
+                        style={{ borderColor: "rgba(108,124,255,0.3)", background: "rgba(108,124,255,0.12)", color: "#9ba8ff" }}
+                      >
+                        <s.Icon size={22} />
+                      </div>
                       <h4 className="text-base font-bold text-white mb-2">{s.title}</h4>
                       <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                         {s.desc}
@@ -348,10 +344,9 @@ export default function DevelopsPage() {
                     </p>
                   </div>
                 </div>
-                <a href="#all-projects"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full border text-sm font-medium transition-all duration-300 hover:-translate-y-0.5"
-                  style={{ color: "#6C7CFF", borderColor: "rgba(108,124,255,0.45)" }}>
-                  {t("전체 프로젝트 보기", "View All Projects")} →
+                <a href="#all-projects" className="btn-ghost btn-blue group">
+                  {t("전체 프로젝트 보기", "View All Projects")}
+                  <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                 </a>
               </div>
             </div>
@@ -389,21 +384,13 @@ export default function DevelopsPage() {
                   )}
                 </p>
                 <p className="text-sm font-mono mb-10" style={{ color: "rgba(108,124,255,0.4)" }}>
-                  // ideas → structure → experience
+                  {"// ideas → structure → experience"}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center px-7 py-3 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg"
-                    style={{ background: "#6C7CFF", color: "#fff" }}
-                  >
+                  <Link href="/contact" className="btn-primary">
                     {t("협업 문의하기", "Contact Us")}
                   </Link>
-                  <a
-                    href="#all-projects"
-                    className="inline-flex items-center justify-center px-7 py-3 rounded-full border text-sm font-medium transition-all hover:-translate-y-0.5"
-                    style={{ color: "#6C7CFF", borderColor: "rgba(108,124,255,0.4)" }}
-                  >
+                  <a href="#all-projects" className="btn-ghost btn-blue">
                     {t("전체 프로젝트 보기", "View All Projects")}
                   </a>
                 </div>
@@ -446,7 +433,12 @@ export default function DevelopsPage() {
 
         {/* Origin Banner */}
         <FadeUp className="glass-card p-6 border border-[#6C7CFF]/30 bg-gradient-to-r from-[#080E24]/60 to-transparent mb-16 flex items-start gap-4">
-          <span className="text-2xl mt-0.5">🛰️</span>
+          <span
+            className="mt-0.5 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border"
+            style={{ borderColor: "rgba(108,124,255,0.3)", background: "rgba(108,124,255,0.12)", color: "#9ba8ff" }}
+          >
+            <IconOrbit size={20} />
+          </span>
           <div>
             <p className="text-[#6C7CFF] text-xs tracking-widest uppercase font-semibold mb-1">
               {t("설립 배경", "Background")}
@@ -541,7 +533,7 @@ export default function DevelopsPage() {
 
           {/* UTOPIA SYNDROME */}
           <StaggerItem>
-            <motion.div className="glass-card border border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
+            <motion.div className="glass-card border border-white/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}>
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">
@@ -560,7 +552,7 @@ export default function DevelopsPage() {
 
           {/* DREAM ON */}
           <StaggerItem>
-            <motion.div className="glass-card border border-white/8 bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
+            <motion.div className="glass-card border border-white/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}>
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">

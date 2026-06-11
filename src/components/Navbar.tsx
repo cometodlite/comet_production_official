@@ -43,6 +43,7 @@ export default function Navbar() {
     { href: "/develops",      label: "DEVELOPS" },
     { href: "/news",          label: t("뉴스", "News") },
     { href: "/careers",       label: t("채용", "Careers") },
+    { href: "/results",       label: t("결과 조회", "Results") },
     { href: "/contact",       label: t("문의", "Contact") },
   ];
 
@@ -74,17 +75,23 @@ export default function Navbar() {
             {navLinks.map(({ href, label }) => {
               const isActive = pathname === href;
               return (
-                <li key={href}>
+                <li key={href} className="relative">
                   <Link
                     href={href}
-                    className={`text-sm transition-colors duration-200 ${
-                      isActive
-                        ? "text-white font-medium"
-                        : "text-[#86868b] hover:text-white"
+                    className={`text-[13px] tracking-[-0.01em] transition-colors duration-300 ${
+                      isActive ? "text-white" : "text-[#86868b] hover:text-white"
                     }`}
                   >
                     {label}
                   </Link>
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-dot"
+                      className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full"
+                      style={{ backgroundColor: "#6C7CFF" }}
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </li>
               );
             })}
@@ -108,6 +115,12 @@ export default function Navbar() {
                         className={`text-xs transition-colors ${pathname === "/evaluation/real" ? "text-white" : "text-[#86868b] hover:text-white"}`}
                       >
                         {t("실전 문제", "Real Exam")}
+                      </Link>
+                      <Link
+                        href="/evaluation/history"
+                        className={`text-xs transition-colors ${pathname === "/evaluation/history" ? "text-white" : "text-[#86868b] hover:text-white"}`}
+                      >
+                        {t("성적 확인", "My Scores")}
                       </Link>
                     </>
                   ) : (
@@ -258,6 +271,14 @@ export default function Navbar() {
                         >
                           <span>{t("실전 문제", "Real Exam")}</span>
                           {pathname === "/evaluation/real" && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />}
+                        </Link>
+                        <Link
+                          href="/evaluation/history"
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center justify-between py-3 text-[15px] tracking-wide border-b border-white/5 transition-colors ${pathname === "/evaluation/history" ? "text-white font-bold" : "text-white/55 hover:text-white"}`}
+                        >
+                          <span>{t("성적 확인", "My Scores")}</span>
+                          {pathname === "/evaluation/history" && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />}
                         </Link>
                       </>
                     ) : (

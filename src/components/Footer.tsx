@@ -19,7 +19,7 @@ export default function Footer() {
   const { t } = useLang();
 
   return (
-    <footer className="border-t border-white/8 bg-black/40 backdrop-blur-sm relative z-10">
+    <footer className="border-t border-white/[0.08] bg-black/40 backdrop-blur-sm relative z-10">
       <div className="max-w-7xl mx-auto px-6 py-8">
 
         {/* 메인 행 */}

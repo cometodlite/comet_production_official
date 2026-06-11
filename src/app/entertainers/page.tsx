@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { FadeUp, StaggerContainer, StaggerItem, motion } from "@/components/Motion";
+import { IconSparkle, IconGem, IconRocket, IconDocument } from "@/components/icons/LineIcons";
 
 const NAVBAR_H  = 64;
 const NUM_SLIDES = 4;
@@ -200,19 +201,19 @@ export default function EntertainersPage() {
                 <div className="grid md:grid-cols-3 gap-5">
                   {[
                     {
-                      icon: "🎤",
+                      Icon: IconSparkle,
                       title: t("아티스트 발굴", "Artist Discovery"),
                       desc:  t("잠재력 있는 아티스트를 발굴하고 성장할 수 있는 환경을 제공합니다.",
                                "We discover artists with potential and provide an environment for them to grow."),
                     },
                     {
-                      icon: "🌟",
+                      Icon: IconGem,
                       title: t("아티스트 관리", "Artist Management"),
                       desc:  t("아티스트의 커리어 전반을 체계적으로 관리하고 지원합니다.",
                                "We systematically manage and support every aspect of an artist's career."),
                     },
                     {
-                      icon: "🚀",
+                      Icon: IconRocket,
                       title: t("아티스트 지원", "Artist Support"),
                       desc:  t("프로모션, 콘텐츠 제작, 팬 커뮤니티 운영 등 다양한 지원을 제공합니다.",
                                "We provide diverse support including promotion, content creation, and fan community management."),
@@ -220,7 +221,12 @@ export default function EntertainersPage() {
                   ].map((s, i) => (
                     <div key={i} className="rounded-2xl p-7 border"
                       style={{ borderColor: "rgba(200,168,106,0.18)", background: "rgba(200,168,106,0.04)" }}>
-                      <div className="text-3xl mb-4">{s.icon}</div>
+                      <div
+                        className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border"
+                        style={{ borderColor: "rgba(200,168,106,0.3)", background: "rgba(200,168,106,0.1)", color: "#C8A86A" }}
+                      >
+                        <s.Icon size={22} />
+                      </div>
                       <h4 className="text-base font-bold text-white mb-2">{s.title}</h4>
                       <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                         {s.desc}
@@ -272,10 +278,9 @@ export default function EntertainersPage() {
                     </div>
                   ))}
                 </div>
-                <a href="#all-artists"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full border text-sm font-medium transition-all duration-300 hover:-translate-y-0.5"
-                  style={{ color: "#C8A86A", borderColor: "rgba(200,168,106,0.4)" }}>
-                  {t("전체 아티스트 보기", "View All Artists")} →
+                <a href="#all-artists" className="btn-ghost btn-gold group">
+                  {t("전체 아티스트 보기", "View All Artists")}
+                  <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
                 </a>
               </div>
             </div>
@@ -311,18 +316,10 @@ export default function EntertainersPage() {
                   Ingenium atque labor lux veritatis.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center px-7 py-3 rounded-full text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5"
-                    style={{ background: "#C8A86A", color: "#0d0a04", boxShadow: "0 0 0 0 transparent" }}
-                  >
+                  <Link href="/contact" className="btn-primary btn-gold">
                     {t("함께하고 싶으신가요?", "Work With Us")}
                   </Link>
-                  <a
-                    href="#all-artists"
-                    className="inline-flex items-center justify-center px-7 py-3 rounded-full border text-sm font-medium transition-all hover:-translate-y-0.5"
-                    style={{ color: "#C8A86A", borderColor: "rgba(200,168,106,0.4)" }}
-                  >
+                  <a href="#all-artists" className="btn-ghost btn-gold">
                     {t("전체 아티스트 보기", "View All Artists")}
                   </a>
                 </div>
@@ -365,7 +362,12 @@ export default function EntertainersPage() {
 
         {/* Origin Banner */}
         <FadeUp className="glass-card p-6 border border-[#C8A86A]/30 bg-gradient-to-r from-[#1a1106]/80 to-transparent mb-16 flex items-start gap-4">
-          <span className="text-2xl mt-0.5">📜</span>
+          <span
+            className="mt-0.5 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border"
+            style={{ borderColor: "rgba(200,168,106,0.3)", background: "rgba(200,168,106,0.1)", color: "#C8A86A" }}
+          >
+            <IconDocument size={20} />
+          </span>
           <div>
             <p className="text-[#C8A86A] text-xs tracking-widest uppercase font-semibold mb-1">
               {t("설립 배경", "Background")}

@@ -103,25 +103,6 @@ export default function PinnedHero() {
   const sub    = lang === "ko" ? scene.ko.sub   : scene.en.sub;
   const isLast = sceneIdx === scenes.length - 1;
 
-  // ── 타이프라이터 ──────────────────────────────
-  const [displayedTitle, setDisplayedTitle] = useState("");
-  const [isTyping,       setIsTyping]       = useState(false);
-
-  useEffect(() => {
-    setDisplayedTitle("");
-    setIsTyping(true);
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setDisplayedTitle(title.slice(0, i));
-      if (i >= title.length) {
-        setIsTyping(false);
-        clearInterval(id);
-      }
-    }, 36);
-    return () => clearInterval(id);
-  }, [title]);
-
   // 위치 스타일: fixed(핀 중) → absolute bottom-0(핀 끝) → absolute top-0(핀 전)
   const posStyle: React.CSSProperties = pinFixed
     ? { position: "fixed",    top: NAVBAR_H, left: 0, right: 0 }
@@ -164,31 +145,23 @@ export default function PinnedHero() {
           COMET PRODUCTION · KE NETWORK
         </motion.p>
 
-        {/* ── 메인 타이틀 (타이프라이터) ── */}
+        {/* ── 메인 타이틀 (부드러운 blur 페이드인) ── */}
         <div className="mb-6 md:mb-8 relative z-10">
-          <h1
-            className={`font-black tracking-tight leading-[0.88] whitespace-pre-line ${
-              scene.gradient ? "gradient-text" : "text-white"
-            }`}
-            style={{ fontSize: "clamp(42px, 9.5vw, 128px)" }}
-          >
-            {displayedTitle}
-            {isTyping && (
-              <span
-                className="animate-cursor"
-                style={{
-                  display: "inline-block",
-                  width: "0.07em",
-                  height: "0.82em",
-                  verticalAlign: "middle",
-                  marginLeft: "0.06em",
-                  marginBottom: "0.06em",
-                  backgroundColor: scene.gradient ? "#6C7CFF" : "rgba(255,255,255,0.8)",
-                  borderRadius: "1px",
-                }}
-              />
-            )}
-          </h1>
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={`title-${sceneIdx}-${lang}`}
+              initial={{ opacity: 0, y: 30, filter: "blur(14px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -22, filter: "blur(8px)" }}
+              transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+              className={`font-black tracking-tight leading-[0.88] whitespace-pre-line ${
+                scene.gradient ? "gradient-text" : "text-white"
+              }`}
+              style={{ fontSize: "clamp(42px, 9.5vw, 128px)" }}
+            >
+              {title}
+            </motion.h1>
+          </AnimatePresence>
         </div>
 
         {/* ── 서브 텍스트 ── */}
@@ -239,16 +212,11 @@ export default function PinnedHero() {
               transition={{ duration: 0.4, delay: 0.25 }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 relative z-10"
             >
-              <Link
-                href="/about"
-                className="px-7 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-all hover:shadow-lg hover:shadow-indigo-500/30 text-center"
-              >
+              <Link href="/about" className="btn-primary group">
                 {t("회사 소개", "About Us")}
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
               </Link>
-              <Link
-                href="/contact"
-                className="px-7 py-3 rounded-full border border-white/20 hover:border-indigo-400 text-white/70 hover:text-white text-sm font-medium transition-all text-center"
-              >
+              <Link href="/contact" className="btn-ghost">
                 {t("문의하기", "Contact")}
               </Link>
             </motion.div>

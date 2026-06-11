@@ -139,7 +139,7 @@ export default function CareersPage() {
           return (
             <StaggerItem key={i}>
               <motion.div
-                className={`glass-card border border-white/8 ${job.hoverBorder} transition-all overflow-hidden`}
+                className={`glass-card border border-white/[0.08] ${job.hoverBorder} transition-all overflow-hidden`}
                 animate={{ y: 0 }}
               >
                 {/* 카드 헤더 (클릭 가능) */}
@@ -271,14 +271,9 @@ export default function CareersPage() {
               "We welcome spontaneous applications at any time. Please reach out through our contact page."
             )}
           </p>
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-block">
-            <Link
-              href="/contact"
-              className="inline-block px-8 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all"
-            >
-              {t("문의하기", "Contact Us")}
-            </Link>
-          </motion.div>
+          <Link href="/contact" className="btn-primary">
+            {t("문의하기", "Contact Us")}
+          </Link>
         </div>
       </FadeUp>
     </div>

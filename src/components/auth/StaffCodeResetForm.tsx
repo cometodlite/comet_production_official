@@ -86,7 +86,7 @@ function Field({
         id={id}
         type={type}
         required
-        className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-indigo-400/70 focus:bg-white/[0.09]"
+        className="w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/[0.28] focus:border-indigo-400/70 focus:bg-white/[0.09]"
         {...props}
       />
       {errors && (

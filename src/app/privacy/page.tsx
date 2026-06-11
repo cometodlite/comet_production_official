@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 
         {/* 1. 처리 목적 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">1. 개인정보의 처리 목적</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 다음의 목적을 위해 개인정보를 처리합니다. 처리한 개인정보는 아래 목적 외의 용도로 이용하지 않으며, 이용 목적이 변경되는 경우 관련 법령에 따라 별도의 동의를 받는 등 필요한 조치를 이행합니다.
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
 
         {/* 2. 처리 항목 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">2. 처리하는 개인정보 항목</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-5">
               COMET PRODUCTION은 서비스 제공에 필요한 범위에서 최소한의 개인정보를 처리합니다.
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
 
         {/* 3. 보유 기간 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">3. 개인정보의 처리 및 보유 기간</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 다만 관계 법령에 따라 보존할 필요가 있는 경우에는 해당 기간 동안 보관할 수 있습니다.
@@ -154,7 +154,7 @@ export default function PrivacyPage() {
 
         {/* 4. 파기 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">4. 개인정보의 파기 절차 및 방법</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 개인정보 보유 기간이 경과하거나 처리 목적이 달성된 경우 해당 개인정보를 지체 없이 파기합니다.
@@ -189,7 +189,7 @@ export default function PrivacyPage() {
 
         {/* 5. 제3자 제공 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">5. 개인정보의 제3자 제공</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 다만 다음의 경우에는 개인정보를 제3자에게 제공할 수 있습니다.
@@ -212,7 +212,7 @@ export default function PrivacyPage() {
 
         {/* 6. 위탁 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">6. 개인정보 처리업무의 위탁</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 원활한 서비스 제공을 위해 일부 개인정보 처리 업무를 외부 서비스에 위탁할 수 있습니다.
@@ -247,7 +247,7 @@ export default function PrivacyPage() {
 
         {/* 7. 국외 이전 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">7. 개인정보의 국외 이전</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION이 Google, Discord, GitHub, Firebase 등 해외 기반 서비스를 이용하는 경우 개인정보가 국외 서버에 저장 또는 이전될 수 있습니다.
@@ -282,7 +282,7 @@ export default function PrivacyPage() {
 
         {/* 8. 안전성 확보 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">8. 개인정보의 안전성 확보 조치</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 개인정보의 안전성 확보를 위해 다음과 같은 조치를 시행합니다.
@@ -309,7 +309,7 @@ export default function PrivacyPage() {
 
         {/* 9. 권리 행사 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">9. 이용자와 법정대리인의 권리 및 행사 방법</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               이용자는 언제든지 COMET PRODUCTION에 대해 다음 권리를 행사할 수 있습니다.
@@ -336,7 +336,7 @@ export default function PrivacyPage() {
 
         {/* 10. 쿠키 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">10. 자동 수집 장치의 설치·운영 및 거부</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 웹사이트 이용 과정에서 쿠키 또는 유사 기술을 사용할 수 있습니다.
@@ -359,7 +359,7 @@ export default function PrivacyPage() {
 
         {/* 11. 보호책임자 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">11. 개인정보 보호책임자 및 문의처</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               COMET PRODUCTION은 개인정보 처리와 관련한 문의, 불만 처리, 피해 구제 등을 위해 아래와 같이 개인정보 보호책임자를 지정합니다.
@@ -387,7 +387,7 @@ export default function PrivacyPage() {
 
         {/* 12. 권익침해 구제 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">12. 권익침해 구제 방법</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               이용자는 개인정보 침해에 대한 구제를 받기 위해 아래 기관에 문의할 수 있습니다.
@@ -418,7 +418,7 @@ export default function PrivacyPage() {
 
         {/* 13. 변경 사항 */}
         <StaggerItem>
-          <div className="glass-card p-7 border border-white/8">
+          <div className="glass-card p-7 border border-white/[0.08]">
             <h2 className="text-base font-bold text-white mb-4">13. 개인정보처리방침의 변경</h2>
             <p className="text-[#86868b] text-sm leading-relaxed mb-4">
               본 개인정보처리방침은 법령, 내부 정책, 서비스 변경에 따라 개정될 수 있습니다. 변경 시 COMET PRODUCTION은 웹사이트 또는 공식 공지 채널을 통해 안내합니다.
