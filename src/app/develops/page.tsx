@@ -314,6 +314,26 @@ export default function DevelopsPage() {
                       {t("플레이하기", "Play Now")} →
                     </p>
                   </a>
+                  {/* PULSE BLOOM */}
+                  <div className="rounded-2xl p-6 border transition-all"
+                    style={{ borderColor: "rgba(139,92,246,0.28)", background: "rgba(139,92,246,0.05)" }}>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-sky-300 border-sky-500/30 bg-sky-500/10">
+                        {t("개발 중", "In Dev")}
+                      </span>
+                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
+                        {t("리듬 게임", "Rhythm")}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white mb-1">PULSE BLOOM</h4>
+                    <p className="text-xs mb-2" style={{ color: "rgba(167,139,250,0.6)" }}>
+                      {t("웹 리듬 게임", "Web Rhythm Game")}
+                    </p>
+                    <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
+                      {t("노트에 맞춰 꽃을 피우는 모바일 퍼스트 리듬 게임.",
+                         "Mobile-first rhythm game where hits bloom flowers.")}
+                    </p>
+                  </div>
                   {/* PROJECT: HW */}
                   <div className="rounded-2xl p-6 border"
                     style={{ borderColor: "rgba(108,124,255,0.18)", background: "rgba(108,124,255,0.04)" }}>
@@ -325,22 +345,6 @@ export default function DevelopsPage() {
                     <h4 className="font-bold text-white mb-2">PROJECT: HW</h4>
                     <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
                       {t("편안한 힐링을 위한.", "For comfortable healing.")}
-                    </p>
-                  </div>
-                  {/* WORLDWIDE_LUNATIC FAMILY */}
-                  <div className="rounded-2xl p-6 border"
-                    style={{ borderColor: "rgba(108,124,255,0.18)", background: "rgba(108,124,255,0.04)" }}>
-                    <div className="mb-3">
-                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
-                        {t("기획 중", "Planning")}
-                      </span>
-                    </div>
-                    <h4 className="font-bold text-white mb-2">WORLDWIDE_LUNATIC FAMILY</h4>
-                    <p className="text-xs mb-2" style={{ color: "rgba(108,124,255,0.6)" }}>
-                      {t("LUNATIC 세계관 기반 캐릭터 웹게임", "LUNATIC Universe-based Character Web Game")}
-                    </p>
-                    <p className="text-xs italic" style={{ color: "rgba(255,255,255,0.2)" }}>
-                      {t("공개 예정", "Details coming soon")}
                     </p>
                   </div>
                 </div>
@@ -495,6 +499,29 @@ export default function DevelopsPage() {
             </motion.a>
           </StaggerItem>
 
+          {/* PULSE BLOOM */}
+          <StaggerItem>
+            <motion.div className="glass-card border border-violet-500/25 bg-gradient-to-b from-violet-950/20 to-transparent p-6 h-full hover:border-violet-500/50 transition-all"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-sky-300 border-sky-500/30 bg-sky-500/10">
+                  {t("개발 중", "In Development")}
+                </span>
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
+                  {t("리듬 게임", "Rhythm Game")}
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white mb-1">PULSE BLOOM</h4>
+              <p className="text-violet-400/70 text-xs mb-3">{t("웹 리듬 게임", "Web Rhythm Game")}</p>
+              <p className="text-[#86868b]/80 text-xs leading-relaxed">
+                {t(
+                  "노트에 맞춰 꽃을 피우는 모바일 퍼스트 웹 리듬 게임. 타점마다 꽃잎이 피어오르는 오리지널 브라우저 리듬 경험.",
+                  "A mobile-first web rhythm game where hitting notes blooms flowers. An original browser rhythm experience — every tap blooms a petal."
+                )}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
           {/* PROJECT: HW */}
           <StaggerItem>
             <motion.div className="glass-card border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/20 to-transparent p-6 h-full"
@@ -508,25 +535,6 @@ export default function DevelopsPage() {
               <p className="text-[#6C7CFF]/70 text-xs mb-3">&nbsp;</p>
               <p className="text-white/40 text-xs leading-relaxed">
                 {t("편안한 힐링을 위한.", "For comfortable healing.")}
-              </p>
-            </motion.div>
-          </StaggerItem>
-
-          {/* WORLDWIDE_LUNATIC FAMILY */}
-          <StaggerItem>
-            <motion.div className="glass-card border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/20 to-transparent p-6 h-full"
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
-                  {t("기획 중", "Planning")}
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-1">WORLDWIDE_LUNATIC FAMILY</h4>
-              <p className="text-[#6C7CFF]/70 text-xs mb-3">
-                {t("LUNATIC 세계관 기반 캐릭터 웹게임", "LUNATIC Universe-based Character Web Game")}
-              </p>
-              <p className="text-white/25 text-xs italic">
-                {t("공개 예정", "Details coming soon")}
               </p>
             </motion.div>
           </StaggerItem>
