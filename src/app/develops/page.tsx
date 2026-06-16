@@ -577,6 +577,47 @@ export default function DevelopsPage() {
         </StaggerContainer>
       </section>
 
+      {/* ── EDU 브릿지 ── */}
+      <section className="max-w-5xl mx-auto px-6 pb-20">
+        <FadeUp>
+          <Link
+            href="/edu"
+            className="group flex items-center justify-between gap-6 rounded-2xl border px-8 py-7 transition-all duration-300"
+            style={{
+              borderColor: "rgba(0,184,150,0.22)",
+              background: "rgba(0,184,150,0.04)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,184,150,0.48)";
+              (e.currentTarget as HTMLAnchorElement).style.background  = "rgba(0,184,150,0.07)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,184,150,0.22)";
+              (e.currentTarget as HTMLAnchorElement).style.background  = "rgba(0,184,150,0.04)";
+            }}
+          >
+            <div>
+              <p className="text-[10px] tracking-[0.5em] uppercase mb-1.5 font-semibold"
+                style={{ color: "rgba(0,184,150,0.55)" }}>
+                COMET EDU
+              </p>
+              <p className="text-white font-semibold text-base mb-1">
+                {t("EDU로 이동할 수 있습니다.", "Go to COMET EDU.")}
+              </p>
+              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+                Learning Shapes Your Future Path.
+              </p>
+            </div>
+            <span
+              className="flex-shrink-0 text-2xl transition-all duration-300 group-hover:translate-x-1"
+              style={{ color: "rgba(0,184,150,0.5)" }}
+            >
+              →
+            </span>
+          </Link>
+        </FadeUp>
+      </section>
+
     </div>
   );
 }
