@@ -81,6 +81,18 @@ export const artists: Artist[] = [
     hasPage: true,
   },
   {
+    slug: "redo",
+    name: "레도",
+    role: "ILLUSTRATOR",
+    generation: "COMET ENTERTAINERS",
+    year: 2026,
+    image: null,
+    bio: { ko: "", en: "" },
+    tags: ["일러스트레이터"],
+    links: [],
+    hasPage: false,
+  },
+  {
     slug: "instar",
     name: "instar",
     role: "CREATOR",

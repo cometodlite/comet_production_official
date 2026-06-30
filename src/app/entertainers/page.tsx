@@ -553,6 +553,23 @@ export default function EntertainersPage() {
             </motion.div>
           </StaggerItem>
 
+          {/* 레도 */}
+          <StaggerItem>
+            <motion.div className="glass-card p-7 border border-[#C8A86A]/25 bg-gradient-to-b from-[#1a1106]/50 to-transparent group h-full"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 rounded-full border-2 border-dashed border-[#C8A86A]/30 flex items-center justify-center text-[#C8A86A]/50 text-xl shrink-0">✦</div>
+                <div>
+                  <h4 className="text-lg font-bold text-white">레도</h4>
+                  <p className="text-[#C8A86A] text-xs tracking-widest mt-0.5">ILLUSTRATOR</p>
+                </div>
+              </div>
+              <div className="mb-5">
+                <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-[#e8cfa0] border-[#C8A86A]/30 bg-[#C8A86A]/10">COMET ENTERTAINERS</span>
+              </div>
+            </motion.div>
+          </StaggerItem>
+
         </StaggerContainer>
       </section>
 
