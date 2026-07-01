@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Conversation, Message } from "@/lib/messaging";
+import ProfileModal from "./ProfileModal";
 
 type StaffUser = { id: string; name: string; staffGroup: string | null };
 
@@ -41,6 +42,7 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
   const [pushEnabled, setPushEnabled] = useState(false);
   const [mobileView, setMobileView] = useState<"list" | "thread">("list");
   const [loading, setLoading] = useState(true);
+  const [profileUserId, setProfileUserId] = useState<string | null>(null);
   const lastMsgTimeRef = useRef<string | null>(null);
   const msgsContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -213,6 +215,13 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
             <h2 className="text-base font-bold text-white">메시지</h2>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setProfileUserId(myId)}
+              title="내 프로필"
+              className="w-8 h-8 flex items-center justify-center rounded-full text-white/40 hover:text-white/70 hover:bg-white/[0.05] transition text-sm"
+            >
+              👤
+            </button>
             {!pushEnabled && (
               <button
                 onClick={enablePush}
@@ -297,13 +306,30 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
                 ←
               </button>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-white truncate">
-                  {selectedConv ? convDisplayName(selectedConv) : ""}
-                </p>
-                {selectedConv?.type === "group" && (
-                  <p className="text-[11px] text-white/35 truncate">
-                    {selectedConv.members.map((m) => m.name).join(", ")}
-                  </p>
+                {selectedConv?.type === "group" ? (
+                  <>
+                    <p className="text-sm font-bold text-white truncate">{convDisplayName(selectedConv)}</p>
+                    <p className="text-[11px] text-white/35 truncate">
+                      {selectedConv.members.map((m, i) => (
+                        <span key={m.id}>
+                          {i > 0 && ", "}
+                          <button onClick={() => setProfileUserId(m.id)} className="hover:text-indigo-300 transition-colors underline decoration-dotted underline-offset-2">
+                            {m.name}
+                          </button>
+                        </span>
+                      ))}
+                    </p>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      const partner = selectedConv?.members.find((m) => m.id !== myId);
+                      if (partner) setProfileUserId(partner.id);
+                    }}
+                    className="text-sm font-bold text-white truncate hover:text-indigo-300 transition-colors text-left"
+                  >
+                    {selectedConv ? convDisplayName(selectedConv) : ""}
+                  </button>
                 )}
               </div>
             </div>
@@ -457,6 +483,14 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
             </div>
           </div>
         </div>
+      )}
+
+      {profileUserId && (
+        <ProfileModal
+          userId={profileUserId}
+          isMe={profileUserId === myId}
+          onClose={() => setProfileUserId(null)}
+        />
       )}
     </div>
   );
