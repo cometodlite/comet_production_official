@@ -37,10 +37,14 @@ export default async function StaffPage() {
           <InfoRow label="가입일" value={joinedAt} />
         </dl>
 
-        <div className={`mt-8 grid gap-3 ${canResetCodes ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+        <div className={`mt-8 grid gap-3 ${canResetCodes ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}>
           <Link href={areaHref} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
             <p className="text-sm font-semibold text-white">내 소속 공간</p>
             <p className="mt-2 text-xs leading-relaxed text-[#86868b]">{getStaffGroupLabel(user.staffGroup)} 전용</p>
+          </Link>
+          <Link href="/staff/messages" className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
+            <p className="text-sm font-semibold text-white">메시지</p>
+            <p className="mt-2 text-xs leading-relaxed text-[#86868b]">사내 1:1 · 그룹 채팅</p>
           </Link>
           <Link href="/staff/settings" className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-5 transition hover:border-white/25 hover:bg-white/[0.07]">
             <p className="text-sm font-semibold text-white">설정</p>
