@@ -558,14 +558,27 @@ export default function EntertainersPage() {
             <motion.div className="glass-card p-7 border border-[#C8A86A]/25 bg-gradient-to-b from-[#1a1106]/50 to-transparent group h-full"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}>
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full border-2 border-dashed border-[#C8A86A]/30 flex items-center justify-center text-[#C8A86A]/50 text-xl shrink-0">✦</div>
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#C8A86A]/40 shrink-0 transition-all duration-300 group-hover:border-[#C8A86A]/80 group-hover:shadow-[0_0_14px_rgba(200,168,106,0.45)]">
+                  <Image src="/artist-redo.jpg" alt="레도" width={56} height={56} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                </div>
                 <div>
                   <h4 className="text-lg font-bold text-white">레도</h4>
                   <p className="text-[#C8A86A] text-xs tracking-widest mt-0.5">ILLUSTRATOR</p>
                 </div>
               </div>
-              <div className="mb-5">
-                <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-[#e8cfa0] border-[#C8A86A]/30 bg-[#C8A86A]/10">COMET ENTERTAINERS</span>
+              <div className="mb-4">
+                <span className="text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full border text-[#e8cfa0] border-[#C8A86A]/30 bg-[#C8A86A]/10">COMET LIVE 3기</span>
+              </div>
+              <p className="text-xs text-white/40 leading-relaxed mb-4">
+                {t("SD, 귀여운 그림체를 추구하는 아티스트 '레도'입니다!", "Artist 'Redo' who pursues an SD, cute art style!")}
+              </p>
+              <div className="flex flex-col gap-2">
+                <a href="https://www.instagram.com/hikkari._.archive" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-white/50 hover:text-pink-400 transition-colors">
+                  <Image src="/instagram.png" alt="인스타그램" width={20} height={20} className="rounded" />인스타그램
+                </a>
+                <a href="https://www.instagram.com/art_hikkari._.archive/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-white/50 hover:text-pink-400 transition-colors">
+                  <Image src="/instagram.png" alt="인스타그램 (아트)" width={20} height={20} className="rounded" />인스타그램 (아트)
+                </a>
               </div>
             </motion.div>
           </StaggerItem>

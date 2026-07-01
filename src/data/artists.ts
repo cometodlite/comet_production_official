@@ -84,12 +84,18 @@ export const artists: Artist[] = [
     slug: "redo",
     name: "레도",
     role: "ILLUSTRATOR",
-    generation: "COMET ENTERTAINERS",
+    generation: "COMET LIVE 3기",
     year: 2026,
-    image: null,
-    bio: { ko: "", en: "" },
+    image: "/artist-redo.jpg",
+    bio: {
+      ko: "SD, 귀여운 그림체를 추구하는 아티스트 '레도'입니다!",
+      en: "Artist 'Redo' who pursues an SD, cute art style!",
+    },
     tags: ["일러스트레이터"],
-    links: [],
+    links: [
+      { platform: "instagram",  url: "https://www.instagram.com/hikkari._.archive",     label: "인스타그램",       hoverClass: "hover:text-pink-400", iconSrc: "/instagram.png" },
+      { platform: "instagram2", url: "https://www.instagram.com/art_hikkari._.archive/", label: "인스타그램 (아트)", hoverClass: "hover:text-pink-400", iconSrc: "/instagram.png" },
+    ],
     hasPage: false,
   },
   {
