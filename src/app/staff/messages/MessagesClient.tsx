@@ -42,11 +42,13 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
   const [mobileView, setMobileView] = useState<"list" | "thread">("list");
   const [loading, setLoading] = useState(true);
   const lastMsgTimeRef = useRef<string | null>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const msgsContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = useCallback((smooth = true) => {
-    bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "instant" });
+    const el = msgsContainerRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "instant" });
   }, []);
 
   const loadConversations = useCallback(async () => {
@@ -291,7 +293,7 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+            <div ref={msgsContainerRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
               {messages.length === 0 && (
                 <p className="text-center text-xs text-white/30 pt-12">첫 메시지를 보내보세요!</p>
               )}
@@ -330,7 +332,6 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
                   </div>
                 );
               })}
-              <div ref={bottomRef} />
             </div>
 
             {/* Input */}
