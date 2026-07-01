@@ -360,9 +360,10 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
                   }}
-                  placeholder="메시지를 입력하세요… (Enter 전송, Shift+Enter 줄바꿈)"
+                  placeholder="메시지 입력…"
                   rows={1}
-                  className="flex-1 resize-none bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50 max-h-40 transition"
+                  className="flex-1 resize-none bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50 max-h-40 transition"
+                  style={{ fontSize: "16px" }}
                   style={{ overflowY: "auto" }}
                 />
                 <button
