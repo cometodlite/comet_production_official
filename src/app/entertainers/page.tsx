@@ -513,7 +513,7 @@ export default function EntertainersPage() {
                 <div className="w-14 h-14 rounded-full border-2 border-dashed border-[#C8A86A]/30 flex items-center justify-center text-[#C8A86A]/50 text-xl shrink-0">✦</div>
                 <div>
                   <h4 className="text-lg font-bold text-white">instar</h4>
-                  <p className="text-[#C8A86A] text-xs tracking-widest mt-0.5">CREATOR</p>
+                  <p className="text-[#C8A86A] text-xs tracking-widest mt-0.5">COMPOSER</p>
                 </div>
               </div>
               <div className="mb-5">

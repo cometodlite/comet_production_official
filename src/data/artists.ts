@@ -101,7 +101,7 @@ export const artists: Artist[] = [
   {
     slug: "instar",
     name: "instar",
-    role: "CREATOR",
+    role: "COMPOSER",
     generation: "COMET LIVE 1기",
     year: 2024,
     image: null,
