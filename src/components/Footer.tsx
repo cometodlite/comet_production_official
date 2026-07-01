@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
+
+const HIDDEN_PATHS = ["/staff/messages"];
 
 const socialLinks = [
   {
@@ -17,6 +20,8 @@ const socialLinks = [
 
 export default function Footer() {
   const { t } = useLang();
+  const pathname = usePathname();
+  if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
 
   return (
     <footer className="border-t border-white/[0.08] bg-black/40 backdrop-blur-sm relative z-10">
