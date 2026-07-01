@@ -199,7 +199,7 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
   }
 
   return (
-    <div className="flex h-[calc(100svh-4rem)] overflow-hidden">
+    <div className="flex h-[calc(100dvh-4rem)] overflow-hidden" style={{ overflowX: "hidden" }}>
       {/* ── Left: conversation list ───────────────────────── */}
       <div className={`
         flex flex-col w-full md:w-72 lg:w-80 shrink-0
@@ -363,8 +363,7 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
                   placeholder="메시지 입력…"
                   rows={1}
                   className="flex-1 resize-none bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50 max-h-40 transition"
-                  style={{ fontSize: "16px" }}
-                  style={{ overflowY: "auto" }}
+                  style={{ fontSize: "16px", overflowY: "auto", touchAction: "manipulation" }}
                 />
                 <button
                   onClick={sendMsg}
