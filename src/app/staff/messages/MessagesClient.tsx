@@ -124,29 +124,45 @@ export default function MessagesClient({ myId, myName }: { myId: string; myName:
   }
 
   async function enablePush() {
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-      alert("이 브라우저는 웹 푸시를 지원하지 않습니다.");
+    if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
+      alert("이 브라우저는 웹 푸시를 지원하지 않습니다.\n(Safari 16+ macOS / iOS 16.4+ 필요)");
       return;
     }
     try {
       const perm = await Notification.requestPermission();
+      if (perm === "denied") {
+        alert("알림이 차단되어 있습니다.\nSafari 환경설정 → 웹사이트 → 알림에서 허용해주세요.");
+        return;
+      }
       if (perm !== "granted") return;
-      const reg = await navigator.serviceWorker.register("/sw.js");
+
+      // SW 등록 후 반드시 active 상태가 될 때까지 대기 (Safari 필수)
+      await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      const readyReg = await navigator.serviceWorker.ready;
+
       const key = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-      if (!key) return;
-      const sub = await reg.pushManager.subscribe({
+      if (!key) { alert("설정 오류: VAPID 키가 없습니다."); return; }
+
+      const sub = await readyReg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(key),
       });
+
       const json = sub.toJSON();
-      await fetch("/api/push/subscribe", {
+      const endpoint = json.endpoint;
+      const keys = json.keys as { p256dh: string; auth: string } | undefined;
+      if (!endpoint || !keys?.p256dh || !keys?.auth) throw new Error("구독 정보가 올바르지 않습니다.");
+
+      const res = await fetch("/api/push/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys }),
+        body: JSON.stringify({ endpoint, keys }),
       });
+      if (!res.ok) throw new Error("서버 저장 실패");
       setPushEnabled(true);
-    } catch {
-      alert("알림 설정에 실패했습니다.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`알림 설정에 실패했습니다.\n${msg}`);
     }
   }
 
