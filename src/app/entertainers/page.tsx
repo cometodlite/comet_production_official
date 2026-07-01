@@ -572,7 +572,7 @@ export default function EntertainersPage() {
               <p className="text-xs text-white/40 leading-relaxed mb-4">
                 {t("SD, 귀여운 그림체를 추구하는 아티스트 '레도'입니다!", "Artist 'Redo' who pursues an SD, cute art style!")}
               </p>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mb-4">
                 <a href="https://www.instagram.com/hikkari._.archive" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-white/50 hover:text-pink-400 transition-colors">
                   <Image src="/instagram.png" alt="인스타그램" width={20} height={20} className="rounded" />인스타그램
                 </a>
@@ -580,6 +580,10 @@ export default function EntertainersPage() {
                   <Image src="/instagram.png" alt="인스타그램 (아트)" width={20} height={20} className="rounded" />인스타그램 (아트)
                 </a>
               </div>
+              <Link href="/entertainers/redo" className="mt-auto pt-3 border-t border-[#C8A86A]/10 flex items-center justify-between group/profile">
+                <span className="text-xs text-[#C8A86A]/50 tracking-widest group-hover/profile:text-[#C8A86A] transition-colors">{t("프로필 보기", "View Profile")}</span>
+                <span className="text-[#C8A86A]/40 text-xs group-hover/profile:text-[#C8A86A] group-hover/profile:translate-x-0.5 transition-all inline-block">→</span>
+              </Link>
             </motion.div>
           </StaggerItem>
 

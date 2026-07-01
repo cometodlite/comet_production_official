@@ -88,15 +88,15 @@ export const artists: Artist[] = [
     year: 2026,
     image: "/artist-redo.jpg",
     bio: {
-      ko: "SD, 귀여운 그림체를 추구하는 아티스트 '레도'입니다!",
-      en: "Artist 'Redo' who pursues an SD, cute art style!",
+      ko: "SD와 귀여운 그림체로 활동하고 있는 ' 레도 ' 라고 합니다! 캐릭터들을 귀엽게 그려나가고 있습니다!",
+      en: "Hi, I'm ' Redo ', an artist working with SD and cute art styles! I love drawing characters in the cutest way possible!",
     },
     tags: ["일러스트레이터"],
     links: [
       { platform: "instagram",  url: "https://www.instagram.com/hikkari._.archive",     label: "인스타그램",       hoverClass: "hover:text-pink-400", iconSrc: "/instagram.png" },
       { platform: "instagram2", url: "https://www.instagram.com/art_hikkari._.archive/", label: "인스타그램 (아트)", hoverClass: "hover:text-pink-400", iconSrc: "/instagram.png" },
     ],
-    hasPage: false,
+    hasPage: true,
   },
   {
     slug: "instar",
