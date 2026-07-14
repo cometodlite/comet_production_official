@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
 import { FadeUp, StaggerContainer, StaggerItem, motion, AnimatePresence } from "@/components/Motion";
 import { IconGamepad, IconPackage, IconWrench, IconOrbit } from "@/components/icons/LineIcons";
+import { developers } from "@/data/developers";
 
 // ── Kinetic Typography ────────────────────────────
 
@@ -288,7 +289,7 @@ export default function DevelopsPage() {
                   style={{ fontSize: "clamp(30px, 5.5vw, 72px)", color: "#9ba8ff" }}>
                   {t("개발 작품", "OUR WORKS.")}
                 </h2>
-                <div className="grid md:grid-cols-3 gap-5 mb-8">
+                <div className="grid md:grid-cols-2 gap-5 mb-8">
                   {/* HCSiG */}
                   <a href="https://cometodlite.github.io/hacking-code-simulation-game/"
                     target="_blank" rel="noopener noreferrer"
@@ -318,8 +319,8 @@ export default function DevelopsPage() {
                   <div className="rounded-2xl p-6 border transition-all"
                     style={{ borderColor: "rgba(139,92,246,0.28)", background: "rgba(139,92,246,0.05)" }}>
                     <div className="flex flex-wrap gap-2 mb-3">
-                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-sky-300 border-sky-500/30 bg-sky-500/10">
-                        {t("개발 중", "In Dev")}
+                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-orange-300 border-orange-500/30 bg-orange-500/10">
+                        {t("개발 중단", "Discontinued")}
                       </span>
                       <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
                         {t("리듬 게임", "Rhythm")}
@@ -332,19 +333,6 @@ export default function DevelopsPage() {
                     <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
                       {t("노트에 맞춰 꽃을 피우는 모바일 퍼스트 리듬 게임.",
                          "Mobile-first rhythm game where hits bloom flowers.")}
-                    </p>
-                  </div>
-                  {/* PROJECT: HW */}
-                  <div className="rounded-2xl p-6 border"
-                    style={{ borderColor: "rgba(108,124,255,0.18)", background: "rgba(108,124,255,0.04)" }}>
-                    <div className="mb-3">
-                      <span className="text-[10px] font-bold tracking-widest px-2 py-0.5 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
-                        {t("기획 중", "Planning")}
-                      </span>
-                    </div>
-                    <h4 className="font-bold text-white mb-2">PROJECT: HW</h4>
-                    <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      {t("편안한 힐링을 위한.", "For comfortable healing.")}
                     </p>
                   </div>
                 </div>
@@ -467,29 +455,8 @@ export default function DevelopsPage() {
         </FadeUp>
 
         <StaggerContainer className="grid md:grid-cols-2 gap-5 mb-20">
-          {[
-            {
-              number: "01",
-              name: "yure0211",
-              role: t("게임 개발자", "Game Developer"),
-              description: t(
-                "주로 Unity를 사용한 게임을 개발하거나 기획합니다.",
-                "Develops and plans games primarily with Unity."
-              ),
-              specialties: ["UNITY", t("게임 개발", "GAME DEVELOPMENT")],
-            },
-            {
-              number: "02",
-              name: "Luna-1o",
-              role: t("웹 개발자", "Web Developer"),
-              description: t(
-                "HTML/CSS/JS와 React를 중심으로 웹사이트 및 관련 웹개발을 담당합니다. COMET PRODUCTION 웹사이트 전반과 Stutant 공부 보조 AI, StudyLab을 개발했으며, HCSiG 시리즈 등 웹게임도 개발했습니다.",
-                "Builds websites and related web experiences with HTML/CSS/JS and React. Developed the COMET PRODUCTION website, Stutant study-assistant AI, StudyLab, and web games including the HCSiG series."
-              ),
-              specialties: ["HTML / CSS / JS", "REACT", "WEB GAMES"],
-            },
-          ].map((developer) => (
-            <StaggerItem key={developer.name}>
+          {developers.map((developer) => {
+            const card = (
               <motion.article
                 className="group relative overflow-hidden rounded-2xl border border-[#6C7CFF]/25 bg-gradient-to-br from-[#080E24]/65 to-[#060b18] p-7 h-full transition-colors hover:border-[#6C7CFF]/60"
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
@@ -498,20 +465,20 @@ export default function DevelopsPage() {
                   className="absolute -right-8 -top-10 h-40 w-40 rounded-full blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   style={{ background: "rgba(108,124,255,0.16)" }}
                 />
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div className="mb-8 flex items-start justify-between gap-4">
                     <span className="font-mono text-xs tracking-[0.35em] text-[#6C7CFF]/60">
                       {developer.number}
                     </span>
                     <span className="rounded-full border border-[#6C7CFF]/25 bg-[#6C7CFF]/10 px-3 py-1 text-[10px] font-bold tracking-widest text-[#aeb7ff]">
-                      {developer.role}
+                      {t(developer.role.ko, developer.role.en)}
                     </span>
                   </div>
                   <h4 className="mb-4 text-2xl font-bold tracking-tight text-white group-hover:text-[#aeb7ff] transition-colors">
                     {developer.name}
                   </h4>
                   <p className="mb-7 text-sm leading-relaxed text-[#86868b]">
-                    {developer.description}
+                    {t(developer.description.ko, developer.description.en)}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {developer.specialties.map((specialty) => (
@@ -523,10 +490,23 @@ export default function DevelopsPage() {
                       </span>
                     ))}
                   </div>
+                  {developer.hasPage && (
+                    <div className="mt-6 pt-4 border-t border-[#6C7CFF]/10 flex items-center justify-between">
+                      <span className="text-xs tracking-widest text-[#6C7CFF]/60 group-hover:text-[#9ba8ff] transition-colors">
+                        {t("자세히 보기", "View Details")}
+                      </span>
+                      <span className="text-[#6C7CFF]/50 text-xs group-hover:text-[#9ba8ff] group-hover:translate-x-0.5 transition-all inline-block">→</span>
+                    </div>
+                  )}
                 </div>
               </motion.article>
-            </StaggerItem>
-          ))}
+            );
+            return (
+              <StaggerItem key={developer.slug}>
+                {developer.hasPage ? <Link href={`/develops/${developer.slug}`}>{card}</Link> : card}
+              </StaggerItem>
+            );
+          })}
         </StaggerContainer>
 
         {/* 전체 프로젝트 */}
@@ -539,7 +519,7 @@ export default function DevelopsPage() {
           </h3>
         </FadeUp>
 
-        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+        <StaggerContainer className="grid md:grid-cols-2 gap-5 mb-12">
 
           {/* HCSiG */}
           <StaggerItem>
@@ -577,8 +557,8 @@ export default function DevelopsPage() {
             <motion.div className="glass-card border border-violet-500/25 bg-gradient-to-b from-violet-950/20 to-transparent p-6 h-full hover:border-violet-500/50 transition-all"
               whileHover={{ y: -4, transition: { duration: 0.2 } }}>
               <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-sky-300 border-sky-500/30 bg-sky-500/10">
-                  {t("개발 중", "In Development")}
+                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-orange-300 border-orange-500/30 bg-orange-500/10">
+                  {t("개발 중단", "Discontinued")}
                 </span>
                 <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-violet-300 border-violet-500/30 bg-violet-500/10">
                   {t("리듬 게임", "Rhythm Game")}
@@ -591,58 +571,6 @@ export default function DevelopsPage() {
                   "노트에 맞춰 꽃을 피우는 모바일 퍼스트 웹 리듬 게임. 타점마다 꽃잎이 피어오르는 오리지널 브라우저 리듬 경험.",
                   "A mobile-first web rhythm game where hitting notes blooms flowers. An original browser rhythm experience — every tap blooms a petal."
                 )}
-              </p>
-            </motion.div>
-          </StaggerItem>
-
-          {/* PROJECT: HW */}
-          <StaggerItem>
-            <motion.div className="glass-card border border-[#6C7CFF]/20 bg-gradient-to-b from-[#080E24]/20 to-transparent p-6 h-full"
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-amber-300 border-amber-500/30 bg-amber-500/10">
-                  {t("기획 중", "Planning")}
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white mb-1">PROJECT: HW</h4>
-              <p className="text-[#6C7CFF]/70 text-xs mb-3">&nbsp;</p>
-              <p className="text-white/40 text-xs leading-relaxed">
-                {t("편안한 힐링을 위한.", "For comfortable healing.")}
-              </p>
-            </motion.div>
-          </StaggerItem>
-
-          {/* UTOPIA SYNDROME */}
-          <StaggerItem>
-            <motion.div className="glass-card border border-white/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">
-                  {t("미공개", "Unrevealed")}
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white/70 mb-1">UTOPIA SYNDROME</h4>
-              <p className="text-white/35 text-xs mb-3">
-                {t("2D 픽셀 SCP풍 생존 웹게임", "2D Pixel SCP-style Survival Web Game")}
-              </p>
-              <p className="text-white/25 text-xs italic">
-                {t("공개 예정", "Details coming soon")}
-              </p>
-            </motion.div>
-          </StaggerItem>
-
-          {/* DREAM ON */}
-          <StaggerItem>
-            <motion.div className="glass-card border border-white/[0.08] bg-gradient-to-b from-white/[0.02] to-transparent p-6 h-full"
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full border text-white/30 border-white/10 bg-white/5">
-                  {t("미공개", "Unrevealed")}
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white/70 mb-1">DREAM ON</h4>
-              <p className="text-white/25 text-xs italic">
-                {t("공개 예정", "Details coming soon")}
               </p>
             </motion.div>
           </StaggerItem>
