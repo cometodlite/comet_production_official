@@ -456,6 +456,79 @@ export default function DevelopsPage() {
           </div>
         </FadeUp>
 
+        {/* 주요 개발자 라인업 */}
+        <FadeUp className="text-center mb-12">
+          <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-3">
+            {t("주요 개발자 라인업", "DEVELOPER LINEUP")}
+          </p>
+          <h3 className="text-3xl font-bold text-white tracking-tight">
+            {t("COMET DEVELOPS를 만드는 사람들", "The People Building COMET DEVELOPS")}
+          </h3>
+        </FadeUp>
+
+        <StaggerContainer className="grid md:grid-cols-2 gap-5 mb-20">
+          {[
+            {
+              number: "01",
+              name: "yure0211",
+              role: t("게임 개발자", "Game Developer"),
+              description: t(
+                "주로 Unity를 사용한 게임을 개발하거나 기획합니다.",
+                "Develops and plans games primarily with Unity."
+              ),
+              specialties: ["UNITY", t("게임 개발", "GAME DEVELOPMENT")],
+            },
+            {
+              number: "02",
+              name: "Luna-1o",
+              role: t("웹 개발자", "Web Developer"),
+              description: t(
+                "HTML/CSS/JS와 React를 중심으로 웹사이트 및 관련 웹개발을 담당합니다. COMET PRODUCTION 웹사이트 전반과 Stutant 공부 보조 AI, StudyLab을 개발했으며, HCSiG 시리즈 등 웹게임도 개발했습니다.",
+                "Builds websites and related web experiences with HTML/CSS/JS and React. Developed the COMET PRODUCTION website, Stutant study-assistant AI, StudyLab, and web games including the HCSiG series."
+              ),
+              specialties: ["HTML / CSS / JS", "REACT", "WEB GAMES"],
+            },
+          ].map((developer) => (
+            <StaggerItem key={developer.name}>
+              <motion.article
+                className="group relative overflow-hidden rounded-2xl border border-[#6C7CFF]/25 bg-gradient-to-br from-[#080E24]/65 to-[#060b18] p-7 h-full transition-colors hover:border-[#6C7CFF]/60"
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              >
+                <div
+                  className="absolute -right-8 -top-10 h-40 w-40 rounded-full blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{ background: "rgba(108,124,255,0.16)" }}
+                />
+                <div className="relative">
+                  <div className="mb-8 flex items-start justify-between gap-4">
+                    <span className="font-mono text-xs tracking-[0.35em] text-[#6C7CFF]/60">
+                      {developer.number}
+                    </span>
+                    <span className="rounded-full border border-[#6C7CFF]/25 bg-[#6C7CFF]/10 px-3 py-1 text-[10px] font-bold tracking-widest text-[#aeb7ff]">
+                      {developer.role}
+                    </span>
+                  </div>
+                  <h4 className="mb-4 text-2xl font-bold tracking-tight text-white group-hover:text-[#aeb7ff] transition-colors">
+                    {developer.name}
+                  </h4>
+                  <p className="mb-7 text-sm leading-relaxed text-[#86868b]">
+                    {developer.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {developer.specialties.map((specialty) => (
+                      <span
+                        key={specialty}
+                        className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[10px] tracking-wider text-white/50"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.article>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
         {/* 전체 프로젝트 */}
         <FadeUp className="text-center mb-12">
           <p className="text-[#6C7CFF] text-xs tracking-[0.5em] uppercase mb-3">
