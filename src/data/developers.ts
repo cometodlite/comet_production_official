@@ -48,7 +48,7 @@ export const developers: Developer[] = [
     games: [],
     web: [],
     other: [],
-    hasPage: false,
+    hasPage: true,
   },
   {
     slug: "luna-1o",
