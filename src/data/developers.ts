@@ -41,10 +41,10 @@ export const developers: Developer[] = [
     role: { ko: "게임 개발자", en: "Game Developer" },
     number: "01",
     description: {
-      ko: "주로 Unity를 사용한 게임을 개발하거나 기획합니다.",
-      en: "Develops and plans games primarily with Unity.",
+      ko: "개발·기획·총괄 디렉팅을 아우르며, 음성합성엔진 조교로도 활동합니다. Unity 기반 게임 개발과 시스템·시나리오 기획에 강점을 갖고 있습니다. 대표 작업물은 KE 활동 특성상 비공개입니다.",
+      en: "Spans development, planning, and overall directing, and also serves as a voice-synthesis engine assistant. Strong in Unity-based game development and system/scenario planning. Representative works are kept confidential due to the nature of KE Group activities.",
     },
-    specialties: ["UNITY", "게임 개발"],
+    specialties: ["UNITY / C# / C++", "KOTLIN · PYTHON · JS", "SYNTHESIZER V"],
     games: [],
     web: [],
     other: [],
