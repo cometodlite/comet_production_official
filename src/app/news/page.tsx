@@ -1,12 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useLang } from "@/context/LanguageContext";
 import { FadeUp, StaggerContainer, StaggerItem, AnimatePresence, motion } from "@/components/Motion";
 
 type Category = "all" | "production" | "entertainers" | "develops";
 
-const newsData = [
+type NewsItem = {
+  id: number;
+  category: Category;
+  date: string;
+  titleKo: string;
+  titleEn: string;
+  descKo: string;
+  descEn: string;
+  tag: string;
+  tagColor: string;
+  accentBar: string;
+  href?: string;
+};
+
+const newsData: NewsItem[] = [
   {
     id: 7,
     category: "develops" as Category,
@@ -35,13 +50,14 @@ const newsData = [
     id: 5,
     category: "develops" as Category,
     date: "2026.07.17",
-    titleKo: "Stutant와 DAILIA, COMET AI로 통합 명명",
-    titleEn: "Stutant and DAILIA Unified as COMET AI",
-    descKo: "Luna-1o 개발자가 개발한 Stutant와 DAILIA 두 AI를 COMET AI로 통칭합니다. 두 서비스는 학습과 일상적인 정보 활용을 돕는 AI 경험을 확장하며, COMET DEVELOPS의 AI 개발 방향을 함께 만들어 갑니다.",
-    descEn: "Stutant and DAILIA, two AI services developed by Luna-1o, are now collectively known as COMET AI. Together, they expand AI experiences for learning and everyday information use while shaping COMET DEVELOPS' AI direction.",
+    titleKo: "COMET, 학습과 일상을 연결하는 ‘COMET AI’ 초대 베타 공개",
+    titleEn: "COMET AI Invite Beta Opens for Learning and Everyday Life",
+    descKo: "Luna-1o가 개발한 학습 AI Stutant 1.61과 일상 AI DAILIA Beta 0.61을 하나의 AI 브랜드 COMET AI로 선보입니다. 현재 소수 사용자를 위한 초대 베타로 운영됩니다.",
+    descEn: "COMET AI brings together Stutant 1.61 for learning and DAILIA Beta 0.61 for everyday life, both developed by Luna-1o. It is currently operating as an invite beta for a limited group of users.",
     tag: "COMET AI",
     tagColor: "text-cyan-300 border-cyan-400/30 bg-cyan-400/10",
     accentBar: "bg-gradient-to-r from-cyan-400/70 to-transparent",
+    href: "/news/comet-ai",
   },
   {
     id: 4,
@@ -149,8 +165,8 @@ export default function NewsPage() {
           transition={{ duration: 0.3 }}
         >
           <StaggerContainer className="space-y-5">
-            {filtered.map((news) => (
-              <StaggerItem key={news.id}>
+            {filtered.map((news) => {
+              const article = (
                 <motion.div
                   className="glass-card border border-white/[0.08] hover:border-white/20 transition-all overflow-hidden"
                   whileHover={{ x: 4, transition: { duration: 0.2 } }}
@@ -187,8 +203,14 @@ export default function NewsPage() {
                     </p>
                   </div>
                 </motion.div>
-              </StaggerItem>
-            ))}
+              );
+
+              return (
+                <StaggerItem key={news.id}>
+                  {news.href ? <Link href={news.href} className="block">{article}</Link> : article}
+                </StaggerItem>
+              );
+            })}
           </StaggerContainer>
 
           {filtered.length === 0 && (
