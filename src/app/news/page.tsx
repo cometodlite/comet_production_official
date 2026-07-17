@@ -19,6 +19,7 @@ type NewsItem = {
   tagColor: string;
   accentBar: string;
   href?: string;
+  priority?: number;
 };
 
 const newsData: NewsItem[] = [
@@ -58,6 +59,7 @@ const newsData: NewsItem[] = [
     tagColor: "text-cyan-300 border-cyan-400/30 bg-cyan-400/10",
     accentBar: "bg-gradient-to-r from-cyan-400/70 to-transparent",
     href: "/news/comet-ai",
+    priority: 1,
   },
   {
     id: 4,
@@ -120,7 +122,8 @@ export default function NewsPage() {
     { value: "develops",      label: "DEVELOPS",               activeClass: "bg-blue-600/80 border-blue-500 text-white" },
   ];
 
-  const filtered = filter === "all" ? newsData : newsData.filter((n) => n.category === filter);
+  const filtered = (filter === "all" ? newsData : newsData.filter((n) => n.category === filter))
+    .toSorted((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
