@@ -125,12 +125,16 @@ export async function askCometGuide(history: CometGuideMessage[]): Promise<{ ok:
     });
 
     const body = (await response.json()) as OpenAIResponseBody;
-    if (!response.ok) return { ok: false, error: body.error?.message || "답변을 생성하지 못했습니다." };
+    if (!response.ok) {
+      console.error("COMET Guide OpenAI request failed", { status: response.status, reason: body.error?.message });
+      return { ok: false, error: "잠시 후 다시 시도해 주세요." };
+    }
 
     const text = extractOutputText(body);
     if (!text) return { ok: false, error: "답변을 생성하지 못했습니다." };
     return { ok: true, text };
-  } catch {
+  } catch (error) {
+    console.error("COMET Guide request error", error instanceof Error ? error.message : error);
     return { ok: false, error: "잠시 후 다시 시도해 주세요." };
   }
 }
