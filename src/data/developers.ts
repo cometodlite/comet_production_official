@@ -3,7 +3,7 @@ export type DevWorkStatus = "live" | "development" | "beta" | "ending" | "discon
 export const STATUS_META: Record<DevWorkStatus, { ko: string; en: string; className: string }> = {
   live:         { ko: "운영 중",         en: "Live",              className: "text-green-300 border-green-500/30 bg-green-500/10" },
   development:  { ko: "개발 중",         en: "In Development",    className: "text-sky-300 border-sky-500/30 bg-sky-500/10" },
-  beta:         { ko: "베타 서비스 예정", en: "Beta Coming Soon",  className: "text-cyan-300 border-cyan-500/30 bg-cyan-500/10" },
+  beta:         { ko: "베타 서비스",      en: "Beta Service",       className: "text-cyan-300 border-cyan-500/30 bg-cyan-500/10" },
   ending:       { ko: "서비스 종료 예정", en: "Service Ending",    className: "text-amber-300 border-amber-500/30 bg-amber-500/10" },
   discontinued: { ko: "개발 중단",       en: "Discontinued",      className: "text-orange-300 border-orange-500/30 bg-orange-500/10" },
   abandoned:    { ko: "폐기",           en: "Abandoned",         className: "text-white/40 border-white/15 bg-white/5" },
@@ -68,42 +68,51 @@ export const developers: Developer[] = [
         url: "https://cometodlite.github.io/hacking-code-simulation-game/",
       },
       {
+        name: "HCSiG II",
+        description: { ko: "HCSiG의 후속 웹게임 프로젝트. 공식 폐기되었습니다.", en: "A follow-up web game project to HCSiG. Officially retired." },
+        status: "abandoned",
+      },
+      {
         name: "PULSE BLOOM",
         description: { ko: "꽃이 핀다라는 것을 모티브로 한 웹 기반 리듬게임.", en: "A web-based rhythm game motivated by blooming flowers." },
         status: "discontinued",
       },
       {
         name: "PROJECT: HW",
-        description: { ko: "편안하게 플레이하기 좋은 힐링 게임.", en: "A healing game meant for comfortable, relaxing play." },
+        description: { ko: "편안하게 플레이하기 좋은 힐링 게임. 공식 폐기되었습니다.", en: "A healing game meant for comfortable, relaxing play. Officially retired." },
         status: "abandoned",
       },
       {
         name: "UTOPIA SYNDROME",
-        description: { ko: "기괴한 괴생명체인 신드롬들을 피해 생존하는 생존게임.", en: "A survival game escaping bizarre creatures known as Syndromes." },
+        description: { ko: "신드롬들을 피해 생존하는 생존게임. 공식 폐기되었습니다.", en: "A survival game escaping Syndromes. Officially retired." },
         status: "abandoned",
       },
       {
         name: "DREAM ON",
-        description: { ko: "UNITED를 기반으로 만들어진 새로운 스토리의 MMORPG.", en: "An MMORPG with an original story, built on UNITED." },
+        description: { ko: "UNITED를 기반으로 한 스토리 MMORPG. 공식 폐기되었습니다.", en: "A story-driven MMORPG built on UNITED. Officially retired." },
         status: "abandoned",
       },
     ],
     web: [
       { name: "COMET PRODUCTION Co. 홈페이지", status: "live" },
-      { name: "Study Lab", status: "ending" },
+      {
+        name: "Study Lab",
+        description: { ko: "2026년 8월 1일 공식 서비스 종료 예정.", en: "Official service ending on August 1, 2026." },
+        status: "ending",
+      },
       {
         name: "COMET AI",
-        description: { ko: "Stutant와 DAILIA를 통칭하는 COMET DEVELOPS의 AI 브랜드.", en: "COMET DEVELOPS' AI brand encompassing Stutant and DAILIA." },
+        description: { ko: "Stutant와 DAILIA를 통칭하는 AI 브랜드. 2026년 8월 1일 베타 서비스를 시작합니다.", en: "The AI brand encompassing Stutant and DAILIA. Beta service begins on August 1, 2026." },
         status: "beta",
       },
       {
         name: "Stutant",
-        description: { ko: "학습을 돕는 AI 서비스.", en: "An AI service that supports learning." },
+        description: { ko: "학습을 돕는 COMET AI 서비스. 2026년 8월 1일 베타 서비스 개시.", en: "A COMET AI service that supports learning. Beta service begins on August 1, 2026." },
         status: "beta",
       },
       {
         name: "DAILIA",
-        description: { ko: "일상적인 정보 활용을 돕는 AI 서비스.", en: "An AI service for everyday information use." },
+        description: { ko: "일상적인 정보 활용을 돕는 COMET AI 서비스. 2026년 8월 1일 베타 서비스 개시.", en: "A COMET AI service for everyday information use. Beta service begins on August 1, 2026." },
         status: "beta",
       },
     ],

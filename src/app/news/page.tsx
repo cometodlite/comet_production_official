@@ -8,6 +8,30 @@ type Category = "all" | "production" | "entertainers" | "develops";
 
 const newsData = [
   {
+    id: 7,
+    category: "develops" as Category,
+    date: "2026.07.17",
+    titleKo: "StudyLab 서비스 종료 및 COMET AI 베타 서비스 개시 안내",
+    titleEn: "StudyLab Closure and COMET AI Beta Service Announcement",
+    descKo: "StudyLab은 2026년 8월 1일 공식 서비스를 종료합니다. 후속 COMET AI인 Stutant와 DAILIA는 같은 날부터 베타 서비스를 시작하며, 학습과 일상적인 정보 활용을 위한 새로운 AI 경험을 제공할 예정입니다.",
+    descEn: "StudyLab will officially end its service on August 1, 2026. Its successor, COMET AI, will begin beta service for Stutant and DAILIA on the same day, offering new AI experiences for learning and everyday information use.",
+    tag: "COMET AI",
+    tagColor: "text-cyan-300 border-cyan-400/30 bg-cyan-400/10",
+    accentBar: "bg-gradient-to-r from-cyan-400/70 to-transparent",
+  },
+  {
+    id: 6,
+    category: "develops" as Category,
+    date: "2026.07.17",
+    titleKo: "HCSiG II 및 일부 게임 프로젝트 공식 폐기",
+    titleEn: "HCSiG II and Selected Game Projects Officially Retired",
+    descKo: "COMET DEVELOPS는 HCSiG II, PROJECT: HW, UTOPIA SYNDROME, DREAM ON 프로젝트를 공식 폐기합니다. 각 프로젝트의 개발은 종료되며, 앞으로의 개발 역량은 새로운 서비스와 COMET AI를 포함한 후속 방향에 집중할 예정입니다.",
+    descEn: "COMET DEVELOPS is officially retiring HCSiG II, PROJECT: HW, UTOPIA SYNDROME, and DREAM ON. Development on these projects has concluded, and future efforts will focus on new services and successors including COMET AI.",
+    tag: "DEVELOPS",
+    tagColor: "text-slate-300 border-slate-400/30 bg-slate-400/10",
+    accentBar: "bg-gradient-to-r from-slate-400/60 to-transparent",
+  },
+  {
     id: 5,
     category: "develops" as Category,
     date: "2026.07.17",
