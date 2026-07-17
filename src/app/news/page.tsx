@@ -34,7 +34,7 @@ const newsData: NewsItem[] = [
     tag: "COMET EDU",
     tagColor: "text-emerald-300 border-emerald-400/30 bg-emerald-400/10",
     accentBar: "bg-gradient-to-r from-emerald-400/70 to-transparent",
-    href: "/news/comet-edu-closure",
+    href: "/news/7",
   },
   {
     id: 6,
@@ -47,6 +47,7 @@ const newsData: NewsItem[] = [
     tag: "DEVELOPS",
     tagColor: "text-slate-300 border-slate-400/30 bg-slate-400/10",
     accentBar: "bg-gradient-to-r from-slate-400/60 to-transparent",
+    href: "/news/6",
   },
   {
     id: 5,
@@ -73,6 +74,7 @@ const newsData: NewsItem[] = [
     tag: "DEVELOPS",
     tagColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
     accentBar: "bg-gradient-to-r from-blue-500/70 to-transparent",
+    href: "/news/4",
   },
   {
     id: 1,
@@ -85,6 +87,7 @@ const newsData: NewsItem[] = [
     tag: "PRODUCTION",
     tagColor: "text-amber-400 border-amber-500/30 bg-amber-500/10",
     accentBar: "bg-gradient-to-r from-amber-500/70 to-transparent",
+    href: "/news/1",
   },
   {
     id: 2,
@@ -97,6 +100,7 @@ const newsData: NewsItem[] = [
     tag: "ENTERTAINERS",
     tagColor: "text-violet-400 border-violet-500/30 bg-violet-500/10",
     accentBar: "bg-gradient-to-r from-violet-500/70 to-transparent",
+    href: "/news/2",
   },
   {
     id: 3,
@@ -109,6 +113,7 @@ const newsData: NewsItem[] = [
     tag: "DEVELOPS",
     tagColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
     accentBar: "bg-gradient-to-r from-blue-500/70 to-transparent",
+    href: "/news/3",
   },
 ];
 

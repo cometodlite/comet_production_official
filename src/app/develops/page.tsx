@@ -582,7 +582,7 @@ export default function DevelopsPage() {
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <FadeUp>
           <Link
-            href="/news/comet-edu-closure"
+            href="/news/7"
             className="group flex items-center justify-between gap-6 rounded-2xl border px-8 py-7 transition-all duration-300"
             style={{
               borderColor: "rgba(0,184,150,0.22)",
