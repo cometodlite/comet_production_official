@@ -578,11 +578,11 @@ export default function DevelopsPage() {
         </StaggerContainer>
       </section>
 
-      {/* ── EDU 브릿지 ── */}
+      {/* ── EDU 종료 안내 ── */}
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <FadeUp>
           <Link
-            href="/edu"
+            href="/news/comet-edu-closure"
             className="group flex items-center justify-between gap-6 rounded-2xl border px-8 py-7 transition-all duration-300"
             style={{
               borderColor: "rgba(0,184,150,0.22)",
@@ -603,10 +603,10 @@ export default function DevelopsPage() {
                 COMET EDU
               </p>
               <p className="text-white font-semibold text-base mb-1">
-                {t("EDU로 이동할 수 있습니다.", "Go to COMET EDU.")}
+                {t("COMET EDU 해산 및 StudyLab 서비스 종료 안내", "COMET EDU Dissolution and StudyLab Closure")}
               </p>
               <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
-                Learning Shapes Your Future Path.
+                {t("2026년 7월 17일 공식 해산 · StudyLab 8월 1일 서비스 종료", "Dissolved July 17, 2026 · StudyLab service ends August 1")}
               </p>
             </div>
             <span

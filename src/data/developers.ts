@@ -97,7 +97,7 @@ export const developers: Developer[] = [
       { name: "COMET PRODUCTION Co. 홈페이지", status: "live" },
       {
         name: "Study Lab",
-        description: { ko: "2026년 8월 1일 공식 서비스 종료 예정.", en: "Official service ending on August 1, 2026." },
+        description: { ko: "2026년 7월 17일 서비스 종료를 발표했으며, 2026년 8월 1일 공식 서비스를 종료합니다.", en: "Service closure was announced on July 17, 2026, with official service ending on August 1, 2026." },
         status: "ending",
       },
       {
