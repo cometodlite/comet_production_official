@@ -52,6 +52,58 @@ function WorkCard({ work }: { work: DevWork }) {
   );
 }
 
+function CometAiSuite({ work }: { work: DevWork }) {
+  const { t, lang } = useLang();
+
+  return (
+    <StaggerItem className="sm:col-span-2">
+      <section
+        className="grid overflow-hidden rounded-lg border md:grid-cols-[minmax(0,1fr)_0.9fr]"
+        style={{ borderColor: "rgba(34,211,238,0.28)", background: "rgba(6,182,212,0.045)" }}
+      >
+        <div className="p-7 md:p-8">
+          <div className="mb-4"><StatusBadge status={work.status} /></div>
+          <p className="text-xs font-bold tracking-[0.3em] text-cyan-300">AI SERVICE SUITE</p>
+          <h4 className="mt-3 text-2xl font-black text-white">{work.name}</h4>
+          {work.description && (
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/50">
+              {lang === "ko" ? work.description.ko : work.description.en}
+            </p>
+          )}
+        </div>
+
+        <div className="border-t border-cyan-300/15 md:border-l md:border-t-0">
+          {work.children?.map((service, index) => (
+            <motion.a
+              key={service.name}
+              href={service.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`group block p-6 transition-colors hover:bg-cyan-300/[0.07] ${index > 0 ? "border-t border-cyan-300/15" : ""}`}
+              whileHover={{ x: 3, transition: { duration: 0.2 } }}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="mb-2"><StatusBadge status={service.status} /></div>
+                  <h5 className="text-lg font-bold text-white transition-colors group-hover:text-cyan-200">{service.name}</h5>
+                  {service.description && (
+                    <p className="mt-1 text-xs leading-relaxed text-white/45">
+                      {lang === "ko" ? service.description.ko : service.description.en}
+                    </p>
+                  )}
+                </div>
+                <span className="mt-7 shrink-0 text-sm font-semibold text-cyan-300">
+                  {t("사용해보기", "Try it")} →
+                </span>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </section>
+    </StaggerItem>
+  );
+}
+
 export default function DeveloperPage({
   params,
 }: {
@@ -62,6 +114,9 @@ export default function DeveloperPage({
 
   const developer = developers.find((d) => d.slug === slug && d.hasPage);
   if (!developer) return null;
+
+  const standardWebWorks = developer.web.filter((work) => work.name !== "COMET AI");
+  const cometAi = developer.web.find((work) => work.name === "COMET AI");
 
   return (
     <div className="min-h-screen" style={{ background: "#050814" }}>
@@ -134,9 +189,10 @@ export default function DeveloperPage({
               {t("웹", "WEB")}
             </p>
             <StaggerContainer className="grid sm:grid-cols-2 gap-4">
-              {developer.web.map((work) => (
+              {standardWebWorks.map((work) => (
                 <WorkCard key={work.name} work={work} />
               ))}
+              {cometAi && <CometAiSuite work={cometAi} />}
             </StaggerContainer>
           </FadeUp>
         )}

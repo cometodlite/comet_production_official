@@ -14,6 +14,7 @@ export type DevWork = {
   description?: { ko: string; en: string };
   status: DevWorkStatus;
   url?: string;
+  children?: DevWork[];
 };
 
 export type DevOtherGroup = {
@@ -102,18 +103,22 @@ export const developers: Developer[] = [
       },
       {
         name: "COMET AI",
-        description: { ko: "Stutant와 DAILIA를 통칭하는 AI 브랜드. 2026년 8월 1일 베타 서비스를 시작합니다.", en: "The AI brand encompassing Stutant and DAILIA. Beta service begins on August 1, 2026." },
+        description: { ko: "Stutant와 DAILIA를 하나로 연결하는 COMET AI 서비스 브랜드.", en: "The COMET AI service brand connecting Stutant and DAILIA." },
         status: "beta",
-      },
-      {
-        name: "Stutant",
-        description: { ko: "학습을 돕는 COMET AI 서비스. 2026년 8월 1일 베타 서비스 개시.", en: "A COMET AI service that supports learning. Beta service begins on August 1, 2026." },
-        status: "beta",
-      },
-      {
-        name: "DAILIA",
-        description: { ko: "일상적인 정보 활용을 돕는 COMET AI 서비스. 2026년 8월 1일 베타 서비스 개시.", en: "A COMET AI service for everyday information use. Beta service begins on August 1, 2026." },
-        status: "beta",
+        children: [
+          {
+            name: "Stutant",
+            description: { ko: "학습을 돕는 AI 작업 공간", en: "An AI workspace for learning" },
+            status: "beta",
+            url: "https://stutant.kenet.co.kr",
+          },
+          {
+            name: "DAILIA",
+            description: { ko: "일상적인 생각과 작업을 돕는 AI 작업 공간", en: "An AI workspace for everyday life" },
+            status: "beta",
+            url: "https://stutant.kenet.co.kr/dailia",
+          },
+        ],
       },
     ],
     other: [
