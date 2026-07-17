@@ -56,8 +56,8 @@ export const developers: Developer[] = [
     role: { ko: "웹 개발자", en: "Web Developer" },
     number: "02",
     description: {
-      ko: "HTML/CSS/JS와 React를 중심으로 웹사이트 및 관련 웹개발을 담당합니다. COMET PRODUCTION 웹사이트 전반과 Stutant 공부 보조 AI, StudyLab을 개발했으며, HCSiG 시리즈 등 웹게임도 개발했습니다.",
-      en: "Builds websites and related web experiences with HTML/CSS/JS and React. Developed the COMET PRODUCTION website, Stutant study-assistant AI, StudyLab, and web games including the HCSiG series.",
+      ko: "HTML/CSS/JS와 React를 중심으로 웹사이트 및 관련 웹개발을 담당합니다. COMET PRODUCTION 웹사이트 전반과 Stutant, DAILIA를 개발했으며, 두 AI는 COMET AI로 통칭됩니다. HCSiG 시리즈 등 웹게임도 개발했습니다.",
+      en: "Builds websites and related web experiences with HTML/CSS/JS and React. Developed the COMET PRODUCTION website, Stutant, and DAILIA, which are collectively known as COMET AI, as well as web games including the HCSiG series.",
     },
     specialties: ["HTML / CSS / JS", "REACT", "WEB GAMES"],
     games: [
@@ -91,7 +91,21 @@ export const developers: Developer[] = [
     web: [
       { name: "COMET PRODUCTION Co. 홈페이지", status: "live" },
       { name: "Study Lab", status: "ending" },
-      { name: "Stutant", status: "beta" },
+      {
+        name: "COMET AI",
+        description: { ko: "Stutant와 DAILIA를 통칭하는 COMET DEVELOPS의 AI 브랜드.", en: "COMET DEVELOPS' AI brand encompassing Stutant and DAILIA." },
+        status: "beta",
+      },
+      {
+        name: "Stutant",
+        description: { ko: "학습을 돕는 AI 서비스.", en: "An AI service that supports learning." },
+        status: "beta",
+      },
+      {
+        name: "DAILIA",
+        description: { ko: "일상적인 정보 활용을 돕는 AI 서비스.", en: "An AI service for everyday information use." },
+        status: "beta",
+      },
     ],
     other: [
       {

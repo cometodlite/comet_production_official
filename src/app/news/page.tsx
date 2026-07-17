@@ -8,6 +8,18 @@ type Category = "all" | "production" | "entertainers" | "develops";
 
 const newsData = [
   {
+    id: 5,
+    category: "develops" as Category,
+    date: "2026.07.17",
+    titleKo: "Stutant와 DAILIA, COMET AI로 통합 명명",
+    titleEn: "Stutant and DAILIA Unified as COMET AI",
+    descKo: "Luna-1o 개발자가 개발한 Stutant와 DAILIA 두 AI를 COMET AI로 통칭합니다. 두 서비스는 학습과 일상적인 정보 활용을 돕는 AI 경험을 확장하며, COMET DEVELOPS의 AI 개발 방향을 함께 만들어 갑니다.",
+    descEn: "Stutant and DAILIA, two AI services developed by Luna-1o, are now collectively known as COMET AI. Together, they expand AI experiences for learning and everyday information use while shaping COMET DEVELOPS' AI direction.",
+    tag: "COMET AI",
+    tagColor: "text-cyan-300 border-cyan-400/30 bg-cyan-400/10",
+    accentBar: "bg-gradient-to-r from-cyan-400/70 to-transparent",
+  },
+  {
     id: 4,
     category: "develops" as Category,
     date: "2026.05.16",
