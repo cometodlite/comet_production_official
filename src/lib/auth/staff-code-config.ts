@@ -7,12 +7,14 @@ const STAFF_CODE_ENV: Record<StaffGroup, string> = {
   entertainers: "STAFF_CODE_ENTERTAINERS",
   develops: "STAFF_CODE_DEVELOPS",
   board: "STAFF_CODE_COMET_BOARD",
+  "comet-dev": "STAFF_CODE_COMET_DEV",
 };
 
 const STAFF_ALLOWED_EMAILS_ENV: Record<StaffGroup, string> = {
   entertainers: "STAFF_ALLOWED_EMAILS_ENTERTAINERS",
   develops: "STAFF_ALLOWED_EMAILS_DEVELOPS",
   board: "STAFF_ALLOWED_EMAILS_COMET_BOARD",
+  "comet-dev": "STAFF_ALLOWED_EMAILS_COMET_DEV",
 };
 
 export function normalizeStaffCode(code: FormDataEntryValue | string | null | undefined) {

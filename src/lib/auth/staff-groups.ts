@@ -1,9 +1,10 @@
-export type StaffGroup = "entertainers" | "develops" | "board";
+export type StaffGroup = "entertainers" | "develops" | "board" | "comet-dev";
 
 export const STAFF_GROUP_OPTIONS: { value: StaffGroup; label: string }[] = [
   { value: "entertainers", label: "COMET ENTERTAINERS" },
   { value: "develops", label: "COMET DEVELOPS" },
   { value: "board", label: "COMET 이사회" },
+  { value: "comet-dev", label: "COMET Dev." },
 ];
 
 const STAFF_GROUP_VALUES = new Set<StaffGroup>(STAFF_GROUP_OPTIONS.map((group) => group.value));
