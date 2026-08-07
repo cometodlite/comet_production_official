@@ -41,6 +41,7 @@ export default function Navbar() {
     { href: "/about",         label: t("회사 소개", "About") },
     { href: "/entertainers",  label: "ENTERTAINERS" },
     { href: "/develops",      label: "DEVELOPS" },
+    { href: "/comet-ai",      label: "COMET AI" },
     { href: "/news",          label: t("뉴스", "News") },
     { href: "/careers",       label: t("채용", "Careers") },
     { href: "/results",       label: t("결과 조회", "Results") },
