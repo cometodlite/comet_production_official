@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        source: "/lister",
+        destination: "https://lister-gilt.vercel.app/lister",
+      },
+      {
         source: "/lister/:path*",
         destination: "https://lister-gilt.vercel.app/lister/:path*",
       },
