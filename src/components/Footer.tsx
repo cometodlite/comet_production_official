@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
+import { isChromelessRoute } from "@/lib/chromeless-routes";
 
 const HIDDEN_PATHS = ["/staff/messages"];
 
@@ -22,6 +23,7 @@ export default function Footer() {
   const { t } = useLang();
   const pathname = usePathname();
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
+  if (isChromelessRoute(pathname)) return null;
 
   return (
     <footer className="border-t border-white/[0.08] bg-black/40 backdrop-blur-sm relative z-10">

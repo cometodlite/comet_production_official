@@ -7,6 +7,7 @@ import StarField from "@/components/StarField";
 import ScrollToTop from "@/components/ScrollToTop";
 import LangTransition from "@/components/LangTransition";
 import CometGuideWidget from "@/components/CometGuideWidget";
+import MainContent from "@/components/MainContent";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://comet.kenet.co.kr"),
@@ -34,7 +35,7 @@ export default function RootLayout({
           <StarField />
           <Navbar />
           <LangTransition>
-            <main className="flex-1 relative z-10 pt-16">{children}</main>
+            <MainContent>{children}</MainContent>
           </LangTransition>
           <Footer />
           <ScrollToTop />

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { logout } from "@/app/actions/auth";
 import { useLang } from "@/context/LanguageContext";
 import { CometProductionLogo } from "@/components/logos/CometLogo";
+import { isChromelessRoute } from "@/lib/chromeless-routes";
 
 type AuthUser = {
   id: string;
@@ -47,6 +48,8 @@ export default function Navbar() {
     { href: "/results",       label: t("결과 조회", "Results") },
     { href: "/contact",       label: t("문의", "Contact") },
   ];
+
+  if (isChromelessRoute(pathname)) return null;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">

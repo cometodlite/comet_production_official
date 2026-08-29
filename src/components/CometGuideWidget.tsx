@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLang } from "@/context/LanguageContext";
 import { CometProductionLogo } from "@/components/logos/CometLogo";
+import { isChromelessRoute } from "@/lib/chromeless-routes";
 
 type Message = { role: "user" | "assistant"; content: string };
 
 export default function CometGuideWidget() {
   const { t } = useLang();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -51,6 +54,8 @@ export default function CometGuideWidget() {
       setSending(false);
     }
   }, [input, sending, messages, t]);
+
+  if (isChromelessRoute(pathname)) return null;
 
   return (
     <div className="fixed bottom-6 left-6 z-50">

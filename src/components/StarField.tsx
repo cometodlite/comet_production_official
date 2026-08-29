@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import { isChromelessRoute } from "@/lib/chromeless-routes";
 
 export default function StarField() {
   const containerRef = useRef<HTMLDivElement>(null);
   const shootingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pathname = usePathname();
+  const chromeless = isChromelessRoute(pathname);
 
   useEffect(() => {
+    if (chromeless) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -59,7 +64,9 @@ export default function StarField() {
       container.innerHTML = "";
       if (shootingTimerRef.current) clearTimeout(shootingTimerRef.current);
     };
-  }, []);
+  }, [chromeless]);
+
+  if (chromeless) return null;
 
   return (
     <div

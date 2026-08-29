@@ -1,16 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { isChromelessRoute } from "@/lib/chromeless-routes";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (isChromelessRoute(pathname)) return null;
 
   return (
     <AnimatePresence>
