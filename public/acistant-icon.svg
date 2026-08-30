@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="background" x1="58" y1="44" x2="461" y2="478" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18234A" />
+      <stop offset="0.54" stop-color="#0D1631" />
+      <stop offset="1" stop-color="#080E20" />
+    </linearGradient>
+    <linearGradient id="comet" x1="142" y1="386" x2="417" y2="97" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#AEB8FF" />
+      <stop offset="0.42" stop-color="#7182FF" />
+      <stop offset="1" stop-color="#9EA8FF" />
+    </linearGradient>
+    <filter id="glow" x="40" y="35" width="442" height="442" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="13" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" result="shape" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#background)" />
+  <circle cx="256" cy="256" r="217" stroke="#9CABFF" stroke-opacity="0.10" />
+  <circle cx="256" cy="256" r="176" stroke="#9CABFF" stroke-opacity="0.08" />
+  <g filter="url(#glow)">
+    <circle cx="179" cy="332" r="77" fill="#101A3A" stroke="url(#comet)" stroke-width="18" />
+    <path d="M237 286L412 111" stroke="url(#comet)" stroke-width="19" stroke-linecap="round" />
+    <path d="M259 278L421 168" stroke="#8291FF" stroke-width="12" stroke-linecap="round" stroke-opacity="0.74" />
+    <path d="M267 255L425 215" stroke="#8E9BFF" stroke-width="7" stroke-linecap="round" stroke-opacity="0.46" />
+  </g>
+  <circle cx="405" cy="112" r="12" fill="#E2E5FF" />
+  <circle cx="427" cy="87" r="5" fill="#B9C1FF" fill-opacity="0.85" />
+</svg>
