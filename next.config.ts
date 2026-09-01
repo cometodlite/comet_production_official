@@ -18,17 +18,16 @@ const nextConfig: NextConfig = {
         source: "/lister/:path*",
         destination: "https://lister-gilt.vercel.app/lister/:path*",
       },
-      // COMET BUNDLE 모노레포 프리뷰 (apps/lister). comet-bundle Vercel 프로젝트가
-      // lister를 basePath "/lister"로 서빙하므로 경로를 그쪽으로 번역한다.
-      // comet-bundle 프로젝트의 Deployment Protection(Vercel Authentication)이
-      // 꺼져 있어야 이 rewrite가 통한다.
+      // COMET BUNDLE 허브 (모노레포 apps/bundle). 이 앱은 basePath "/app-bundles"로
+      // 서빙되므로 경로를 1:1로 넘긴다. comet-bundle Vercel 프로젝트의 Root Directory가
+      // apps/bundle, Deployment Protection(Vercel Authentication)이 꺼져 있어야 한다.
       {
         source: "/app-bundles",
-        destination: "https://comet-bundle.vercel.app/lister",
+        destination: "https://comet-bundle.vercel.app/app-bundles",
       },
       {
         source: "/app-bundles/:path*",
-        destination: "https://comet-bundle.vercel.app/lister/:path*",
+        destination: "https://comet-bundle.vercel.app/app-bundles/:path*",
       },
     ];
   },
