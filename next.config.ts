@@ -18,6 +18,18 @@ const nextConfig: NextConfig = {
         source: "/lister/:path*",
         destination: "https://lister-gilt.vercel.app/lister/:path*",
       },
+      // COMET BUNDLE 모노레포 프리뷰 (apps/lister). comet-bundle Vercel 프로젝트가
+      // lister를 basePath "/lister"로 서빙하므로 경로를 그쪽으로 번역한다.
+      // comet-bundle 프로젝트의 Deployment Protection(Vercel Authentication)이
+      // 꺼져 있어야 이 rewrite가 통한다.
+      {
+        source: "/app-bundles",
+        destination: "https://comet-bundle.vercel.app/lister",
+      },
+      {
+        source: "/app-bundles/:path*",
+        destination: "https://comet-bundle.vercel.app/lister/:path*",
+      },
     ];
   },
 };
