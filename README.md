@@ -62,6 +62,12 @@ Staff signup requires the matching group code. If a group code is not configured
 
 Staff who need a signup code can use `/contact?type=staff-code` to send a staff signup code request through the contact form.
 
+## Security Dashboard
+
+`/security` runs hourly, non-intrusive security checks (TLS/certificate expiry, HTTP security headers, sensitive file exposure, DNS/DMARC/SPF status, dangling CNAME) against the COMET PRODUCTION domains listed in `src/lib/security/targets.ts`, and stores results in `comet_security_scans` (or `.data/security-scans.json` locally). The page itself is restricted to `COMET 이사회` accounts and includes a manual "지금 다시 스캔" button.
+
+Set `CRON_SECRET` in every Vercel environment so `vercel.json`'s hourly cron (`/api/security/scan`) can authenticate — Vercel automatically sends `Authorization: Bearer $CRON_SECRET` on cron-triggered requests once that variable is set.
+
 Staff codes are separated by staff group and should be configured as server-side environment variables:
 
 ```bash
