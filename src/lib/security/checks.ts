@@ -47,11 +47,15 @@ export async function checkTlsCertificate(hostname: string): Promise<SecurityFin
             reject(new Error("인증서 정보를 가져올 수 없습니다."));
             return;
           }
+          // 인증서 발급자 필드(O, CN)는 멀티밸류 RDN일 경우 Node 타입상 string[]로도
+          // 올 수 있어, 단일 문자열로 정규화한다.
+          const issuerName = (value: string | string[] | undefined) =>
+            Array.isArray(value) ? value[0] : value;
           resolve({
             validTo: cert.valid_to,
             validFrom: cert.valid_from,
             protocol,
-            issuer: cert.issuer?.O || cert.issuer?.CN || "알 수 없음",
+            issuer: issuerName(cert.issuer?.O) || issuerName(cert.issuer?.CN) || "알 수 없음",
           });
         },
       );
