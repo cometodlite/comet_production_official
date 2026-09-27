@@ -12,11 +12,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/lister",
-        destination: "https://lister-gilt.vercel.app/lister",
+        destination: "https://lister-mu.vercel.app/lister",
       },
       {
         source: "/lister/:path*",
-        destination: "https://lister-gilt.vercel.app/lister/:path*",
+        destination: "https://lister-mu.vercel.app/lister/:path*",
       },
       // COMET BUNDLE 허브 (모노레포 apps/bundle). 이 앱은 basePath "/app-bundles"로
       // 서빙되므로 경로를 1:1로 넘긴다. comet-bundle Vercel 프로젝트의 Root Directory가
