@@ -8,6 +8,9 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+# NEXT_PUBLIC_* 값은 빌드 시 코드에 박힌다(푸시 알림 공개 키).
+ARG NEXT_PUBLIC_VAPID_PUBLIC_KEY
+ENV NEXT_PUBLIC_VAPID_PUBLIC_KEY=$NEXT_PUBLIC_VAPID_PUBLIC_KEY
 # next.config.ts는 이 플래그가 있을 때만 standalone 출력을 만든다(Vercel 빌드와 구분).
 ENV COMET_STANDALONE=1
 RUN npm run build
