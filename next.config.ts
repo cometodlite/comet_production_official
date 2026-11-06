@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Cloudflare Worker가 comet.cometprod.com을 거쳐 전달하므로 x-forwarded-host와 Origin이 다르다.
+  experimental: {
+    serverActions: { allowedOrigins: ["comet.kenet.co.kr", "comet.cometprod.com"] },
+  },
   // 회사 서버(Docker) 빌드에서만 standalone 출력을 만든다. Vercel 빌드는 그대로.
   ...(process.env.COMET_STANDALONE ? { output: "standalone" as const } : {}),
   turbopack: {
