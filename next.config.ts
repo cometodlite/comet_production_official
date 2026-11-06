@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // 회사 서버(Docker) 빌드에서만 standalone 출력을 만든다. Vercel 빌드는 그대로.
+  ...(process.env.COMET_STANDALONE ? { output: "standalone" as const } : {}),
   turbopack: {
     // Prevent a parent-level lockfile from being treated as this project's root.
     root: process.cwd(),
